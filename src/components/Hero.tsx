@@ -11,7 +11,12 @@ import { TextRoll } from './TextRoll'
 import { PartnerIcon } from './PartnerIcon'
 import { useLondonTime } from '../hooks/useLondonTime'
 
-const NAV_LINKS = ['Projects', 'Studio', 'Journal', 'Connect']
+const NAV_LINKS: { label: string; href: string }[] = [
+  { label: 'Projects', href: '#work' },
+  { label: 'Studio', href: '#about' },
+  { label: 'Journal', href: '#services' },
+  { label: 'Connect', href: '#contact' },
+]
 
 export function Hero() {
   const [menuOpen, setMenuOpen] = useState(false)
@@ -61,11 +66,11 @@ export function Hero() {
             <div className="hidden items-center gap-6 md:flex">
               {NAV_LINKS.map((link) => (
                 <a
-                  key={link}
-                  href="#"
+                  key={link.label}
+                  href={link.href}
                   className="text-[14px] text-gray-900 transition-colors duration-300 hover:text-gray-500"
                 >
-                  {link}
+                  {link.label}
                 </a>
               ))}
             </div>
@@ -81,7 +86,7 @@ export function Hero() {
               <span>{londonTime} in London</span>
             </div>
             <a
-              href="#"
+              href="#contact"
               className="group flex items-center gap-2 rounded-full bg-gray-900 py-2 pl-5 pr-2 text-[13px] font-medium text-white"
             >
               <TextRoll>Book a strategy call</TextRoll>
@@ -140,17 +145,18 @@ export function Hero() {
           <div className="flex flex-col gap-2">
             {NAV_LINKS.map((link) => (
               <a
-                key={link}
-                href="#"
+                key={link.label}
+                href={link.href}
                 onClick={() => setMenuOpen(false)}
                 className="text-[28px] font-medium leading-[32px] text-gray-900"
               >
-                {link}
+                {link.label}
               </a>
             ))}
           </div>
           <a
-            href="#"
+            href="#contact"
+            onClick={() => setMenuOpen(false)}
             className="group mt-6 flex items-center justify-between rounded-full bg-[#F26522] py-2 pl-6 pr-2 text-[14px] font-medium text-white"
           >
             <span>Start a project</span>
@@ -180,7 +186,7 @@ export function Hero() {
 
           <div className="mt-8 flex flex-col gap-4 sm:mt-12 sm:flex-row sm:gap-5">
             <a
-              href="#"
+              href="#contact"
               className="group inline-flex items-center gap-2 self-start rounded-full bg-[#F26522] py-2 pl-5 pr-2 text-[13px] font-medium text-white transition-colors hover:bg-[#e05a1a] sm:pl-6 sm:text-[14px]"
             >
               <TextRoll>Start a project</TextRoll>

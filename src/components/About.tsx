@@ -22,7 +22,10 @@ function StudioButton() {
 
 export function About() {
   return (
-    <section className="overflow-hidden bg-white pb-12 pt-16 sm:pb-16 sm:pt-20 lg:pb-24 lg:pt-32">
+    <section
+      id="about"
+      className="overflow-hidden bg-white pb-12 pt-16 sm:pb-16 sm:pt-20 lg:pb-24 lg:pt-32"
+    >
       <div className="mx-auto w-full max-w-[1440px]">
         {/* Badge row */}
         <div className="mb-6 flex items-center gap-3 px-5 sm:mb-8 sm:px-8 lg:px-12">

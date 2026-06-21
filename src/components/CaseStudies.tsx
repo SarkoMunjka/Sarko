@@ -28,7 +28,10 @@ function LinkIcon({ className }: { className?: string }) {
 
 export function CaseStudies() {
   return (
-    <section className="bg-[#F5F5F5] pb-16 pt-16 sm:pb-20 sm:pt-20 lg:pb-28 lg:pt-28">
+    <section
+      id="work"
+      className="bg-[#F5F5F5] pb-16 pt-16 sm:pb-20 sm:pt-20 lg:pb-28 lg:pt-28"
+    >
       <div className="mx-auto w-full max-w-[1440px]">
         {/* Badge row */}
         <div className="mb-6 flex items-center gap-3 px-5 sm:mb-8 sm:px-8 lg:px-12">
