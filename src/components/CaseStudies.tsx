@@ -1,4 +1,6 @@
 import { ArrowRight } from 'lucide-react'
+import BlurText from './BlurText'
+import { FadeIn } from './FadeIn'
 
 const NARRATIV_VIDEO =
   'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260516_122702_390f5305-8719-41d5-ae80-d23ab3796c28.mp4'
@@ -44,9 +46,13 @@ export function CaseStudies() {
         </div>
 
         {/* Heading */}
-        <h2 className="mb-10 px-5 font-medium leading-[1.08] tracking-[-0.03em] text-gray-900 text-[clamp(1.75rem,7vw,4.2rem)] sm:mb-14 sm:px-8 sm:text-[clamp(2.5rem,5vw,4.2rem)] lg:mb-16 lg:px-12">
-          Our projects
-        </h2>
+        <BlurText
+          as="h2"
+          animateBy="words"
+          delay={80}
+          text="Our projects"
+          className="mb-10 px-5 font-medium leading-[1.08] tracking-[-0.03em] text-gray-900 text-[clamp(1.75rem,7vw,4.2rem)] sm:mb-14 sm:px-8 sm:text-[clamp(2.5rem,5vw,4.2rem)] lg:mb-16 lg:px-12"
+        />
 
         {/* Cards */}
         <div className="grid grid-cols-1 gap-5 px-5 sm:gap-6 sm:px-8 md:grid-cols-2 lg:gap-7 lg:px-12">
@@ -70,10 +76,13 @@ export function CaseStudies() {
                 </span>
               </div>
             </div>
-            <p className="mt-4 text-[13px] leading-relaxed text-gray-600 sm:text-[14px]">
+            <FadeIn
+              as="p"
+              className="mt-4 text-[13px] leading-relaxed text-gray-600 sm:text-[14px]"
+            >
               Winner of Site of the Month 2025 - an interactive 3D showcase
               driving record engagement
-            </p>
+            </FadeIn>
             <h3 className="mt-1 text-[14px] font-semibold text-gray-900 sm:text-[15px]">
               Narrativ
             </h3>
@@ -102,10 +111,13 @@ export function CaseStudies() {
                 </span>
               </div>
             </div>
-            <p className="mt-4 text-[13px] leading-relaxed text-gray-600 sm:text-[14px]">
+            <FadeIn
+              as="p"
+              className="mt-4 text-[13px] leading-relaxed text-gray-600 sm:text-[14px]"
+            >
               Transforming a dated platform into a conversion-focused brand
               experience
-            </p>
+            </FadeIn>
             <h3 className="mt-1 text-[14px] font-semibold text-gray-900 sm:text-[15px]">
               Luminar
             </h3>

@@ -1,5 +1,7 @@
 import { ArrowRight } from 'lucide-react'
 import { TextRoll } from './TextRoll'
+import BlurText from './BlurText'
+import { FadeIn } from './FadeIn'
 
 const SMALL_IMAGE =
   'https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260516_090123_74be96d4-9c1b-40cf-932a-96f4f4babed3.png&w=1280&q=85'
@@ -38,18 +40,23 @@ export function About() {
         </div>
 
         {/* Heading */}
-        <h2 className="mb-12 px-5 font-medium leading-[1.12] tracking-[-0.02em] text-gray-900 text-[clamp(1.5rem,4vw,3.2rem)] sm:mb-16 sm:px-8 lg:mb-28 lg:px-12">
-          Strategy-led creatives, delivering
-          <br />
-          results in digital and beyond.
-        </h2>
+        <BlurText
+          as="h2"
+          animateBy="words"
+          delay={60}
+          text={'Strategy-led creatives, delivering\nresults in digital and beyond.'}
+          className="mb-12 px-5 font-medium leading-[1.12] tracking-[-0.02em] text-gray-900 text-[clamp(1.5rem,4vw,3.2rem)] sm:mb-16 sm:px-8 lg:mb-28 lg:px-12"
+        />
 
         {/* Mobile / tablet layout */}
         <div className="px-5 sm:px-8 lg:hidden">
-          <p className="text-[15px] font-medium leading-[1.6] text-gray-900 sm:text-[17px]">
+          <FadeIn
+            as="p"
+            className="text-[15px] font-medium leading-[1.6] text-gray-900 sm:text-[17px]"
+          >
             Through research, creative thinking and iteration we help growing
             brands realize their digital full potential.
-          </p>
+          </FadeIn>
           <div className="mt-6">
             <StudioButton />
           </div>
@@ -81,13 +88,16 @@ export function About() {
           </div>
           <div className="flex justify-end self-start">
             <div className="flex flex-col">
-              <p className="whitespace-nowrap text-[16px] font-medium leading-[1.65] text-gray-900 sm:text-[18px]">
+              <FadeIn
+                as="p"
+                className="whitespace-nowrap text-[16px] font-medium leading-[1.65] text-gray-900 sm:text-[18px]"
+              >
                 Through research, creative thinking and iteration
                 <br />
                 we help growing brands realize their digital
                 <br />
                 full potential.
-              </p>
+              </FadeIn>
               <div className="mt-6">
                 <StudioButton />
               </div>

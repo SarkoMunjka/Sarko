@@ -8,6 +8,8 @@ import {
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { SectionBadge } from './SectionBadge'
+import BlurText from './BlurText'
+import { FadeIn } from './FadeIn'
 
 interface Service {
   icon: LucideIcon
@@ -62,16 +64,19 @@ export function Services() {
     >
       <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
         <SectionBadge number="3" label="What we do" />
-        <h2 className="mb-12 font-medium leading-[1.12] tracking-[-0.02em] text-gray-900 text-[clamp(1.5rem,4vw,3.2rem)] sm:mb-16">
-          Everything you need to launch,
-          <br />
-          grow and stand out online.
-        </h2>
+        <BlurText
+          as="h2"
+          animateBy="words"
+          delay={60}
+          text={'Everything you need to launch,\ngrow and stand out online.'}
+          className="mb-12 font-medium leading-[1.12] tracking-[-0.02em] text-gray-900 text-[clamp(1.5rem,4vw,3.2rem)] sm:mb-16"
+        />
 
         <div className="grid grid-cols-1 gap-5 sm:gap-6 md:grid-cols-2 lg:grid-cols-3 lg:gap-7">
-          {SERVICES.map(({ icon: Icon, title, description }) => (
-            <div
+          {SERVICES.map(({ icon: Icon, title, description }, index) => (
+            <FadeIn
               key={title}
+              delay={(index % 3) * 0.08}
               className="group rounded-2xl border border-gray-200 p-6 transition-colors duration-300 hover:border-gray-900 sm:p-8"
             >
               <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[#F5F5F5] text-gray-900 transition-colors duration-300 group-hover:bg-[#F26522] group-hover:text-white sm:h-12 sm:w-12">
@@ -83,7 +88,7 @@ export function Services() {
               <p className="mt-2 text-[14px] leading-[1.6] text-gray-600 sm:text-[15px]">
                 {description}
               </p>
-            </div>
+            </FadeIn>
           ))}
         </div>
       </div>

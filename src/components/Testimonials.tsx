@@ -1,4 +1,6 @@
 import { SectionBadge } from './SectionBadge'
+import BlurText from './BlurText'
+import { FadeIn } from './FadeIn'
 
 interface Testimonial {
   quote: string
@@ -36,16 +38,20 @@ export function Testimonials() {
     <section className="bg-white pb-16 pt-16 sm:pb-20 sm:pt-20 lg:pb-28 lg:pt-28">
       <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
         <SectionBadge number="5" label="Kind words" />
-        <h2 className="mb-12 font-medium leading-[1.12] tracking-[-0.02em] text-gray-900 text-[clamp(1.5rem,4vw,3.2rem)] sm:mb-16">
-          Teams keep coming back
-          <br />
-          for the details.
-        </h2>
+        <BlurText
+          as="h2"
+          animateBy="words"
+          delay={60}
+          text={'Teams keep coming back\nfor the details.'}
+          className="mb-12 font-medium leading-[1.12] tracking-[-0.02em] text-gray-900 text-[clamp(1.5rem,4vw,3.2rem)] sm:mb-16"
+        />
 
         <div className="grid grid-cols-1 gap-5 sm:gap-6 md:grid-cols-3 lg:gap-7">
-          {TESTIMONIALS.map((t) => (
-            <figure
+          {TESTIMONIALS.map((t, index) => (
+            <FadeIn
+              as="figure"
               key={t.name}
+              delay={index * 0.1}
               className="flex flex-col justify-between rounded-2xl border border-gray-200 p-6 sm:p-8"
             >
               <blockquote className="text-[16px] font-medium leading-[1.5] text-gray-900 sm:text-[18px]">
@@ -62,7 +68,7 @@ export function Testimonials() {
                   <div className="text-[13px] text-gray-600">{t.role}</div>
                 </div>
               </figcaption>
-            </figure>
+            </FadeIn>
           ))}
         </div>
       </div>

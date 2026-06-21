@@ -1,4 +1,6 @@
 import { RollButton } from './RollButton'
+import BlurText from './BlurText'
+import { FadeIn } from './FadeIn'
 
 interface Stat {
   value: string
@@ -20,19 +22,28 @@ export function CallToAction() {
     >
       <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
         <div className="rounded-3xl bg-gray-900 px-6 py-14 sm:px-10 sm:py-20 lg:px-16 lg:py-24">
-          <p className="mb-5 text-[13px] tracking-wide text-gray-400 sm:mb-7 sm:text-[14px]">
+          <FadeIn
+            as="p"
+            y={10}
+            className="mb-5 text-[13px] tracking-wide text-gray-400 sm:mb-7 sm:text-[14px]"
+          >
             Let&rsquo;s work together
-          </p>
-          <h2 className="font-medium leading-[1.08] tracking-[-0.03em] text-white text-[clamp(1.75rem,7vw,4.2rem)] sm:text-[clamp(2.5rem,5vw,4.2rem)]">
-            Let&rsquo;s build something
-            <br className="hidden sm:block" />
-            <span className="sm:hidden"> </span>
-            worth remembering.
-          </h2>
-          <p className="mt-6 max-w-xl text-[15px] leading-[1.6] text-gray-400 sm:text-[17px]">
+          </FadeIn>
+          <BlurText
+            as="h2"
+            responsiveBreak
+            animateBy="words"
+            delay={60}
+            text={'Let\u2019s build something\nworth remembering.'}
+            className="font-medium leading-[1.08] tracking-[-0.03em] text-white text-[clamp(1.75rem,7vw,4.2rem)] sm:text-[clamp(2.5rem,5vw,4.2rem)]"
+          />
+          <FadeIn
+            as="p"
+            className="mt-6 max-w-xl text-[15px] leading-[1.6] text-gray-400 sm:text-[17px]"
+          >
             Tell us where you want your brand to go. We will map the route and
             craft the experience that gets you there.
-          </p>
+          </FadeIn>
 
           <div className="mt-8 flex flex-col gap-4 sm:mt-10 sm:flex-row sm:items-center sm:gap-5">
             <RollButton label="Start a project" variant="orange" />
@@ -45,15 +56,15 @@ export function CallToAction() {
           </div>
 
           <div className="mt-12 grid grid-cols-2 gap-8 border-t border-white/10 pt-10 sm:mt-16 lg:grid-cols-4">
-            {STATS.map((stat) => (
-              <div key={stat.label}>
+            {STATS.map((stat, index) => (
+              <FadeIn key={stat.label} delay={index * 0.08}>
                 <div className="text-[28px] font-medium tracking-tight text-white sm:text-[36px]">
                   {stat.value}
                 </div>
                 <div className="mt-1 text-[13px] text-gray-400 sm:text-[14px]">
                   {stat.label}
                 </div>
-              </div>
+              </FadeIn>
             ))}
           </div>
         </div>

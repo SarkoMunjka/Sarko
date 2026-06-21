@@ -9,6 +9,8 @@ import {
 } from 'shaders/react'
 import { TextRoll } from './TextRoll'
 import { PartnerIcon } from './PartnerIcon'
+import BlurText from './BlurText'
+import { FadeIn } from './FadeIn'
 import { useLondonTime } from '../hooks/useLondonTime'
 
 const NAV_LINKS: { label: string; href: string }[] = [
@@ -171,18 +173,22 @@ export function Hero() {
       <div className="relative z-20 flex flex-1 flex-col">
         <div className="flex-1" />
         <div className="mx-auto w-full max-w-[1440px] px-5 pb-14 sm:px-8 sm:pb-16 lg:px-12 lg:pb-20">
-          <p className="mb-5 text-[13px] tracking-wide text-gray-900 sm:mb-8 sm:text-[14px]">
+          <FadeIn
+            as="p"
+            y={10}
+            className="mb-5 text-[13px] tracking-wide text-gray-900 sm:mb-8 sm:text-[14px]"
+          >
             Axion Studio
-          </p>
-          <h1 className="font-medium leading-[1.08] tracking-[-0.03em] text-gray-900 text-[clamp(1.75rem,7vw,4.2rem)] sm:text-[clamp(2.5rem,5vw,4.2rem)]">
-            We craft digital experiences
-            <br className="hidden sm:block" />
-            <span className="sm:hidden"> </span>
-            for brands ready to dominate
-            <br className="hidden sm:block" />
-            <span className="sm:hidden"> </span>
-            their category online.
-          </h1>
+          </FadeIn>
+          <BlurText
+            as="h1"
+            responsiveBreak
+            animateBy="words"
+            direction="top"
+            delay={60}
+            text={'We craft digital experiences\nfor brands ready to dominate\ntheir category online.'}
+            className="font-medium leading-[1.08] tracking-[-0.03em] text-gray-900 text-[clamp(1.75rem,7vw,4.2rem)] sm:text-[clamp(2.5rem,5vw,4.2rem)]"
+          />
 
           <div className="mt-8 flex flex-col gap-4 sm:mt-12 sm:flex-row sm:gap-5">
             <a
