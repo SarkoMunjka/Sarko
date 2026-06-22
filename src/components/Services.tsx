@@ -60,7 +60,7 @@ export function Services() {
   return (
     <section
       id="services"
-      className="bg-white pb-16 pt-16 sm:pb-20 sm:pt-20 lg:pb-28 lg:pt-28"
+      className="bg-white pb-16 pt-16 transition-colors duration-300 dark:bg-[#0a0a0a] sm:pb-20 sm:pt-20 lg:pb-28 lg:pt-28"
     >
       <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
         <SectionBadge number="3" label="What we do" />
@@ -69,7 +69,7 @@ export function Services() {
           animateBy="words"
           delay={60}
           text={'Everything you need to launch,\ngrow and stand out online.'}
-          className="mb-12 font-medium leading-[1.12] tracking-[-0.02em] text-gray-900 text-[clamp(1.5rem,4vw,3.2rem)] sm:mb-16"
+          className="mb-12 font-medium leading-[1.12] tracking-[-0.02em] text-gray-900 dark:text-white text-[clamp(1.5rem,4vw,3.2rem)] sm:mb-16"
         />
 
         <div className="grid grid-cols-1 gap-5 sm:gap-6 md:grid-cols-2 lg:grid-cols-3 lg:gap-7">
@@ -77,15 +77,15 @@ export function Services() {
             <FadeIn
               key={title}
               delay={(index % 3) * 0.08}
-              className="group rounded-2xl border border-gray-200 p-6 transition-colors duration-300 hover:border-gray-900 sm:p-8"
+              className="group rounded-2xl border border-gray-200 p-6 transition-colors duration-300 hover:border-gray-900 dark:border-white/10 dark:hover:border-white sm:p-8"
             >
-              <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[#F5F5F5] text-gray-900 transition-colors duration-300 group-hover:bg-[#F26522] group-hover:text-white sm:h-12 sm:w-12">
+              <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[#F5F5F5] text-gray-900 transition-colors duration-300 group-hover:bg-[#F26522] group-hover:text-white dark:bg-white/10 dark:text-white sm:h-12 sm:w-12">
                 <Icon size={20} />
               </div>
-              <h3 className="mt-5 text-[17px] font-semibold text-gray-900 sm:mt-6 sm:text-[19px]">
+              <h3 className="mt-5 text-[17px] font-semibold text-gray-900 dark:text-white sm:mt-6 sm:text-[19px]">
                 {title}
               </h3>
-              <p className="mt-2 text-[14px] leading-[1.6] text-gray-600 sm:text-[15px]">
+              <p className="mt-2 text-[14px] leading-[1.6] text-gray-600 dark:text-gray-400 sm:text-[15px]">
                 {description}
               </p>
             </FadeIn>

@@ -26,15 +26,15 @@ export function About() {
   return (
     <section
       id="about"
-      className="overflow-hidden bg-white pb-12 pt-16 sm:pb-16 sm:pt-20 lg:pb-24 lg:pt-32"
+      className="overflow-hidden bg-white pb-12 pt-16 transition-colors duration-300 dark:bg-[#0a0a0a] sm:pb-16 sm:pt-20 lg:pb-24 lg:pt-32"
     >
       <div className="mx-auto w-full max-w-[1440px]">
         {/* Badge row */}
         <div className="mb-6 flex items-center gap-3 px-5 sm:mb-8 sm:px-8 lg:px-12">
-          <div className="flex h-6 w-6 items-center justify-center rounded-full bg-gray-900 text-[11px] font-semibold text-white sm:h-7 sm:w-7 sm:text-[12px]">
+          <div className="flex h-6 w-6 items-center justify-center rounded-full bg-gray-900 text-[11px] font-semibold text-white dark:bg-white dark:text-gray-900 sm:h-7 sm:w-7 sm:text-[12px]">
             1
           </div>
-          <span className="rounded-full border border-gray-200 px-3 py-1 text-[12px] font-medium sm:px-4 sm:py-1.5 sm:text-[13px]">
+          <span className="rounded-full border border-gray-200 px-3 py-1 text-[12px] font-medium text-gray-900 dark:border-white/15 dark:text-gray-200 sm:px-4 sm:py-1.5 sm:text-[13px]">
             Introducing Axion
           </span>
         </div>
@@ -45,14 +45,14 @@ export function About() {
           animateBy="words"
           delay={60}
           text={'Strategy-led creatives, delivering\nresults in digital and beyond.'}
-          className="mb-12 px-5 font-medium leading-[1.12] tracking-[-0.02em] text-gray-900 text-[clamp(1.5rem,4vw,3.2rem)] sm:mb-16 sm:px-8 lg:mb-28 lg:px-12"
+          className="mb-12 px-5 font-medium leading-[1.12] tracking-[-0.02em] text-gray-900 dark:text-white text-[clamp(1.5rem,4vw,3.2rem)] sm:mb-16 sm:px-8 lg:mb-28 lg:px-12"
         />
 
         {/* Mobile / tablet layout */}
         <div className="px-5 sm:px-8 lg:hidden">
           <FadeIn
             as="p"
-            className="text-[15px] font-medium leading-[1.6] text-gray-900 sm:text-[17px]"
+            className="text-[15px] font-medium leading-[1.6] text-gray-900 dark:text-gray-200 sm:text-[17px]"
           >
             Through research, creative thinking and iteration we help growing
             brands realize their digital full potential.
@@ -90,7 +90,7 @@ export function About() {
             <div className="flex flex-col">
               <FadeIn
                 as="p"
-                className="whitespace-nowrap text-[16px] font-medium leading-[1.65] text-gray-900 sm:text-[18px]"
+                className="whitespace-nowrap text-[16px] font-medium leading-[1.65] text-gray-900 dark:text-gray-200 sm:text-[18px]"
               >
                 Through research, creative thinking and iteration
                 <br />
