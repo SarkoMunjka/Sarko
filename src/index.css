@@ -6,6 +6,17 @@ html {
   scroll-behavior: smooth;
 }
 
+body {
+  background-color: #ffffff;
+  color: #111827;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.dark body {
+  background-color: #0a0a0a;
+  color: #f3f4f6;
+}
+
 .liquid-glass {
   position: relative;
   background: rgba(255, 255, 255, 0.01);

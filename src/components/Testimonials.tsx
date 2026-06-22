@@ -35,7 +35,7 @@ const TESTIMONIALS: Testimonial[] = [
 
 export function Testimonials() {
   return (
-    <section className="bg-white pb-16 pt-16 sm:pb-20 sm:pt-20 lg:pb-28 lg:pt-28">
+    <section className="bg-white pb-16 pt-16 transition-colors duration-300 dark:bg-[#0a0a0a] sm:pb-20 sm:pt-20 lg:pb-28 lg:pt-28">
       <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
         <SectionBadge number="5" label="Kind words" />
         <BlurText
@@ -43,7 +43,7 @@ export function Testimonials() {
           animateBy="words"
           delay={60}
           text={'Teams keep coming back\nfor the details.'}
-          className="mb-12 font-medium leading-[1.12] tracking-[-0.02em] text-gray-900 text-[clamp(1.5rem,4vw,3.2rem)] sm:mb-16"
+          className="mb-12 font-medium leading-[1.12] tracking-[-0.02em] text-gray-900 dark:text-white text-[clamp(1.5rem,4vw,3.2rem)] sm:mb-16"
         />
 
         <div className="grid grid-cols-1 gap-5 sm:gap-6 md:grid-cols-3 lg:gap-7">
@@ -52,20 +52,22 @@ export function Testimonials() {
               as="figure"
               key={t.name}
               delay={index * 0.1}
-              className="flex flex-col justify-between rounded-2xl border border-gray-200 p-6 sm:p-8"
+              className="flex flex-col justify-between rounded-2xl border border-gray-200 p-6 dark:border-white/10 sm:p-8"
             >
-              <blockquote className="text-[16px] font-medium leading-[1.5] text-gray-900 sm:text-[18px]">
+              <blockquote className="text-[16px] font-medium leading-[1.5] text-gray-900 dark:text-white sm:text-[18px]">
                 &ldquo;{t.quote}&rdquo;
               </blockquote>
               <figcaption className="mt-6 flex items-center gap-3 sm:mt-8">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-900 text-[12px] font-semibold text-white">
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-900 text-[12px] font-semibold text-white dark:bg-white dark:text-gray-900">
                   {t.initials}
                 </div>
                 <div>
-                  <div className="text-[14px] font-semibold text-gray-900">
+                  <div className="text-[14px] font-semibold text-gray-900 dark:text-white">
                     {t.name}
                   </div>
-                  <div className="text-[13px] text-gray-600">{t.role}</div>
+                  <div className="text-[13px] text-gray-600 dark:text-gray-400">
+                    {t.role}
+                  </div>
                 </div>
               </figcaption>
             </FadeIn>

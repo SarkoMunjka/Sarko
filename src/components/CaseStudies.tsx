@@ -32,15 +32,15 @@ export function CaseStudies() {
   return (
     <section
       id="work"
-      className="bg-[#F5F5F5] pb-16 pt-16 sm:pb-20 sm:pt-20 lg:pb-28 lg:pt-28"
+      className="bg-[#F5F5F5] pb-16 pt-16 transition-colors duration-300 dark:bg-[#121212] sm:pb-20 sm:pt-20 lg:pb-28 lg:pt-28"
     >
       <div className="mx-auto w-full max-w-[1440px]">
         {/* Badge row */}
         <div className="mb-6 flex items-center gap-3 px-5 sm:mb-8 sm:px-8 lg:px-12">
-          <div className="flex h-6 w-6 items-center justify-center rounded-full bg-gray-900 text-[11px] font-semibold text-white sm:h-7 sm:w-7 sm:text-[12px]">
+          <div className="flex h-6 w-6 items-center justify-center rounded-full bg-gray-900 text-[11px] font-semibold text-white dark:bg-white dark:text-gray-900 sm:h-7 sm:w-7 sm:text-[12px]">
             2
           </div>
-          <span className="rounded-full border border-gray-300 px-3 py-1 text-[12px] font-medium sm:px-4 sm:py-1.5 sm:text-[13px]">
+          <span className="rounded-full border border-gray-300 px-3 py-1 text-[12px] font-medium text-gray-900 dark:border-white/15 dark:text-gray-200 sm:px-4 sm:py-1.5 sm:text-[13px]">
             Featured client work
           </span>
         </div>
@@ -51,7 +51,7 @@ export function CaseStudies() {
           animateBy="words"
           delay={80}
           text="Our projects"
-          className="mb-10 px-5 font-medium leading-[1.08] tracking-[-0.03em] text-gray-900 text-[clamp(1.75rem,7vw,4.2rem)] sm:mb-14 sm:px-8 sm:text-[clamp(2.5rem,5vw,4.2rem)] lg:mb-16 lg:px-12"
+          className="mb-10 px-5 font-medium leading-[1.08] tracking-[-0.03em] text-gray-900 dark:text-white text-[clamp(1.75rem,7vw,4.2rem)] sm:mb-14 sm:px-8 sm:text-[clamp(2.5rem,5vw,4.2rem)] lg:mb-16 lg:px-12"
         />
 
         {/* Cards */}
@@ -78,12 +78,12 @@ export function CaseStudies() {
             </div>
             <FadeIn
               as="p"
-              className="mt-4 text-[13px] leading-relaxed text-gray-600 sm:text-[14px]"
+              className="mt-4 text-[13px] leading-relaxed text-gray-600 dark:text-gray-400 sm:text-[14px]"
             >
               Winner of Site of the Month 2025 - an interactive 3D showcase
               driving record engagement
             </FadeIn>
-            <h3 className="mt-1 text-[14px] font-semibold text-gray-900 sm:text-[15px]">
+            <h3 className="mt-1 text-[14px] font-semibold text-gray-900 dark:text-white sm:text-[15px]">
               Narrativ
             </h3>
           </div>
@@ -113,12 +113,12 @@ export function CaseStudies() {
             </div>
             <FadeIn
               as="p"
-              className="mt-4 text-[13px] leading-relaxed text-gray-600 sm:text-[14px]"
+              className="mt-4 text-[13px] leading-relaxed text-gray-600 dark:text-gray-400 sm:text-[14px]"
             >
               Transforming a dated platform into a conversion-focused brand
               experience
             </FadeIn>
-            <h3 className="mt-1 text-[14px] font-semibold text-gray-900 sm:text-[15px]">
+            <h3 className="mt-1 text-[14px] font-semibold text-gray-900 dark:text-white sm:text-[15px]">
               Luminar
             </h3>
           </div>
