@@ -4,6 +4,7 @@ import BlurText from './BlurText'
 import { FadeIn } from './FadeIn'
 import { ScrollPreview } from './ScrollPreview'
 import { NovaVisual } from './NovaVisual'
+import { VimeoHoverPreview } from './VimeoPreview'
 
 export function CaseStudies() {
   return (
@@ -70,7 +71,10 @@ export function CaseStudies() {
               to="/projects/novaframe"
               className="group relative block aspect-[329/246] cursor-pointer overflow-hidden rounded-2xl bg-[#15110D]"
             >
-              <NovaVisual variant="cover" />
+              <VimeoHoverPreview
+                videoId="1204433136"
+                poster={<NovaVisual variant="cover" />}
+              />
               <div className="absolute bottom-4 left-4 z-10 flex h-9 w-9 items-center overflow-hidden rounded-full bg-white transition-all duration-300 ease-in-out group-hover:w-[168px]">
                 <span className="flex h-9 w-9 shrink-0 items-center justify-center text-gray-900">
                   <ArrowRight
