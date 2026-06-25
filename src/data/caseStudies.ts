@@ -327,6 +327,7 @@ export const CASE_STUDIES: CaseStudyContent[] = [
         alt: 'Deluks Padel Centar website',
       },
     ],
+    gallerySiteUrl: 'delukspadel.rs',
     palette: [
       { name: 'Black', hex: '#0A0A0A' },
       { name: 'Carbon', hex: '#1A1A1A' },
@@ -406,6 +407,7 @@ export const CASE_STUDIES: CaseStudyContent[] = [
         alt: 'MM Studio website',
       },
     ],
+    gallerySiteUrl: 'mmstudio.rs',
     palette: [
       { name: 'Ink', hex: '#0D0D0D' },
       { name: 'Charcoal', hex: '#2A2A2A' },
