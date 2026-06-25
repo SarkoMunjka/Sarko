@@ -21,6 +21,8 @@ export interface CaseStudyContent {
     quote?: { text: string; attribution: string; serif?: boolean }
   }
   coverImage: string
+  /** NovaFrame only — autoplay Vimeo over the cover hero image. */
+  coverVimeoId?: string
   ctaHeading: string
   ctaSubtext: string
 }
