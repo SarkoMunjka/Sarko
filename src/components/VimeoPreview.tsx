@@ -28,12 +28,19 @@ export function VimeoEmbed({
   videoId,
   className = '',
   autoplay = true,
-}: VimeoEmbedProps) {
+  fit = 'fill',
+}: VimeoEmbedProps & { fit?: 'fill' | 'cover' }) {
+  const coverClass =
+    'left-1/2 top-1/2 h-[56.25vw] min-h-full min-w-full w-[177.78vh] -translate-x-1/2 -translate-y-1/2'
+  const fillClass = 'inset-0 h-full w-full scale-[1.02]'
+
   return (
     <iframe
       src={vimeoEmbedUrl(videoId, autoplay)}
       title="Project preview"
-      className={`pointer-events-none absolute inset-0 h-full w-full scale-[1.02] border-0 ${className}`}
+      className={`pointer-events-none absolute border-0 ${
+        fit === 'cover' ? coverClass : fillClass
+      } ${className}`}
       allow="autoplay; fullscreen; picture-in-picture"
       referrerPolicy="strict-origin-when-cross-origin"
     />
@@ -74,7 +81,7 @@ export function VimeoHoverPreview({
 
   return (
     <div
-      className={`relative h-full w-full overflow-hidden ${className}`}
+      className={`absolute inset-0 overflow-hidden ${className}`}
       onMouseEnter={() => setHovering(true)}
       onMouseLeave={() => setHovering(false)}
     >
@@ -85,7 +92,11 @@ export function VimeoHoverPreview({
       >
         {posterNode}
       </div>
-      {hovering && <VimeoEmbed videoId={videoId} autoplay />}
+      {hovering && (
+        <div className="absolute inset-0 overflow-hidden">
+          <VimeoEmbed videoId={videoId} autoplay fit="cover" />
+        </div>
+      )}
     </div>
   )
 }

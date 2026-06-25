@@ -72,7 +72,7 @@ export function CaseStudies() {
             >
               <VimeoHoverPreview
                 videoId="1204433136"
-                posterSrc="/nova-home.jpg"
+                posterSrc="/nova-hero.png"
               />
               <div className="absolute bottom-4 left-4 z-10 flex h-9 w-9 items-center overflow-hidden rounded-full bg-white transition-all duration-300 ease-in-out group-hover:w-[168px]">
                 <span className="flex h-9 w-9 shrink-0 items-center justify-center text-gray-900">

@@ -39,7 +39,7 @@ export const PROJECTS: Project[] = [
       'A cinematic portfolio and booking site for a Belgrade wedding film studio shooting love stories across Europe and the world.',
     accent: '#B79268',
     caseStudy: true,
-    poster: '/nova-home.jpg',
+    poster: '/nova-hero.png',
     vimeoId: '1204433136',
   },
   {
