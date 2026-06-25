@@ -4,9 +4,15 @@ import { Navbar } from '../components/Navbar'
 import { Footer } from '../components/Footer'
 import BlurText from '../components/BlurText'
 import { FadeIn } from '../components/FadeIn'
-import { SocksVisual } from '../components/SocksVisual'
+import { BrowserFrame } from '../components/BrowserFrame'
 
 const ACCENT = '#9181D6'
+
+const IMG = {
+  home: '/socks-home.png',
+  collab: '/socks-collab.png',
+  cart: '/socks-cart.png',
+}
 
 const META = [
   { label: 'Role', value: 'Identity · Web · Build' },
@@ -38,11 +44,14 @@ const APPROACH = [
   },
 ]
 
-const GALLERY: { variant: 'home' | 'collab' | 'cart' | 'footer'; label: string }[] = [
-  { variant: 'home', label: 'Homepage' },
-  { variant: 'collab', label: 'Collaboration store' },
-  { variant: 'cart', label: 'Cart & checkout' },
-  { variant: 'footer', label: '“Let’s talk” footer' },
+const GALLERY: { src: string; label: string; alt: string }[] = [
+  { src: IMG.home, label: 'Homepage', alt: 'Socks & Co. homepage' },
+  {
+    src: IMG.collab,
+    label: 'Limited edition · Nike collaboration',
+    alt: 'Socks & Co. x Nike collaboration store',
+  },
+  { src: IMG.cart, label: 'Cart & checkout', alt: 'Socks & Co. cart and checkout' },
 ]
 
 const PALETTE = [
@@ -142,7 +151,12 @@ export function CaseStudySocks() {
       {/* Cover visual */}
       <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
         <FadeIn className="aspect-[16/10] overflow-hidden rounded-3xl sm:aspect-[16/8]">
-          <SocksVisual variant="cover" />
+          <img
+            src={IMG.collab}
+            alt="Socks & Co. collaboration store"
+            className="h-full w-full object-cover object-top"
+            loading="lazy"
+          />
         </FadeIn>
       </div>
 
@@ -251,14 +265,26 @@ export function CaseStudySocks() {
             text="A look across the experience"
             className="mb-12 mt-5 max-w-3xl font-medium leading-[1.12] tracking-[-0.02em] text-gray-900 dark:text-white text-[clamp(1.5rem,4vw,3rem)]"
           />
-          <div className="grid grid-cols-1 gap-5 sm:gap-6 md:grid-cols-2 lg:gap-7">
+          <div className="mx-auto flex max-w-[1000px] flex-col gap-12 sm:gap-16">
             {GALLERY.map((g, index) => (
-              <FadeIn
-                key={g.variant}
-                delay={(index % 2) * 0.08}
-                className="aspect-[16/10] overflow-hidden rounded-2xl shadow-[0_8px_30px_rgba(0,0,0,0.08)] dark:shadow-[0_8px_30px_rgba(0,0,0,0.4)] sm:rounded-3xl"
-              >
-                <SocksVisual variant={g.variant} label={g.label} />
+              <FadeIn key={g.src} delay={(index % 2) * 0.06}>
+                <div className="mb-4 flex items-center gap-2.5">
+                  <span
+                    className="h-2 w-2 rounded-full"
+                    style={{ backgroundColor: ACCENT }}
+                  />
+                  <span className="text-[13px] font-medium text-gray-700 dark:text-gray-300">
+                    {g.label}
+                  </span>
+                </div>
+                <BrowserFrame>
+                  <img
+                    src={g.src}
+                    alt={g.alt}
+                    className="block h-auto w-full"
+                    loading="lazy"
+                  />
+                </BrowserFrame>
               </FadeIn>
             ))}
           </div>
