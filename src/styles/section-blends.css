@@ -11,6 +11,7 @@
   --tone-surface: #0a0a0a;
   --tone-muted: #121212;
   --tone-hero: #0a0a0a;
+  --tone-footer: #000000;
 }
 
 /* Hero → About (ends on surface) */
@@ -46,7 +47,16 @@
   );
 }
 
-/* CTA section — flat muted background, sharp cut into footer */
+/* CTA section — sharp into footer on light, soft blend on dark */
 .section-tone-muted-footer {
   background-color: var(--tone-muted);
+}
+
+.dark .section-tone-muted-footer {
+  background-image: linear-gradient(
+    to bottom,
+    var(--tone-muted) 0,
+    var(--tone-muted) calc(100% - var(--section-blend)),
+    var(--tone-footer) 100%
+  );
 }
