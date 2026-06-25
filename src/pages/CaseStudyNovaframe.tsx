@@ -4,12 +4,25 @@ import { Navbar } from '../components/Navbar'
 import { Footer } from '../components/Footer'
 import BlurText from '../components/BlurText'
 import { FadeIn } from '../components/FadeIn'
-import { NovaVisual } from '../components/NovaVisual'
 import { BrowserFrame } from '../components/BrowserFrame'
 import { VimeoEmbed } from '../components/VimeoPreview'
 
 const ACCENT = '#B79268'
 const NOVA_VIMEO = '1204433136'
+
+const IMG = {
+  home: '/nova-home.jpg',
+  couples: '/nova-couples.jpg',
+}
+
+const GALLERY: { src: string; label: string; alt: string }[] = [
+  { src: IMG.home, label: 'Homepage', alt: 'NovaFrame homepage hero' },
+  {
+    src: IMG.couples,
+    label: 'Couples portfolio',
+    alt: 'NovaFrame couples portfolio',
+  },
+]
 
 const META = [
   { label: 'Role', value: 'Web design · Build' },
@@ -39,12 +52,6 @@ const APPROACH = [
     title: 'Answers that build trust',
     body: 'A thoughtful FAQ covers style, delivery times and travel — removing doubt before couples ever reach out.',
   },
-]
-
-const GALLERY: { variant: 'film' | 'couples' | 'quote'; label: string }[] = [
-  { variant: 'film', label: 'Film showcase' },
-  { variant: 'couples', label: 'Couples portfolio' },
-  { variant: 'quote', label: 'Get a quote' },
 ]
 
 const PALETTE = [
@@ -145,7 +152,12 @@ export function CaseStudyNovaframe() {
       {/* Cover visual — autoplay site walkthrough */}
       <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
         <FadeIn className="relative aspect-[16/10] overflow-hidden rounded-3xl bg-[#15110D] sm:aspect-[16/8]">
-          <NovaVisual variant="cover" className="absolute inset-0" />
+          <img
+            src={IMG.home}
+            alt="NovaFrame homepage"
+            className="absolute inset-0 h-full w-full object-cover object-top"
+            loading="lazy"
+          />
           <VimeoEmbed videoId={NOVA_VIMEO} />
         </FadeIn>
       </div>
@@ -272,14 +284,26 @@ export function CaseStudyNovaframe() {
             </BrowserFrame>
           </FadeIn>
 
-          <div className="grid grid-cols-1 gap-5 sm:gap-6 md:grid-cols-2 lg:gap-7">
+          <div className="mx-auto flex max-w-[1000px] flex-col gap-12 sm:gap-16">
             {GALLERY.map((g, index) => (
-              <FadeIn
-                key={g.variant}
-                delay={(index % 2) * 0.08}
-                className="aspect-[16/10] overflow-hidden rounded-2xl shadow-[0_8px_30px_rgba(0,0,0,0.12)] dark:shadow-[0_8px_30px_rgba(0,0,0,0.45)] sm:rounded-3xl"
-              >
-                <NovaVisual variant={g.variant} label={g.label} />
+              <FadeIn key={g.src} delay={(index % 2) * 0.06}>
+                <div className="mb-4 flex items-center gap-2.5">
+                  <span
+                    className="h-2 w-2 rounded-full"
+                    style={{ backgroundColor: ACCENT }}
+                  />
+                  <span className="text-[13px] font-medium text-gray-700 dark:text-gray-300">
+                    {g.label}
+                  </span>
+                </div>
+                <BrowserFrame url="novaframefvs.com">
+                  <img
+                    src={g.src}
+                    alt={g.alt}
+                    className="block h-auto w-full"
+                    loading="lazy"
+                  />
+                </BrowserFrame>
               </FadeIn>
             ))}
           </div>

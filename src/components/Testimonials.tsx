@@ -1,77 +1,120 @@
+import { motion } from 'motion/react'
 import { SectionBadge } from './SectionBadge'
 import BlurText from './BlurText'
 import { FadeIn } from './FadeIn'
+import {
+  TestimonialsColumn,
+  type TestimonialItem,
+} from '@/components/ui/testimonials-columns-1'
 
-interface Testimonial {
-  quote: string
-  name: string
-  role: string
-  initials: string
-}
-
-const TESTIMONIALS: Testimonial[] = [
+const TESTIMONIALS: TestimonialItem[] = [
   {
-    quote:
-      'Axion translated a vague vision into a brand that finally feels like us. The launch doubled our demo requests in a single month.',
+    text: 'Axion translated a vague vision into a brand that finally feels like us. The launch doubled our demo requests in a single month.',
+    image:
+      'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&h=150&fit=crop&crop=face',
     name: 'Maya Chen',
     role: 'CEO, Northwind',
-    initials: 'MC',
   },
   {
-    quote:
-      'The most collaborative studio we have worked with. Sharp thinking, beautiful execution and zero drama from kickoff to launch.',
+    text: 'The most collaborative studio we have worked with. Sharp thinking, beautiful execution and zero drama from kickoff to launch.',
+    image:
+      'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face',
     name: 'Daniel Roy',
     role: 'Head of Product, Lumen',
-    initials: 'DR',
   },
   {
-    quote:
-      'They sweat every pixel and every millisecond. Our new site is the fastest and best-looking in our entire category.',
+    text: 'They sweat every pixel and every millisecond. Our new site is the fastest and best-looking in our entire category.',
+    image:
+      'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=150&h=150&fit=crop&crop=face',
     name: 'Priya Anand',
     role: 'CMO, Vertex',
-    initials: 'PA',
+  },
+  {
+    text: 'From strategy to ship, the team moved with clarity. We had a polished product in weeks, not quarters.',
+    image:
+      'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face',
+    name: 'James Okonkwo',
+    role: 'Founder, Relay',
+  },
+  {
+    text: 'Our rebrand finally matches the quality of our work. Inbound leads are up and the site feels unmistakably ours.',
+    image:
+      'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face',
+    name: 'Elena Vasquez',
+    role: 'Creative Director, Forma',
+  },
+  {
+    text: 'Axion understood our audience before we finished the brief. The result is elegant, fast and built to convert.',
+    image:
+      'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face',
+    name: 'Marcus Webb',
+    role: 'VP Marketing, Atlas',
+  },
+  {
+    text: 'Every handoff was thoughtful. Design, copy and engineering felt like one team — rare and invaluable.',
+    image:
+      'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&h=150&fit=crop&crop=face',
+    name: 'Sofia Lindström',
+    role: 'Product Lead, Haven',
+  },
+  {
+    text: 'We needed a partner who could move fast without cutting corners. Axion delivered on both, start to finish.',
+    image:
+      'https://images.unsplash.com/photo-1519345182560-3f2917c472ef?w=150&h=150&fit=crop&crop=face',
+    name: 'David Park',
+    role: 'COO, Meridian',
+  },
+  {
+    text: 'The new experience raised our credibility overnight. Clients mention the site in the first five minutes of every call.',
+    image:
+      'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop&crop=face',
+    name: 'Amara Okafor',
+    role: 'Founder, Studio Nine',
   },
 ]
 
+const firstColumn = TESTIMONIALS.slice(0, 3)
+const secondColumn = TESTIMONIALS.slice(3, 6)
+const thirdColumn = TESTIMONIALS.slice(6, 9)
+
 export function Testimonials() {
   return (
-    <section className="bg-white pb-16 pt-16 transition-colors duration-300 dark:bg-[#0a0a0a] sm:pb-20 sm:pt-20 lg:pb-28 lg:pt-28">
-      <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
+    <section className="relative overflow-hidden bg-white pb-16 pt-16 transition-colors duration-300 dark:bg-[#0a0a0a] sm:pb-20 sm:pt-20 lg:pb-28 lg:pt-28">
+      <div className="relative z-10 mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
         <SectionBadge number="5" label="Kind words" />
-        <BlurText
-          as="h2"
-          animateBy="words"
-          delay={60}
-          text={'Teams keep coming back\nfor the details.'}
-          className="mb-12 font-medium leading-[1.12] tracking-[-0.02em] text-gray-900 dark:text-white text-[clamp(1.5rem,4vw,3.2rem)] sm:mb-16"
-        />
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+          viewport={{ once: true }}
+        >
+          <BlurText
+            as="h2"
+            animateBy="words"
+            delay={60}
+            text={'Teams keep coming back\nfor the details.'}
+            className="max-w-3xl font-medium leading-[1.12] tracking-[-0.02em] text-gray-900 dark:text-white text-[clamp(1.5rem,4vw,3.2rem)]"
+          />
+          <FadeIn
+            as="p"
+            className="mt-5 max-w-xl text-[15px] leading-[1.6] text-gray-600 dark:text-gray-400 sm:text-[17px]"
+          >
+            See what partners say about working with Axion.
+          </FadeIn>
+        </motion.div>
 
-        <div className="grid grid-cols-1 gap-5 sm:gap-6 md:grid-cols-3 lg:gap-7">
-          {TESTIMONIALS.map((t, index) => (
-            <FadeIn
-              as="figure"
-              key={t.name}
-              delay={index * 0.1}
-              className="flex flex-col justify-between rounded-2xl border border-gray-200 p-6 dark:border-white/10 sm:p-8"
-            >
-              <blockquote className="text-[16px] font-medium leading-[1.5] text-gray-900 dark:text-white sm:text-[18px]">
-                &ldquo;{t.quote}&rdquo;
-              </blockquote>
-              <figcaption className="mt-6 flex items-center gap-3 sm:mt-8">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-900 text-[12px] font-semibold text-white dark:bg-white dark:text-gray-900">
-                  {t.initials}
-                </div>
-                <div>
-                  <div className="text-[14px] font-semibold text-gray-900 dark:text-white">
-                    {t.name}
-                  </div>
-                  <div className="text-[13px] text-gray-600 dark:text-gray-400">
-                    {t.role}
-                  </div>
-                </div>
-              </figcaption>
-            </FadeIn>
-          ))}
+        <div className="mt-10 flex justify-center gap-6 overflow-hidden [mask-image:linear-gradient(to_bottom,transparent,black_20%,black_80%,transparent)] max-h-[740px] sm:mt-12">
+          <TestimonialsColumn testimonials={firstColumn} duration={15} />
+          <TestimonialsColumn
+            testimonials={secondColumn}
+            className="hidden md:block"
+            duration={19}
+          />
+          <TestimonialsColumn
+            testimonials={thirdColumn}
+            className="hidden lg:block"
+            duration={17}
+          />
         </div>
       </div>
     </section>
