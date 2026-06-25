@@ -1,0 +1,53 @@
+export interface Project {
+  slug: string
+  name: string
+  category: string
+  year: string
+  blurb: string
+  /** Brand accent color used in cards/placeholders. */
+  accent: string
+  /** Whether a full case-study page exists at /projects/[slug]. */
+  caseStudy: boolean
+  /** Optional looping video used as the card media. */
+  video?: string
+}
+
+export const PROJECTS: Project[] = [
+  {
+    slug: 'socks-co',
+    name: 'Socks & Co.',
+    category: 'E-commerce · Branding',
+    year: '2024',
+    blurb:
+      'A bold, playful e-commerce experience for a direct-to-consumer sock brand — from identity to a high-converting storefront and a Nike collaboration drop.',
+    accent: '#9181D6',
+    caseStudy: true,
+  },
+  {
+    slug: 'narrativ',
+    name: 'Narrativ',
+    category: 'Interactive · 3D',
+    year: '2025',
+    blurb:
+      'Winner of Site of the Month 2025 — an interactive 3D showcase driving record engagement.',
+    accent: '#1a1d2e',
+    caseStudy: false,
+    video:
+      'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260516_122702_390f5305-8719-41d5-ae80-d23ab3796c28.mp4',
+  },
+  {
+    slug: 'luminar',
+    name: 'Luminar',
+    category: 'Web · Rebrand',
+    year: '2025',
+    blurb:
+      'Transforming a dated platform into a conversion-focused brand experience.',
+    accent: '#6b6b6b',
+    caseStudy: false,
+    video:
+      'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260516_123323_f909c2b8-ff6c-4edf-882b-8ebcdbe389b5.mp4',
+  },
+]
+
+export const getProject = (slug: string): Project | undefined =>
+  PROJECTS.find((p) => p.slug === slug)
