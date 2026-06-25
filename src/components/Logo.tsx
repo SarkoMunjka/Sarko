@@ -5,7 +5,7 @@ interface LogoProps {
 }
 
 export function Logo({
-  className = 'h-11 w-auto',
+  className = 'h-9 w-auto',
   tone = 'dark',
 }: LogoProps) {
   const toneClass = tone === 'light' ? 'invert dark:invert-0' : ''
