@@ -62,26 +62,24 @@ export function Process() {
         {STEPS.map((step) => (
           <ScrollStackItem
             key={step.number}
-            itemClassName="rounded-3xl border border-gray-200 bg-white p-8 shadow-[0_8px_30px_rgba(0,0,0,0.06)] transition-colors duration-300 dark:border-white/10 dark:bg-[#1a1a1a] dark:shadow-[0_8px_30px_rgba(0,0,0,0.35)] sm:p-10"
+            itemClassName="flex items-center justify-center rounded-3xl border border-gray-200 bg-white p-8 text-center shadow-[0_8px_30px_rgba(0,0,0,0.06)] transition-colors duration-300 dark:border-white/10 dark:bg-[#1a1a1a] dark:shadow-[0_8px_30px_rgba(0,0,0,0.35)] sm:p-10"
           >
-            <div className="flex items-start justify-between gap-6">
-              <div className="min-w-0 flex-1">
-                <span className="text-[13px] font-semibold uppercase tracking-wide text-[#F26522]">
-                  Step {step.number}
-                </span>
-                <h3 className="mt-3 text-[clamp(1.35rem,3vw,1.75rem)] font-semibold leading-tight tracking-[-0.02em] text-gray-900 dark:text-white">
-                  {step.title}
-                </h3>
-                <p className="mt-3 max-w-lg text-[15px] leading-[1.65] text-gray-600 dark:text-gray-400 sm:text-[16px]">
-                  {step.description}
-                </p>
-              </div>
+            <div className="mx-auto flex max-w-lg flex-col items-center">
               <span
-                className="hidden shrink-0 text-[clamp(3rem,8vw,4.5rem)] font-medium leading-none tracking-tight text-[#F26522]/20 sm:block"
+                className="text-[clamp(2.5rem,6vw,3.5rem)] font-medium leading-none tracking-tight text-[#F26522]/20"
                 aria-hidden="true"
               >
                 {step.number}
               </span>
+              <span className="mt-4 text-[13px] font-semibold uppercase tracking-wide text-[#F26522]">
+                Step {step.number}
+              </span>
+              <h3 className="mt-3 text-[clamp(1.35rem,3vw,1.75rem)] font-semibold leading-tight tracking-[-0.02em] text-gray-900 dark:text-white">
+                {step.title}
+              </h3>
+              <p className="mt-3 text-[15px] leading-[1.65] text-gray-600 dark:text-gray-400 sm:text-[16px]">
+                {step.description}
+              </p>
             </div>
           </ScrollStackItem>
         ))}
