@@ -1,3 +1,4 @@
+import { useLayoutEffect, useState } from 'react'
 import { SectionBadge } from './SectionBadge'
 import BlurText from './BlurText'
 import ScrollStack, { ScrollStackItem } from '@/components/ui/ScrollStack'
@@ -35,7 +36,96 @@ const STEPS: Step[] = [
   },
 ]
 
+const DESKTOP_STACK_QUERY = '(min-width: 1024px)'
+
+function useDesktopStack() {
+  const [isDesktop, setIsDesktop] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia(DESKTOP_STACK_QUERY).matches,
+  )
+
+  useLayoutEffect(() => {
+    const media = window.matchMedia(DESKTOP_STACK_QUERY)
+    const onChange = () => setIsDesktop(media.matches)
+
+    onChange()
+    media.addEventListener('change', onChange)
+    return () => media.removeEventListener('change', onChange)
+  }, [])
+
+  return isDesktop
+}
+
+function ProcessStepCard({ step }: { step: Step }) {
+  return (
+    <div className="flex items-start justify-between gap-6">
+      <div className="min-w-0 flex-1">
+        <span className="text-[13px] font-semibold uppercase tracking-wide text-[#F26522]">
+          Step {step.number}
+        </span>
+        <h3 className="mt-3 text-[clamp(1.35rem,3vw,1.75rem)] font-semibold leading-tight tracking-[-0.02em] text-gray-900 dark:text-white">
+          {step.title}
+        </h3>
+        <p className="mt-3 max-w-lg text-[15px] leading-[1.65] text-gray-600 dark:text-gray-400 sm:text-[16px]">
+          {step.description}
+        </p>
+      </div>
+      <span
+        className="hidden shrink-0 text-[clamp(3rem,8vw,4.5rem)] font-medium leading-none tracking-tight text-[#F26522]/20 sm:block"
+        aria-hidden="true"
+      >
+        {step.number}
+      </span>
+    </div>
+  )
+}
+
+const cardClassName =
+  'rounded-3xl border border-gray-200 bg-white p-8 shadow-[0_8px_30px_rgba(0,0,0,0.06)] transition-colors duration-300 dark:border-white/10 dark:bg-[#1a1a1a] dark:shadow-[0_8px_30px_rgba(0,0,0,0.35)] sm:p-10'
+
+function MobileStickyStack({ steps }: { steps: Step[] }) {
+  return (
+    <div className="mx-auto w-full max-w-[720px] px-5 sm:px-8">
+      {steps.map((step, index) => (
+        <article
+          key={step.number}
+          className={`${cardClassName} sticky mb-5 last:mb-0`}
+          style={{
+            top: `calc(4.75rem + ${index * 1.25}rem)`,
+            zIndex: index + 1,
+          }}
+        >
+          <ProcessStepCard step={step} />
+        </article>
+      ))}
+      <div className="h-16" aria-hidden="true" />
+    </div>
+  )
+}
+
+function DesktopScrollStack({ steps }: { steps: Step[] }) {
+  return (
+    <ScrollStack
+      useWindowScroll
+      itemDistance={72}
+      itemStackDistance={28}
+      stackPosition="22%"
+      scaleEndPosition="12%"
+      baseScale={0.9}
+      itemScale={0.025}
+      className="mx-auto w-full max-w-[1440px]"
+    >
+      {steps.map((step) => (
+        <ScrollStackItem key={step.number} itemClassName={cardClassName}>
+          <ProcessStepCard step={step} />
+        </ScrollStackItem>
+      ))}
+    </ScrollStack>
+  )
+}
+
 export function Process() {
+  const isDesktop = useDesktopStack()
+
   return (
     <section className="bg-[#F5F5F5] pb-16 pt-16 transition-colors duration-300 dark:bg-[#121212] sm:pb-20 sm:pt-20 lg:pb-28 lg:pt-28">
       <div className="mx-auto flex w-full max-w-[1440px] flex-col items-center px-5 text-center sm:px-8 lg:px-12">
@@ -49,43 +139,11 @@ export function Process() {
         />
       </div>
 
-      <ScrollStack
-        useWindowScroll
-        itemDistance={72}
-        itemStackDistance={28}
-        stackPosition="22%"
-        scaleEndPosition="12%"
-        baseScale={0.9}
-        itemScale={0.025}
-        className="mx-auto w-full max-w-[1440px]"
-      >
-        {STEPS.map((step) => (
-          <ScrollStackItem
-            key={step.number}
-            itemClassName="rounded-3xl border border-gray-200 bg-white p-8 shadow-[0_8px_30px_rgba(0,0,0,0.06)] transition-colors duration-300 dark:border-white/10 dark:bg-[#1a1a1a] dark:shadow-[0_8px_30px_rgba(0,0,0,0.35)] sm:p-10"
-          >
-            <div className="flex items-start justify-between gap-6">
-              <div className="min-w-0 flex-1">
-                <span className="text-[13px] font-semibold uppercase tracking-wide text-[#F26522]">
-                  Step {step.number}
-                </span>
-                <h3 className="mt-3 text-[clamp(1.35rem,3vw,1.75rem)] font-semibold leading-tight tracking-[-0.02em] text-gray-900 dark:text-white">
-                  {step.title}
-                </h3>
-                <p className="mt-3 max-w-lg text-[15px] leading-[1.65] text-gray-600 dark:text-gray-400 sm:text-[16px]">
-                  {step.description}
-                </p>
-              </div>
-              <span
-                className="hidden shrink-0 text-[clamp(3rem,8vw,4.5rem)] font-medium leading-none tracking-tight text-[#F26522]/20 sm:block"
-                aria-hidden="true"
-              >
-                {step.number}
-              </span>
-            </div>
-          </ScrollStackItem>
-        ))}
-      </ScrollStack>
+      {isDesktop ? (
+        <DesktopScrollStack steps={STEPS} />
+      ) : (
+        <MobileStickyStack steps={STEPS} />
+      )}
     </section>
   )
 }
