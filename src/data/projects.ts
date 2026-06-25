@@ -12,10 +12,10 @@ export interface Project {
   video?: string
   /** Optional cover image (path under /public) used as the card media. */
   cover?: string
+  /** Static poster image shown before Vimeo hover playback. */
+  poster?: string
   /** Vimeo video ID for hover preview / case-study hero. */
   vimeoId?: string
-  /** Optional branded CSS mockup used as the card poster (before hover). */
-  visual?: 'nova'
 }
 
 export const PROJECTS: Project[] = [
@@ -39,8 +39,8 @@ export const PROJECTS: Project[] = [
       'A cinematic portfolio and booking site for a Belgrade wedding film studio shooting love stories across Europe and the world.',
     accent: '#B79268',
     caseStudy: true,
+    poster: '/nova-home.jpg',
     vimeoId: '1204433136',
-    visual: 'nova',
   },
   {
     slug: 'narrativ',

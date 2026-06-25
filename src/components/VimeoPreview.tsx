@@ -7,6 +7,7 @@ function vimeoEmbedUrl(videoId: string, autoplay: boolean): string {
     autoplay: autoplay ? '1' : '0',
     loop: '1',
     muted: '1',
+    playsinline: '1',
     title: '0',
     byline: '0',
     portrait: '0',
@@ -34,41 +35,55 @@ export function VimeoEmbed({
       title="Project preview"
       className={`pointer-events-none absolute inset-0 h-full w-full scale-[1.02] border-0 ${className}`}
       allow="autoplay; fullscreen; picture-in-picture"
-      loading="lazy"
+      referrerPolicy="strict-origin-when-cross-origin"
     />
   )
 }
 
 interface VimeoHoverPreviewProps {
   videoId: string
-  /** Shown before hover / while the iframe is loading. */
-  poster: ReactNode
+  /** Image path under /public (preferred). */
+  posterSrc?: string
+  /** Custom poster node (fallback). */
+  poster?: ReactNode
   className?: string
 }
 
 /**
- * Shows a static poster by default; loads and plays a muted Vimeo loop when the
- * parent `.group` is hovered (same idea as ScrollPreview for Socks).
+ * Shows a real screenshot by default; plays a muted Vimeo loop on hover — the
+ * site-walkthrough preview for NovaFrame.
  */
 export function VimeoHoverPreview({
   videoId,
+  posterSrc,
   poster,
   className = '',
 }: VimeoHoverPreviewProps) {
   const [hovering, setHovering] = useState(false)
 
+  const posterNode = posterSrc ? (
+    <img
+      src={posterSrc}
+      alt=""
+      className="h-full w-full object-cover object-top"
+      loading="lazy"
+    />
+  ) : (
+    poster
+  )
+
   return (
     <div
-      className={`relative h-full w-full ${className}`}
+      className={`relative h-full w-full overflow-hidden ${className}`}
       onMouseEnter={() => setHovering(true)}
       onMouseLeave={() => setHovering(false)}
     >
       <div
         className={`absolute inset-0 transition-opacity duration-300 ${
-          hovering ? 'opacity-0' : 'opacity-100'
+          hovering ? 'pointer-events-none opacity-0' : 'opacity-100'
         }`}
       >
-        {poster}
+        {posterNode}
       </div>
       {hovering && <VimeoEmbed videoId={videoId} autoplay />}
     </div>
