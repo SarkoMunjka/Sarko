@@ -6,15 +6,38 @@
   overflow-x: visible;
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
-  scroll-behavior: smooth;
   -webkit-transform: translateZ(0);
   transform: translateZ(0);
-  will-change: scroll-position;
 }
 
 .scroll-stack-scroller--window {
   height: auto;
   overflow: visible;
+  /* Collapse scroll runway so section spacing matches the rest of the page */
+  margin-bottom: -42vh;
+}
+
+@media (min-width: 1024px) {
+  .scroll-stack-scroller--window {
+    margin-bottom: -48vh;
+  }
+}
+
+.scroll-stack-scroller--window .scroll-stack-inner {
+  padding-top: 0;
+  padding-bottom: 0;
+  min-height: auto;
+}
+
+.scroll-stack-scroller--window .scroll-stack-end {
+  height: 42vh;
+  pointer-events: none;
+}
+
+@media (min-width: 1024px) {
+  .scroll-stack-scroller--window .scroll-stack-end {
+    height: 48vh;
+  }
 }
 
 .scroll-stack-inner {
@@ -33,24 +56,34 @@
   .scroll-stack-inner {
     padding-left: 3rem;
     padding-right: 3rem;
-    padding-bottom: 44rem;
+    padding-bottom: 40rem;
   }
 }
 
 .scroll-stack-card {
   transform-origin: top center;
-  will-change: transform, filter;
   backface-visibility: hidden;
-  transform-style: preserve-3d;
   box-sizing: border-box;
   width: 100%;
   max-width: 720px;
   margin-left: auto;
   margin-right: auto;
   min-height: 16rem;
-  -webkit-transform: translateZ(0);
-  transform: translateZ(0);
   position: relative;
+  touch-action: pan-y;
+}
+
+.scroll-stack-card--touch {
+  will-change: transform;
+}
+
+@media (pointer: fine) {
+  .scroll-stack-card {
+    will-change: transform, filter;
+    transform-style: preserve-3d;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+  }
 }
 
 .scroll-stack-end {
