@@ -103,7 +103,7 @@ export const CASE_STUDIES: CaseStudyContent[] = [
         { value: '4.9/5', label: 'Customer rating' },
       ],
       quote: {
-        text: 'Axion gave us a brand we are genuinely excited to show off — and the numbers followed. Best decision we made this year.',
+        text: 'Mark Studio gave us a brand we are genuinely excited to show off — and the numbers followed. Best decision we made this year.',
         attribution: 'Founder, Socks & Co.',
       },
     },

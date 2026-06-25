@@ -85,7 +85,7 @@ export function Hero() {
             y={10}
             className="mb-5 text-[13px] tracking-wide text-gray-900 dark:text-gray-100 sm:mb-8 sm:text-[14px]"
           >
-            Axion Studio
+            Mark Studio
           </FadeIn>
           <BlurText
             as="h1"
