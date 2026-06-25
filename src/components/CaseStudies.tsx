@@ -1,32 +1,8 @@
 import { ArrowRight } from 'lucide-react'
+import { Link } from 'react-router-dom'
 import BlurText from './BlurText'
 import { FadeIn } from './FadeIn'
-
-const NARRATIV_VIDEO =
-  'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260516_122702_390f5305-8719-41d5-ae80-d23ab3796c28.mp4'
-const LUMINAR_VIDEO =
-  'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260516_123323_f909c2b8-ff6c-4edf-882b-8ebcdbe389b5.mp4'
-
-function LinkIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="14"
-      height="14"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-      aria-hidden="true"
-    >
-      <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
-      <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
-    </svg>
-  )
-}
+import { SocksVisual } from './SocksVisual'
 
 export function CaseStudies() {
   return (
@@ -56,50 +32,14 @@ export function CaseStudies() {
 
         {/* Cards */}
         <div className="grid grid-cols-1 gap-5 px-5 sm:gap-6 sm:px-8 md:grid-cols-2 lg:gap-7 lg:px-12">
-          {/* Card 1 — Narrativ */}
+          {/* Card 1 — Socks & Co. (full case study) */}
           <div>
-            <div className="group relative aspect-[329/246] cursor-pointer overflow-hidden rounded-2xl bg-[#1a1d2e]">
-              <video
-                src={NARRATIV_VIDEO}
-                autoPlay
-                muted
-                loop
-                playsInline
-                className="h-full w-full object-cover"
-              />
-              <div className="absolute bottom-4 left-4 flex h-9 w-9 items-center overflow-hidden rounded-full bg-white transition-all duration-300 ease-in-out group-hover:w-[148px]">
-                <span className="flex h-9 w-9 shrink-0 items-center justify-center text-gray-900">
-                  <LinkIcon className="h-[14px] w-[14px] -rotate-45 transition-transform duration-300 group-hover:rotate-0" />
-                </span>
-                <span className="whitespace-nowrap pr-3 text-[13px] font-medium text-gray-900 opacity-0 transition-opacity delay-100 duration-300 group-hover:opacity-100">
-                  Learn more
-                </span>
-              </div>
-            </div>
-            <FadeIn
-              as="p"
-              className="mt-4 text-[13px] leading-relaxed text-gray-600 dark:text-gray-400 sm:text-[14px]"
+            <Link
+              to="/projects/socks-co"
+              className="group relative block aspect-[329/246] cursor-pointer overflow-hidden rounded-2xl bg-[#9181D6]"
             >
-              Winner of Site of the Month 2025 - an interactive 3D showcase
-              driving record engagement
-            </FadeIn>
-            <h3 className="mt-1 text-[14px] font-semibold text-gray-900 dark:text-white sm:text-[15px]">
-              Narrativ
-            </h3>
-          </div>
-
-          {/* Card 2 — Luminar */}
-          <div>
-            <div className="group relative aspect-square cursor-pointer overflow-hidden rounded-2xl bg-[#6b6b6b]">
-              <video
-                src={LUMINAR_VIDEO}
-                autoPlay
-                muted
-                loop
-                playsInline
-                className="h-full w-full object-cover"
-              />
-              <div className="absolute bottom-4 left-4 flex h-9 w-9 items-center overflow-hidden rounded-full bg-gray-900 transition-all duration-300 ease-in-out group-hover:w-[168px]">
+              <SocksVisual variant="cover" />
+              <div className="absolute bottom-4 left-4 z-10 flex h-9 w-9 items-center overflow-hidden rounded-full bg-gray-900 transition-all duration-300 ease-in-out group-hover:w-[168px]">
                 <span className="flex h-9 w-9 shrink-0 items-center justify-center text-white">
                   <ArrowRight
                     size={14}
@@ -110,16 +50,54 @@ export function CaseStudies() {
                   View case study
                 </span>
               </div>
-            </div>
+            </Link>
             <FadeIn
               as="p"
               className="mt-4 text-[13px] leading-relaxed text-gray-600 dark:text-gray-400 sm:text-[14px]"
             >
-              Transforming a dated platform into a conversion-focused brand
-              experience
+              A bold direct-to-consumer sock brand — identity, a high-converting
+              storefront and a Nike collaboration drop
             </FadeIn>
             <h3 className="mt-1 text-[14px] font-semibold text-gray-900 dark:text-white sm:text-[15px]">
-              Luminar
+              Socks &amp; Co.
+            </h3>
+          </div>
+
+          {/* Card 2 — Narrativ */}
+          <div>
+            <Link
+              to="/projects"
+              className="group relative block aspect-[329/246] cursor-pointer overflow-hidden rounded-2xl bg-[#1a1d2e]"
+            >
+              <video
+                src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260516_122702_390f5305-8719-41d5-ae80-d23ab3796c28.mp4"
+                autoPlay
+                muted
+                loop
+                playsInline
+                className="h-full w-full object-cover"
+              />
+              <div className="absolute bottom-4 left-4 z-10 flex h-9 w-9 items-center overflow-hidden rounded-full bg-white transition-all duration-300 ease-in-out group-hover:w-[148px]">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center text-gray-900">
+                  <ArrowRight
+                    size={14}
+                    className="-rotate-45 transition-transform duration-300 group-hover:rotate-0"
+                  />
+                </span>
+                <span className="whitespace-nowrap pr-3 text-[13px] font-medium text-gray-900 opacity-0 transition-opacity delay-100 duration-300 group-hover:opacity-100">
+                  See all work
+                </span>
+              </div>
+            </Link>
+            <FadeIn
+              as="p"
+              className="mt-4 text-[13px] leading-relaxed text-gray-600 dark:text-gray-400 sm:text-[14px]"
+            >
+              Winner of Site of the Month 2025 - an interactive 3D showcase
+              driving record engagement
+            </FadeIn>
+            <h3 className="mt-1 text-[14px] font-semibold text-gray-900 dark:text-white sm:text-[15px]">
+              Narrativ
             </h3>
           </div>
         </div>
