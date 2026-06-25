@@ -51,6 +51,17 @@ export function VimeoEmbed({
   )
 }
 
+/** Fill card height; crop sides to match Socks card proportions. */
+function HeightFillFrame({ children }: { children: ReactNode }) {
+  return (
+    <div className="absolute inset-0 overflow-hidden">
+      <div className="absolute top-0 left-1/2 h-full -translate-x-1/2 aspect-[3420/1870]">
+        {children}
+      </div>
+    </div>
+  )
+}
+
 interface VimeoHoverPreviewProps {
   videoId: string
   /** Image path under /public (preferred). */
@@ -73,12 +84,14 @@ export function VimeoHoverPreview({
   const [hovering, setHovering] = useState(false)
 
   const posterNode = posterSrc ? (
-    <img
-      src={posterSrc}
-      alt=""
-      className="h-full w-full object-contain object-top"
-      loading="lazy"
-    />
+    <HeightFillFrame>
+      <img
+        src={posterSrc}
+        alt=""
+        className="h-full w-full object-cover object-top"
+        loading="lazy"
+      />
+    </HeightFillFrame>
   ) : (
     poster
   )
@@ -97,9 +110,9 @@ export function VimeoHoverPreview({
         {posterNode}
       </div>
       {hovering && (
-        <div className="absolute inset-0 flex items-start justify-center">
-          <VimeoEmbed videoId={videoId} autoplay fit="contain" />
-        </div>
+        <HeightFillFrame>
+          <VimeoEmbed videoId={videoId} autoplay fit="fill" />
+        </HeightFillFrame>
       )}
     </div>
   )
