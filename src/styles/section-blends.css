@@ -4,7 +4,6 @@
   --tone-surface: #ffffff;
   --tone-muted: #f5f5f5;
   --tone-hero: #efefef;
-  --tone-footer: #f26522;
   --section-blend: clamp(7rem, 16vw, 12rem);
 }
 
@@ -12,7 +11,6 @@
   --tone-surface: #0a0a0a;
   --tone-muted: #121212;
   --tone-hero: #0a0a0a;
-  --tone-footer: #000000;
 }
 
 /* Hero → About (ends on surface) */
@@ -48,13 +46,7 @@
   );
 }
 
-/* Muted section → Footer (CTA) */
+/* CTA section — flat muted background, sharp cut into footer */
 .section-tone-muted-footer {
   background-color: var(--tone-muted);
-  background-image: linear-gradient(
-    to bottom,
-    var(--tone-muted) 0,
-    var(--tone-muted) calc(100% - var(--section-blend)),
-    var(--tone-footer) 100%
-  );
 }
