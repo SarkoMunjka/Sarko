@@ -1,6 +1,7 @@
 import { useLayoutEffect, useState } from 'react'
 import { SectionBadge } from './SectionBadge'
 import BlurText from './BlurText'
+import { SectionBlend } from './SectionBlend'
 import ScrollStack, { ScrollStackItem } from '@/components/ui/ScrollStack'
 
 interface Step {
@@ -127,7 +128,8 @@ export function Process() {
   const isDesktop = useDesktopStack()
 
   return (
-    <section className="bg-[#F5F5F5] pb-16 pt-16 transition-colors duration-300 dark:bg-[#121212] sm:pb-20 sm:pt-20 lg:pb-28 lg:pt-28">
+    <section className="relative bg-[#F5F5F5] pb-16 pt-16 transition-colors duration-300 dark:bg-[#121212] sm:pb-20 sm:pt-20 lg:pb-28 lg:pt-28">
+      <SectionBlend fadeTop="surface" fadeBottom="surface" />
       <div className="mx-auto flex w-full max-w-[1440px] flex-col items-center px-5 text-center sm:px-8 lg:px-12">
         <SectionBadge number="4" label="How we work" borderClass="border-gray-300" />
         <BlurText

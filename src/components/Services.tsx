@@ -8,6 +8,7 @@ import {
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { SectionBadge } from './SectionBadge'
+import { SectionBlend } from './SectionBlend'
 import BlurText from './BlurText'
 import { FadeIn } from './FadeIn'
 
@@ -60,8 +61,9 @@ export function Services() {
   return (
     <section
       id="services"
-      className="bg-white pb-16 pt-16 transition-colors duration-300 dark:bg-[#0a0a0a] sm:pb-20 sm:pt-20 lg:pb-28 lg:pt-28"
+      className="relative bg-white pb-16 pt-16 transition-colors duration-300 dark:bg-[#0a0a0a] sm:pb-20 sm:pt-20 lg:pb-28 lg:pt-28"
     >
+      <SectionBlend fadeBottom="muted" />
       <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
         <SectionBadge number="3" label="What we do" />
         <BlurText
