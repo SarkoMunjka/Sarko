@@ -43,28 +43,37 @@ export const PROJECTS: Project[] = [
     vimeoId: '1204433136',
   },
   {
-    slug: 'narrativ',
-    name: 'Narrativ',
-    category: 'Interactive · 3D',
+    slug: 'kosmaj-zomes',
+    name: 'Kosmaj Zomes',
+    category: 'Hospitality · Web',
     year: '2025',
     blurb:
-      'Winner of Site of the Month 2025 — an interactive 3D showcase driving record engagement.',
-    accent: '#1a1d2e',
-    caseStudy: false,
-    video:
-      'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260516_122702_390f5305-8719-41d5-ae80-d23ab3796c28.mp4',
+      'A serene booking site for luxury geodesic domes on Kosmaj mountain — nature-first storytelling and a frictionless reservation flow.',
+    accent: '#2F4F3E',
+    caseStudy: true,
+    cover: '/kosmaj-zomes-home.png',
   },
   {
-    slug: 'luminar',
-    name: 'Luminar',
-    category: 'Web · Rebrand',
+    slug: 'deluks-padel',
+    name: 'Deluks Padel',
+    category: 'Sports · Web',
     year: '2025',
     blurb:
-      'Transforming a dated platform into a conversion-focused brand experience.',
-    accent: '#6b6b6b',
-    caseStudy: false,
-    video:
-      'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260516_123323_f909c2b8-ff6c-4edf-882b-8ebcdbe389b5.mp4',
+      'A bold, high-energy site for Obrenovac\'s premier padel center — driving court bookings and building a local sports community.',
+    accent: '#1A1A1A',
+    caseStudy: true,
+    cover: '/deluks-padel-home.png',
+  },
+  {
+    slug: 'mm-studio',
+    name: 'MM Studio',
+    category: 'Architecture · Web',
+    year: '2025',
+    blurb:
+      'A refined portfolio for an architecture and interiors studio — letting residential and commercial work speak through immersive project storytelling.',
+    accent: '#2A2A2A',
+    caseStudy: true,
+    cover: '/mm-studio-home.png',
   },
 ]
 
