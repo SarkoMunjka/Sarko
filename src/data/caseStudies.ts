@@ -21,6 +21,8 @@ export interface CaseStudyContent {
     quote?: { text: string; attribution: string; serif?: boolean }
   }
   coverImage: string
+  /** NovaFrame only — autoplay Vimeo over the cover hero image. */
+  coverVimeoId?: string
   ctaHeading: string
   ctaSubtext: string
 }
@@ -81,6 +83,7 @@ export const CASE_STUDIES: CaseStudyContent[] = [
       },
       { src: '/socks-cart.png', label: 'Cart & checkout', alt: 'Socks & Co. cart and checkout' },
     ],
+    gallerySiteUrl: 'socksandco.com',
     palette: [
       { name: 'Grape', hex: '#9181D6' },
       { name: 'Sunshine', hex: '#FFD23F' },
