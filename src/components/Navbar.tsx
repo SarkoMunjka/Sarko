@@ -61,7 +61,7 @@ export function Navbar() {
         menuOpen ? 'z-[1100]' : 'z-50'
       }`}
     >
-      <div className="flex items-center justify-between rounded-full bg-white p-[5px] transition-colors duration-300 dark:bg-[#1a1a1a]">
+      <div className="flex min-h-[52px] items-center justify-between rounded-full bg-white py-1 pl-2 pr-[5px] transition-colors duration-300 dark:bg-[#1a1a1a] sm:pl-3">
         {/* Left: logo + links */}
         <div className="flex items-center gap-6">
           <Link
@@ -69,7 +69,7 @@ export function Navbar() {
             className="flex shrink-0 items-center rounded-lg transition-opacity duration-300 hover:opacity-90"
             aria-label="Mark Studio home"
           >
-            <Logo tone="light" className="h-10 w-auto sm:h-11" />
+            <Logo tone="light" className="h-11 w-auto min-w-[148px] sm:h-12 sm:min-w-[168px]" />
           </Link>
           <div className="hidden items-center gap-6 md:flex">
             {NAV_LINKS.map((link) =>

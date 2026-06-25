@@ -27,7 +27,7 @@ export function Footer() {
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1fr]">
           <div>
             <div className="flex items-center gap-3">
-              <Logo className="h-12 w-auto" />
+              <Logo className="h-12 w-auto min-w-[168px] sm:h-14 sm:min-w-[196px]" />
             </div>
             <p className="mt-5 max-w-xs text-[14px] leading-[1.6]">
               Mark Studio — a strategy-led design studio helping ambitious brands
