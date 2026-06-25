@@ -69,7 +69,7 @@ export function Navbar() {
             className="flex shrink-0 items-center rounded-lg transition-opacity duration-300 hover:opacity-90"
             aria-label="Mark Studio home"
           >
-            <Logo className="h-8 w-auto sm:h-9" />
+            <Logo tone="light" className="h-10 w-auto sm:h-11" />
           </Link>
           <div className="hidden items-center gap-6 md:flex">
             {NAV_LINKS.map((link) =>
