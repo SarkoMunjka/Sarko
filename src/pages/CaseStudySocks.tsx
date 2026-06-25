@@ -152,8 +152,8 @@ export function CaseStudySocks() {
       <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
         <FadeIn className="aspect-[16/10] overflow-hidden rounded-3xl sm:aspect-[16/8]">
           <img
-            src={IMG.collab}
-            alt="Socks & Co. collaboration store"
+            src={IMG.home}
+            alt="Socks & Co. homepage"
             className="h-full w-full object-cover object-top"
             loading="lazy"
           />

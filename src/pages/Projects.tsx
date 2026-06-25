@@ -4,6 +4,7 @@ import { Navbar } from '../components/Navbar'
 import { Footer } from '../components/Footer'
 import BlurText from '../components/BlurText'
 import { FadeIn } from '../components/FadeIn'
+import { ScrollPreview } from '../components/ScrollPreview'
 import { PROJECTS } from '../data/projects'
 
 export function Projects() {
@@ -54,12 +55,7 @@ export function Projects() {
                       className="h-full w-full object-cover"
                     />
                   ) : project.cover ? (
-                    <img
-                      src={project.cover}
-                      alt={project.name}
-                      className="h-full w-full object-cover object-top"
-                      loading="lazy"
-                    />
+                    <ScrollPreview src={project.cover} alt={project.name} />
                   ) : (
                     <div className="h-full w-full" style={{ backgroundColor: project.accent }} />
                   )}
