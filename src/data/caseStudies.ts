@@ -21,7 +21,6 @@ export interface CaseStudyContent {
     quote?: { text: string; attribution: string; serif?: boolean }
   }
   coverImage: string
-  coverVimeoId?: string
   ctaHeading: string
   ctaSubtext: string
 }
