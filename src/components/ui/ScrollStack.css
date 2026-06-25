@@ -62,7 +62,6 @@
 
 .scroll-stack-card {
   transform-origin: top center;
-  will-change: transform;
   backface-visibility: hidden;
   box-sizing: border-box;
   width: 100%;
@@ -70,15 +69,20 @@
   margin-left: auto;
   margin-right: auto;
   min-height: 16rem;
-  -webkit-transform: translateZ(0);
-  transform: translateZ(0);
   position: relative;
+  touch-action: pan-y;
+}
+
+.scroll-stack-card--touch {
+  will-change: transform;
 }
 
 @media (pointer: fine) {
   .scroll-stack-card {
     will-change: transform, filter;
     transform-style: preserve-3d;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
   }
 }
 
