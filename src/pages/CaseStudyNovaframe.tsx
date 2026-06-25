@@ -5,8 +5,11 @@ import { Footer } from '../components/Footer'
 import BlurText from '../components/BlurText'
 import { FadeIn } from '../components/FadeIn'
 import { NovaVisual } from '../components/NovaVisual'
+import { BrowserFrame } from '../components/BrowserFrame'
+import { VimeoEmbed } from '../components/VimeoPreview'
 
 const ACCENT = '#B79268'
+const NOVA_VIMEO = '1204433136'
 
 const META = [
   { label: 'Role', value: 'Web design · Build' },
@@ -38,8 +41,7 @@ const APPROACH = [
   },
 ]
 
-const GALLERY: { variant: 'cover' | 'film' | 'couples' | 'quote'; label: string }[] = [
-  { variant: 'cover', label: 'Homepage' },
+const GALLERY: { variant: 'film' | 'couples' | 'quote'; label: string }[] = [
   { variant: 'film', label: 'Film showcase' },
   { variant: 'couples', label: 'Couples portfolio' },
   { variant: 'quote', label: 'Get a quote' },
@@ -140,10 +142,11 @@ export function CaseStudyNovaframe() {
         </dl>
       </header>
 
-      {/* Cover visual */}
+      {/* Cover visual — autoplay site walkthrough */}
       <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
-        <FadeIn className="aspect-[16/10] overflow-hidden rounded-3xl sm:aspect-[16/8]">
-          <NovaVisual variant="cover" />
+        <FadeIn className="relative aspect-[16/10] overflow-hidden rounded-3xl bg-[#15110D] sm:aspect-[16/8]">
+          <NovaVisual variant="cover" className="absolute inset-0" />
+          <VimeoEmbed videoId={NOVA_VIMEO} />
         </FadeIn>
       </div>
 
@@ -251,6 +254,24 @@ export function CaseStudyNovaframe() {
             text="A look across the experience"
             className="mb-12 mt-5 max-w-3xl font-medium leading-[1.12] tracking-[-0.02em] text-gray-900 dark:text-white text-[clamp(1.5rem,4vw,3rem)]"
           />
+
+          <FadeIn className="mx-auto mb-12 max-w-[1000px] sm:mb-16">
+            <div className="mb-4 flex items-center gap-2.5">
+              <span
+                className="h-2 w-2 rounded-full"
+                style={{ backgroundColor: ACCENT }}
+              />
+              <span className="text-[13px] font-medium text-gray-700 dark:text-gray-300">
+                Site walkthrough
+              </span>
+            </div>
+            <BrowserFrame url="novaframefvs.com">
+              <div className="relative aspect-[16/10] bg-[#15110D]">
+                <VimeoEmbed videoId={NOVA_VIMEO} />
+              </div>
+            </BrowserFrame>
+          </FadeIn>
+
           <div className="grid grid-cols-1 gap-5 sm:gap-6 md:grid-cols-2 lg:gap-7">
             {GALLERY.map((g, index) => (
               <FadeIn

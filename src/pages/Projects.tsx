@@ -6,6 +6,7 @@ import BlurText from '../components/BlurText'
 import { FadeIn } from '../components/FadeIn'
 import { ScrollPreview } from '../components/ScrollPreview'
 import { NovaVisual } from '../components/NovaVisual'
+import { VimeoHoverPreview } from '../components/VimeoPreview'
 import { PROJECTS } from '../data/projects'
 
 export function Projects() {
@@ -46,7 +47,12 @@ export function Projects() {
                   className="relative aspect-[16/11] overflow-hidden rounded-2xl sm:rounded-3xl"
                   style={{ backgroundColor: project.accent }}
                 >
-                  {project.video ? (
+                  {project.vimeoId ? (
+                    <VimeoHoverPreview
+                      videoId={project.vimeoId}
+                      poster={<NovaVisual variant="cover" />}
+                    />
+                  ) : project.video ? (
                     <video
                       src={project.video}
                       autoPlay
