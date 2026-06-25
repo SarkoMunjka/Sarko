@@ -1,6 +1,6 @@
 import { SectionBadge } from './SectionBadge'
 import BlurText from './BlurText'
-import { FadeIn } from './FadeIn'
+import ScrollStack, { ScrollStackItem } from '@/components/ui/ScrollStack'
 
 interface Step {
   number: string
@@ -45,29 +45,48 @@ export function Process() {
           animateBy="words"
           delay={60}
           text={'A clear path from first\nidea to final launch.'}
-          className="mb-12 font-medium leading-[1.12] tracking-[-0.02em] text-gray-900 dark:text-white text-[clamp(1.5rem,4vw,3.2rem)] sm:mb-16 lg:mb-20"
+          className="mb-10 font-medium leading-[1.12] tracking-[-0.02em] text-gray-900 dark:text-white text-[clamp(1.5rem,4vw,3.2rem)] sm:mb-12 lg:mb-14"
         />
+      </div>
 
-        <div className="grid grid-cols-1 gap-x-7 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
-          {STEPS.map((step, index) => (
-            <FadeIn
-              key={step.number}
-              delay={index * 0.08}
-              className="border-t border-gray-300 pt-5 dark:border-white/15"
-            >
-              <span className="text-[34px] font-medium tracking-tight text-[#F26522] sm:text-[40px]">
+      <ScrollStack
+        useWindowScroll
+        itemDistance={72}
+        itemStackDistance={28}
+        stackPosition="22%"
+        scaleEndPosition="12%"
+        baseScale={0.9}
+        itemScale={0.025}
+        blurAmount={1.5}
+        className="mx-auto w-full max-w-[1440px]"
+      >
+        {STEPS.map((step) => (
+          <ScrollStackItem
+            key={step.number}
+            itemClassName="rounded-3xl border border-gray-200 bg-white p-8 shadow-[0_8px_30px_rgba(0,0,0,0.06)] transition-colors duration-300 dark:border-white/10 dark:bg-[#1a1a1a] dark:shadow-[0_8px_30px_rgba(0,0,0,0.35)] sm:p-10"
+          >
+            <div className="flex items-start justify-between gap-6">
+              <div className="min-w-0 flex-1">
+                <span className="text-[13px] font-semibold uppercase tracking-wide text-[#F26522]">
+                  Step {step.number}
+                </span>
+                <h3 className="mt-3 text-[clamp(1.35rem,3vw,1.75rem)] font-semibold leading-tight tracking-[-0.02em] text-gray-900 dark:text-white">
+                  {step.title}
+                </h3>
+                <p className="mt-3 max-w-lg text-[15px] leading-[1.65] text-gray-600 dark:text-gray-400 sm:text-[16px]">
+                  {step.description}
+                </p>
+              </div>
+              <span
+                className="hidden shrink-0 text-[clamp(3rem,8vw,4.5rem)] font-medium leading-none tracking-tight text-[#F26522]/20 sm:block"
+                aria-hidden="true"
+              >
                 {step.number}
               </span>
-              <h3 className="mt-4 text-[18px] font-semibold text-gray-900 dark:text-white sm:text-[20px]">
-                {step.title}
-              </h3>
-              <p className="mt-2 text-[14px] leading-[1.6] text-gray-600 dark:text-gray-400 sm:text-[15px]">
-                {step.description}
-              </p>
-            </FadeIn>
-          ))}
-        </div>
-      </div>
+            </div>
+          </ScrollStackItem>
+        ))}
+      </ScrollStack>
     </section>
   )
 }
