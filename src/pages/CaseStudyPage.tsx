@@ -25,6 +25,42 @@ function SectionLabel({
   )
 }
 
+function LiveSiteButton({ href, accent }: { href?: string; accent: string }) {
+  const className =
+    'group inline-flex items-center gap-2 rounded-full py-2 pl-5 pr-2 text-[13px] font-medium text-white sm:text-[14px]'
+  const icon = (
+    <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white transition-transform duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:-rotate-45 sm:h-8 sm:w-8">
+      <ArrowUpRight size={16} style={{ color: accent }} />
+    </span>
+  )
+
+  if (href) {
+    return (
+      <a
+        href={href}
+        target="_blank"
+        rel="noreferrer"
+        className={`${className} transition-opacity hover:opacity-90`}
+        style={{ backgroundColor: accent }}
+      >
+        Visit live site
+        {icon}
+      </a>
+    )
+  }
+
+  return (
+    <span
+      className={`${className} cursor-default opacity-80`}
+      style={{ backgroundColor: accent }}
+      aria-disabled="true"
+    >
+      Visit live site
+      {icon}
+    </span>
+  )
+}
+
 export function CaseStudyPage() {
   const { slug } = useParams<{ slug: string }>()
   const study = slug ? getCaseStudy(slug) : undefined
@@ -72,22 +108,9 @@ export function CaseStudyPage() {
           {study.intro}
         </FadeIn>
 
-        {study.liveUrl && (
-          <div className="mt-8 flex flex-wrap items-center gap-4">
-            <a
-              href={study.liveUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="group inline-flex items-center gap-2 rounded-full py-2 pl-5 pr-2 text-[13px] font-medium text-white transition-opacity hover:opacity-90 sm:text-[14px]"
-              style={{ backgroundColor: accent }}
-            >
-              Visit live site
-              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white transition-transform duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:-rotate-45 sm:h-8 sm:w-8">
-                <ArrowUpRight size={16} style={{ color: accent }} />
-              </span>
-            </a>
-          </div>
-        )}
+        <div className="mt-8 flex flex-wrap items-center gap-4">
+          <LiveSiteButton href={study.liveUrl} accent={accent} />
+        </div>
 
         <dl className="mt-12 grid grid-cols-2 gap-6 border-t border-gray-300 pt-8 dark:border-white/10 lg:grid-cols-4">
           {study.meta.map((m) => (
@@ -105,28 +128,17 @@ export function CaseStudyPage() {
 
       <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
         <FadeIn
-          className={`aspect-[16/10] overflow-hidden rounded-3xl sm:aspect-[16/8] ${
-            study.coverVimeoId ? 'relative bg-[#15110D]' : ''
+          className={`relative aspect-[16/10] overflow-hidden rounded-3xl sm:aspect-[16/8] ${
+            study.coverVimeoId ? 'bg-[#15110D]' : 'bg-white'
           }`}
         >
-          {study.coverVimeoId ? (
-            <>
-              <img
-                src={study.coverImage}
-                alt={`${study.name} homepage`}
-                className="absolute inset-0 h-full w-full object-cover object-top"
-                loading="lazy"
-              />
-              <VimeoEmbed videoId={study.coverVimeoId} />
-            </>
-          ) : (
-            <img
-              src={study.coverImage}
-              alt={`${study.name} homepage`}
-              className="h-full w-full object-cover object-top"
-              loading="lazy"
-            />
-          )}
+          <img
+            src={study.coverImage}
+            alt={`${study.name} homepage`}
+            className="absolute inset-0 h-full w-full object-cover object-top"
+            loading="eager"
+          />
+          {study.coverVimeoId && <VimeoEmbed videoId={study.coverVimeoId} />}
         </FadeIn>
       </div>
 
@@ -247,12 +259,14 @@ export function CaseStudyPage() {
                   </span>
                 </div>
                 <BrowserFrame url={study.gallerySiteUrl}>
-                  <img
-                    src={g.src}
-                    alt={g.alt}
-                    className="block h-auto w-full"
-                    loading="lazy"
-                  />
+                  <div className="bg-white">
+                    <img
+                      src={g.src}
+                      alt={g.alt}
+                      className="block h-auto w-full"
+                      loading="lazy"
+                    />
+                  </div>
                 </BrowserFrame>
               </FadeIn>
             ))}
