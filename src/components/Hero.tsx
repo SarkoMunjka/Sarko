@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from 'react'
 import { ArrowRight } from 'lucide-react'
 import {
   Shader,
@@ -21,12 +22,31 @@ const SHADER_COLORS = {
 export function Hero() {
   const { theme } = useTheme()
   const shader = SHADER_COLORS[theme]
+  const heroRef = useRef<HTMLElement>(null)
+  const [shaderActive, setShaderActive] = useState(true)
+
+  useEffect(() => {
+    const hero = heroRef.current
+    if (!hero) return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setShaderActive(entry.isIntersecting),
+      { threshold: 0 },
+    )
+
+    observer.observe(hero)
+    return () => observer.disconnect()
+  }, [])
 
   return (
-    <section className="relative flex min-h-screen flex-col bg-[#EFEFEF] transition-colors duration-300 dark:bg-[#0a0a0a]">
-      {/* Animated shader background */}
-      <div className="pointer-events-none absolute inset-0 z-10">
-        <Shader key={theme} className="h-full w-full" style={{ width: '100%', height: '100%' }}>
+    <section
+      ref={heroRef}
+      className="relative flex min-h-screen flex-col bg-[#EFEFEF] transition-colors duration-300 dark:bg-[#0a0a0a]"
+    >
+      {/* Animated shader background — paused when hero leaves the viewport */}
+      {shaderActive && (
+        <div className="pointer-events-none absolute inset-0 z-10">
+          <Shader key={theme} className="h-full w-full" style={{ width: '100%', height: '100%' }}>
           <Swirl colorA={shader.colorA} colorB={shader.colorB} detail={1.7} />
           <ChromaFlow
             baseColor={shader.base}
@@ -51,7 +71,8 @@ export function Hero() {
           />
           <FilmGrain strength={0.05} />
         </Shader>
-      </div>
+        </div>
+      )}
 
       <Navbar />
 

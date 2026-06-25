@@ -123,6 +123,7 @@ export default function ScrollStack({
     containerHeight: 0,
   })
   const lastTransformsRef = useRef<Map<number, CardTransform>>(new Map())
+  const activeRef = useRef(false)
 
   const calculateProgress = useCallback((scrollTop: number, start: number, end: number) => {
     if (scrollTop < start) return 0
@@ -311,10 +312,10 @@ export default function ScrollStack({
     remeasureLayout()
     updateCardTransforms()
 
-    let lenis: Lenis | null = null
+    const initLenis = () => {
+      if (lenisRef.current || !useWindowScroll || useNativeScroll) return
 
-    if (useWindowScroll && !useNativeScroll) {
-      lenis = new Lenis({
+      const lenis = new Lenis({
         duration: 1.2,
         easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
         smoothWheel: true,
@@ -324,7 +325,13 @@ export default function ScrollStack({
         lerp: 0.1,
         syncTouch: false,
       })
-    } else if (!useWindowScroll) {
+
+      lenisRef.current = lenis
+    }
+
+    let lenis: Lenis | null = null
+
+    if (!useWindowScroll) {
       const content = scroller.querySelector('.scroll-stack-inner')
       if (!content) return () => undefined
 
@@ -342,9 +349,23 @@ export default function ScrollStack({
         syncTouch: true,
         syncTouchLerp: 0.075,
       })
+
+      lenisRef.current = lenis
+      activeRef.current = true
     }
 
-    lenisRef.current = lenis
+    const sectionObserver = new IntersectionObserver(
+      ([entry]) => {
+        activeRef.current = entry.isIntersecting
+
+        if (entry.isIntersecting) {
+          initLenis()
+          remeasureLayout()
+          updateCardTransforms()
+        }
+      },
+      { rootMargin: '40% 0px 40% 0px', threshold: 0 },
+    )
 
     let resizeTimer: number | undefined
     let disconnectResizeObserver: (() => void) | undefined
@@ -352,7 +373,7 @@ export default function ScrollStack({
 
     const onResize = () => {
       const run = () => {
-        lenis?.resize()
+        lenisRef.current?.resize()
         remeasureLayout()
         updateCardTransforms()
       }
@@ -377,7 +398,9 @@ export default function ScrollStack({
       disconnectResizeObserver = () => resizeObserver.disconnect()
     }
 
-    if (useNativeScroll) {
+    if (useWindowScroll && useNativeScroll) {
+      activeRef.current = true
+
       const onScroll = () => {
         updateCardTransforms()
       }
@@ -385,17 +408,26 @@ export default function ScrollStack({
       disconnectScrollListener = () => window.removeEventListener('scroll', onScroll)
     }
 
+    if (useWindowScroll && !useNativeScroll) {
+      sectionObserver.observe(scroller)
+    } else if (!useWindowScroll) {
+      activeRef.current = true
+    }
+
     const raf = (time: number) => {
-      lenis?.raf(time)
-      if (!useNativeScroll) {
+      lenisRef.current?.raf(time)
+
+      if (activeRef.current) {
         updateCardTransforms()
       }
+
       animationFrameRef.current = requestAnimationFrame(raf)
     }
 
     animationFrameRef.current = requestAnimationFrame(raf)
 
     return () => {
+      sectionObserver.disconnect()
       window.removeEventListener('orientationchange', onResize)
 
       if (!useNativeScroll) {
@@ -414,8 +446,9 @@ export default function ScrollStack({
         cancelAnimationFrame(animationFrameRef.current)
       }
 
-      lenis?.destroy()
+      lenisRef.current?.destroy()
       lenisRef.current = null
+      activeRef.current = false
       useNativeScrollRef.current = false
       stackCompletedRef.current = false
       cardsRef.current = []
