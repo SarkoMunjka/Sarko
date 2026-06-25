@@ -9,7 +9,7 @@ export interface CaseStudyContent {
   overview: { heading: string; paragraphs: string[] }
   challenge: { heading: string; body: string }
   approach: { no: string; title: string; body: string }[]
-  gallery: { src: string; label: string; alt: string; fullPage?: boolean }[]
+  gallery: { src: string; label: string; alt: string }[]
   gallerySiteUrl?: string
   galleryVimeoId?: string
   palette: { name: string; hex: string }[]
@@ -77,9 +77,13 @@ export const CASE_STUDIES: CaseStudyContent[] = [
       },
     ],
     gallery: [
-      { src: '/socks-home.png', label: 'Homepage', alt: 'Socks & Co. homepage', fullPage: true },
-      { src: '/socks-collab.png', label: 'Limited edition · Nike collaboration', alt: 'Socks & Co. x Nike collaboration store', fullPage: true },
-      { src: '/socks-cart.png', label: 'Cart & checkout', alt: 'Socks & Co. cart and checkout', fullPage: true },
+      { src: '/socks-home.png', label: 'Homepage', alt: 'Socks & Co. homepage' },
+      {
+        src: '/socks-collab.png',
+        label: 'Limited edition · Nike collaboration',
+        alt: 'Socks & Co. x Nike collaboration store',
+      },
+      { src: '/socks-cart.png', label: 'Cart & checkout', alt: 'Socks & Co. cart and checkout' },
     ],
     gallerySiteUrl: 'socksandco.com',
     palette: [
@@ -272,6 +276,7 @@ export const CASE_STUDIES: CaseStudyContent[] = [
       },
     },
     coverImage: '/kosmaj-zomes-home.png',
+    coverFullPage: true,
     ctaHeading: 'Ready to welcome more guests?',
     ctaSubtext: "Let's craft the experience that fills your calendar.",
   },
@@ -352,6 +357,7 @@ export const CASE_STUDIES: CaseStudyContent[] = [
       },
     },
     coverImage: '/deluks-padel-home.png',
+    coverFullPage: true,
     ctaHeading: 'Building a sports brand?',
     ctaSubtext: "Let's create the digital home your community deserves.",
   },
@@ -433,6 +439,7 @@ export const CASE_STUDIES: CaseStudyContent[] = [
       },
     },
     coverImage: '/mm-studio-home.png',
+    coverFullPage: true,
     ctaHeading: 'Have work worth showcasing?',
     ctaSubtext: "Let's build the portfolio that wins your next client.",
   },

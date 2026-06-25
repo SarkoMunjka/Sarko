@@ -275,25 +275,14 @@ export function CaseStudyPage() {
                   </div>
                 </FadeIn>
                 <BrowserFrame url={study.gallerySiteUrl}>
-                  {g.fullPage ? (
-                    <div className="bg-white">
-                      <img
-                        src={g.src}
-                        alt={g.alt}
-                        className="block h-auto w-full"
-                        loading="lazy"
-                      />
-                    </div>
-                  ) : (
-                    <div className="relative aspect-[16/10] overflow-hidden bg-white sm:aspect-[16/8]">
-                      <img
-                        src={g.src}
-                        alt={g.alt}
-                        className="absolute inset-0 h-full w-full object-cover object-top"
-                        loading="lazy"
-                      />
-                    </div>
-                  )}
+                  <div className="bg-white">
+                    <img
+                      src={g.src}
+                      alt={g.alt}
+                      className="block h-auto w-full"
+                      loading="lazy"
+                    />
+                  </div>
                 </BrowserFrame>
               </div>
             ))}
