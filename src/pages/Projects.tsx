@@ -5,6 +5,7 @@ import { Footer } from '../components/Footer'
 import BlurText from '../components/BlurText'
 import { FadeIn } from '../components/FadeIn'
 import { ScrollPreview } from '../components/ScrollPreview'
+import { NovaVisual } from '../components/NovaVisual'
 import { PROJECTS } from '../data/projects'
 
 export function Projects() {
@@ -56,6 +57,8 @@ export function Projects() {
                     />
                   ) : project.cover ? (
                     <ScrollPreview src={project.cover} alt={project.name} />
+                  ) : project.visual === 'nova' ? (
+                    <NovaVisual variant="cover" />
                   ) : (
                     <div className="h-full w-full" style={{ backgroundColor: project.accent }} />
                   )}
