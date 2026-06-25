@@ -21,8 +21,6 @@ export interface CaseStudyContent {
     quote?: { text: string; attribution: string; serif?: boolean }
   }
   coverImage: string
-  /** Show the full-page screenshot on the cover (no crop). */
-  coverFullPage?: boolean
   /** NovaFrame only — autoplay Vimeo over the cover hero image. */
   coverVimeoId?: string
   ctaHeading: string
@@ -110,7 +108,6 @@ export const CASE_STUDIES: CaseStudyContent[] = [
       },
     },
     coverImage: '/socks-home.png',
-    coverFullPage: true,
     ctaHeading: 'Have a brand worth bragging about?',
     ctaSubtext: "Let's build the experience that gets you there.",
   },
@@ -276,7 +273,6 @@ export const CASE_STUDIES: CaseStudyContent[] = [
       },
     },
     coverImage: '/kosmaj-zomes-home.png',
-    coverFullPage: true,
     ctaHeading: 'Ready to welcome more guests?',
     ctaSubtext: "Let's craft the experience that fills your calendar.",
   },
@@ -357,7 +353,6 @@ export const CASE_STUDIES: CaseStudyContent[] = [
       },
     },
     coverImage: '/deluks-padel-home.png',
-    coverFullPage: true,
     ctaHeading: 'Building a sports brand?',
     ctaSubtext: "Let's create the digital home your community deserves.",
   },
@@ -439,7 +434,6 @@ export const CASE_STUDIES: CaseStudyContent[] = [
       },
     },
     coverImage: '/mm-studio-home.png',
-    coverFullPage: true,
     ctaHeading: 'Have work worth showcasing?',
     ctaSubtext: "Let's build the portfolio that wins your next client.",
   },

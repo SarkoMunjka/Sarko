@@ -126,31 +126,21 @@ export function CaseStudyPage() {
         </dl>
       </header>
 
+      {/* Cover — hero viewport only */}
       <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
-        {study.coverFullPage ? (
-          <div className="overflow-hidden rounded-3xl bg-white">
-            <img
-              src={study.coverImage}
-              alt={`${study.name} homepage`}
-              className="block h-auto w-full"
-              loading="eager"
-            />
-          </div>
-        ) : (
-          <FadeIn
-            className={`relative aspect-[16/10] overflow-hidden rounded-3xl sm:aspect-[16/8] ${
-              study.coverVimeoId ? 'bg-[#15110D]' : 'bg-white'
-            }`}
-          >
-            <img
-              src={study.coverImage}
-              alt={`${study.name} homepage`}
-              className="absolute inset-0 h-full w-full object-cover object-top"
-              loading="eager"
-            />
-            {study.coverVimeoId && <VimeoEmbed videoId={study.coverVimeoId} />}
-          </FadeIn>
-        )}
+        <FadeIn
+          className={`relative aspect-[16/10] overflow-hidden rounded-3xl sm:aspect-[16/8] ${
+            study.coverVimeoId ? 'bg-[#15110D]' : 'bg-white'
+          }`}
+        >
+          <img
+            src={study.coverImage}
+            alt={`${study.name} homepage`}
+            className="absolute inset-0 h-full w-full object-cover object-top"
+            loading="eager"
+          />
+          {study.coverVimeoId && <VimeoEmbed videoId={study.coverVimeoId} />}
+        </FadeIn>
       </div>
 
       <section className="bg-white transition-colors duration-300 dark:bg-[#0a0a0a]">
