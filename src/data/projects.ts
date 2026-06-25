@@ -16,6 +16,8 @@ export interface Project {
   poster?: string
   /** Vimeo video ID for hover preview / case-study hero. */
   vimeoId?: string
+  /** Show on the home page featured grid (default true). */
+  showOnHome?: boolean
 }
 
 export const PROJECTS: Project[] = [
@@ -41,6 +43,7 @@ export const PROJECTS: Project[] = [
     caseStudy: true,
     poster: '/nova-hero.png',
     vimeoId: '1204433136',
+    showOnHome: false,
   },
   {
     slug: 'kosmaj-zomes',

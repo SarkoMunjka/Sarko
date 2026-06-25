@@ -27,7 +27,7 @@ export function CaseStudies() {
         />
 
         <div className="grid grid-cols-1 gap-5 px-5 sm:gap-6 sm:px-8 md:grid-cols-2 lg:gap-7 lg:px-12">
-          {PROJECTS.map((project, index) => (
+          {PROJECTS.filter((p) => p.showOnHome !== false).map((project, index) => (
             <ProjectCard key={project.slug} project={project} index={index} variant="home" />
           ))}
         </div>
