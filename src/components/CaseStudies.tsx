@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import BlurText from './BlurText'
 import { FadeIn } from './FadeIn'
 import { ScrollPreview } from './ScrollPreview'
+import { NovaVisual } from './NovaVisual'
 
 export function CaseStudies() {
   return (
@@ -63,21 +64,14 @@ export function CaseStudies() {
             </h3>
           </div>
 
-          {/* Card 2 — Narrativ */}
+          {/* Card 2 — NovaFrame (full case study) */}
           <div>
             <Link
-              to="/projects"
-              className="group relative block aspect-[329/246] cursor-pointer overflow-hidden rounded-2xl bg-[#1a1d2e]"
+              to="/projects/novaframe"
+              className="group relative block aspect-[329/246] cursor-pointer overflow-hidden rounded-2xl bg-[#15110D]"
             >
-              <video
-                src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260516_122702_390f5305-8719-41d5-ae80-d23ab3796c28.mp4"
-                autoPlay
-                muted
-                loop
-                playsInline
-                className="h-full w-full object-cover"
-              />
-              <div className="absolute bottom-4 left-4 z-10 flex h-9 w-9 items-center overflow-hidden rounded-full bg-white transition-all duration-300 ease-in-out group-hover:w-[148px]">
+              <NovaVisual variant="cover" />
+              <div className="absolute bottom-4 left-4 z-10 flex h-9 w-9 items-center overflow-hidden rounded-full bg-white transition-all duration-300 ease-in-out group-hover:w-[168px]">
                 <span className="flex h-9 w-9 shrink-0 items-center justify-center text-gray-900">
                   <ArrowRight
                     size={14}
@@ -85,7 +79,7 @@ export function CaseStudies() {
                   />
                 </span>
                 <span className="whitespace-nowrap pr-3 text-[13px] font-medium text-gray-900 opacity-0 transition-opacity delay-100 duration-300 group-hover:opacity-100">
-                  See all work
+                  View case study
                 </span>
               </div>
             </Link>
@@ -93,11 +87,11 @@ export function CaseStudies() {
               as="p"
               className="mt-4 text-[13px] leading-relaxed text-gray-600 dark:text-gray-400 sm:text-[14px]"
             >
-              Winner of Site of the Month 2025 - an interactive 3D showcase
-              driving record engagement
+              A cinematic portfolio and booking site for a Belgrade wedding film
+              studio shooting love stories worldwide
             </FadeIn>
             <h3 className="mt-1 text-[14px] font-semibold text-gray-900 dark:text-white sm:text-[15px]">
-              Narrativ
+              NovaFrame
             </h3>
           </div>
         </div>

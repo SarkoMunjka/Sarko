@@ -12,6 +12,8 @@ export interface Project {
   video?: string
   /** Optional cover image (path under /public) used as the card media. */
   cover?: string
+  /** Optional branded CSS mockup used as the card media (no screenshot yet). */
+  visual?: 'nova'
 }
 
 export const PROJECTS: Project[] = [
@@ -25,6 +27,17 @@ export const PROJECTS: Project[] = [
     accent: '#9181D6',
     caseStudy: true,
     cover: '/socks-home.png',
+  },
+  {
+    slug: 'novaframe',
+    name: 'NovaFrame',
+    category: 'Wedding film · Web',
+    year: '2025',
+    blurb:
+      'A cinematic portfolio and booking site for a Belgrade wedding film studio shooting love stories across Europe and the world.',
+    accent: '#B79268',
+    caseStudy: true,
+    visual: 'nova',
   },
   {
     slug: 'narrativ',

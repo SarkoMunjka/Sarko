@@ -3,6 +3,7 @@ import { ScrollToTop } from './components/ScrollToTop'
 import { Home } from './pages/Home'
 import { Projects } from './pages/Projects'
 import { CaseStudySocks } from './pages/CaseStudySocks'
+import { CaseStudyNovaframe } from './pages/CaseStudyNovaframe'
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/projects" element={<Projects />} />
         <Route path="/projects/socks-co" element={<CaseStudySocks />} />
+        <Route path="/projects/novaframe" element={<CaseStudyNovaframe />} />
       </Routes>
     </>
   )
