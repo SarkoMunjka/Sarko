@@ -57,7 +57,6 @@ export function Process() {
         scaleEndPosition="12%"
         baseScale={0.9}
         itemScale={0.025}
-        blurAmount={1.5}
         className="mx-auto w-full max-w-[1440px]"
       >
         {STEPS.map((step) => (
