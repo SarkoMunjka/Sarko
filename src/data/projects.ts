@@ -10,6 +10,8 @@ export interface Project {
   caseStudy: boolean
   /** Optional looping video used as the card media. */
   video?: string
+  /** Optional cover image (path under /public) used as the card media. */
+  cover?: string
 }
 
 export const PROJECTS: Project[] = [
@@ -22,6 +24,7 @@ export const PROJECTS: Project[] = [
       'A bold, playful e-commerce experience for a direct-to-consumer sock brand — from identity to a high-converting storefront and a Nike collaboration drop.',
     accent: '#9181D6',
     caseStudy: true,
+    cover: '/socks-collab.png',
   },
   {
     slug: 'narrativ',

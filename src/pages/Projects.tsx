@@ -4,7 +4,6 @@ import { Navbar } from '../components/Navbar'
 import { Footer } from '../components/Footer'
 import BlurText from '../components/BlurText'
 import { FadeIn } from '../components/FadeIn'
-import { SocksVisual } from '../components/SocksVisual'
 import { PROJECTS } from '../data/projects'
 
 export function Projects() {
@@ -54,8 +53,15 @@ export function Projects() {
                       playsInline
                       className="h-full w-full object-cover"
                     />
+                  ) : project.cover ? (
+                    <img
+                      src={project.cover}
+                      alt={project.name}
+                      className="h-full w-full object-cover object-top"
+                      loading="lazy"
+                    />
                   ) : (
-                    <SocksVisual variant="cover" />
+                    <div className="h-full w-full" style={{ backgroundColor: project.accent }} />
                   )}
                   {project.caseStudy && (
                     <span className="absolute right-4 top-4 z-10 flex items-center gap-1 rounded-full bg-white/90 px-3 py-1 text-[12px] font-semibold text-gray-900 backdrop-blur-sm">
