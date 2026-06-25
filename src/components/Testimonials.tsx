@@ -1,6 +1,5 @@
 import { motion } from 'motion/react'
 import { SectionBadge } from './SectionBadge'
-import { SectionBlend } from './SectionBlend'
 import BlurText from './BlurText'
 import { FadeIn } from './FadeIn'
 import {
@@ -79,8 +78,7 @@ const secondColumn = TESTIMONIALS.slice(5, 9)
 
 export function Testimonials() {
   return (
-    <section className="relative overflow-hidden bg-white pb-16 pt-16 transition-colors duration-300 dark:bg-[#0a0a0a] sm:pb-20 sm:pt-20 lg:pb-28 lg:pt-28">
-      <SectionBlend fadeBottom="muted" />
+    <section className="section-tone-surface-down relative overflow-hidden pb-16 pt-16 transition-colors duration-300 sm:pb-20 sm:pt-20 lg:pb-28 lg:pt-28">
       <div className="relative z-10 mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
         <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] lg:items-start lg:gap-10 xl:gap-16">
           {/* Left — heading copy */}

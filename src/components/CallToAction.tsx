@@ -1,5 +1,4 @@
 import { RollButton } from './RollButton'
-import { SectionBlend } from './SectionBlend'
 import BlurText from './BlurText'
 import { FadeIn } from './FadeIn'
 
@@ -19,9 +18,8 @@ export function CallToAction() {
   return (
     <section
       id="contact"
-      className="relative bg-[#F5F5F5] pb-16 pt-4 transition-colors duration-300 dark:bg-[#121212] sm:pb-20 lg:pb-28"
+      className="section-tone-muted-footer relative pb-16 pt-4 transition-colors duration-300 sm:pb-20 lg:pb-28"
     >
-      <SectionBlend fadeTop="surface" fadeBottom="footer" />
       <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
         <div className="rounded-3xl bg-gray-900 px-6 py-14 dark:bg-[#1a1a1a] dark:ring-1 dark:ring-white/10 sm:px-10 sm:py-20 lg:px-16 lg:py-24">
           <FadeIn

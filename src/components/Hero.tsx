@@ -7,7 +7,6 @@ import {
   FlutedGlass,
   FilmGrain,
 } from 'shaders/react'
-import { SectionBlend } from './SectionBlend'
 import { Navbar } from './Navbar'
 import { TextRoll } from './TextRoll'
 import { PartnerIcon } from './PartnerIcon'
@@ -42,9 +41,8 @@ export function Hero() {
   return (
     <section
       ref={heroRef}
-      className="relative flex min-h-screen flex-col bg-[#EFEFEF] transition-colors duration-300 dark:bg-[#0a0a0a]"
+      className="section-tone-hero relative flex min-h-screen flex-col transition-colors duration-300"
     >
-      <SectionBlend fadeBottom="surface" />
       {/* Animated shader background — paused when hero leaves the viewport */}
       {shaderActive && (
         <div className="pointer-events-none absolute inset-0 z-10">

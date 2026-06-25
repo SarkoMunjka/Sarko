@@ -1,4 +1,3 @@
-import { SectionBlend } from './SectionBlend'
 import BlurText from './BlurText'
 import { ProjectCard } from './ProjectCard'
 import { PROJECTS } from '../data/projects'
@@ -7,9 +6,8 @@ export function CaseStudies() {
   return (
     <section
       id="work"
-      className="relative bg-[#F5F5F5] pb-16 pt-16 transition-colors duration-300 dark:bg-[#121212] sm:pb-20 sm:pt-20 lg:pb-28 lg:pt-28"
+      className="section-tone-muted-up relative pb-16 pt-16 transition-colors duration-300 sm:pb-20 sm:pt-20 lg:pb-28 lg:pt-28"
     >
-      <SectionBlend fadeTop="surface" fadeBottom="surface" />
       <div className="mx-auto w-full max-w-[1440px]">
         <div className="mb-6 flex items-center gap-3 px-5 sm:mb-8 sm:px-8 lg:px-12">
           <div className="flex h-6 w-6 items-center justify-center rounded-full bg-gray-900 text-[11px] font-semibold text-white dark:bg-white dark:text-gray-900 sm:h-7 sm:w-7 sm:text-[12px]">

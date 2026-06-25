@@ -1,6 +1,5 @@
 import { ArrowRight } from 'lucide-react'
 import { TextRoll } from './TextRoll'
-import { SectionBlend } from './SectionBlend'
 import BlurText from './BlurText'
 import { FadeIn } from './FadeIn'
 
@@ -27,9 +26,8 @@ export function About() {
   return (
     <section
       id="about"
-      className="relative overflow-hidden bg-white pb-12 pt-16 transition-colors duration-300 dark:bg-[#0a0a0a] sm:pb-16 sm:pt-20 lg:pb-24 lg:pt-32"
+      className="section-tone-surface-down relative overflow-hidden pb-12 pt-16 transition-colors duration-300 sm:pb-16 sm:pt-20 lg:pb-24 lg:pt-32"
     >
-      <SectionBlend fadeBottom="muted" />
       <div className="mx-auto w-full max-w-[1440px]">
         {/* Badge row */}
         <div className="mb-6 flex items-center gap-3 px-5 sm:mb-8 sm:px-8 lg:px-12">

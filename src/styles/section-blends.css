@@ -1,0 +1,60 @@
+/* Section background blends — matched edge colors between neighbors */
+
+:root {
+  --tone-surface: #ffffff;
+  --tone-muted: #f5f5f5;
+  --tone-hero: #efefef;
+  --tone-footer: #111827;
+  --section-blend: clamp(7rem, 16vw, 12rem);
+}
+
+.dark {
+  --tone-surface: #0a0a0a;
+  --tone-muted: #121212;
+  --tone-hero: #0a0a0a;
+  --tone-footer: #000000;
+}
+
+/* Hero → About (ends on surface) */
+.section-tone-hero {
+  background-color: var(--tone-hero);
+  background-image: linear-gradient(
+    to bottom,
+    var(--tone-hero) 0,
+    var(--tone-hero) calc(100% - var(--section-blend)),
+    var(--tone-surface) 100%
+  );
+}
+
+/* Surface section → next is muted (About, Services, Testimonials) */
+.section-tone-surface-down {
+  background-color: var(--tone-surface);
+  background-image: linear-gradient(
+    to bottom,
+    var(--tone-surface) 0,
+    var(--tone-surface) calc(100% - var(--section-blend)),
+    var(--tone-muted) 100%
+  );
+}
+
+/* Muted section → next is surface (Case Studies, Process) */
+.section-tone-muted-up {
+  background-color: var(--tone-muted);
+  background-image: linear-gradient(
+    to bottom,
+    var(--tone-muted) 0,
+    var(--tone-muted) calc(100% - var(--section-blend)),
+    var(--tone-surface) 100%
+  );
+}
+
+/* Muted section → Footer (CTA) */
+.section-tone-muted-footer {
+  background-color: var(--tone-muted);
+  background-image: linear-gradient(
+    to bottom,
+    var(--tone-muted) 0,
+    var(--tone-muted) calc(100% - var(--section-blend)),
+    var(--tone-footer) 100%
+  );
+}
