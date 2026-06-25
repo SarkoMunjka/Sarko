@@ -11,7 +11,7 @@ const ACCENT = '#B79268'
 const NOVA_VIMEO = '1204433136'
 
 const IMG = {
-  home: '/nova-home.jpg',
+  home: '/nova-hero.png',
   couples: '/nova-couples.jpg',
 }
 
