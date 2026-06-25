@@ -9,7 +9,7 @@ export interface CaseStudyContent {
   overview: { heading: string; paragraphs: string[] }
   challenge: { heading: string; body: string }
   approach: { no: string; title: string; body: string }[]
-  gallery: { src: string; label: string; alt: string }[]
+  gallery: { src: string; label: string; alt: string; fullPage?: boolean }[]
   gallerySiteUrl?: string
   galleryVimeoId?: string
   palette: { name: string; hex: string }[]
@@ -76,12 +76,8 @@ export const CASE_STUDIES: CaseStudyContent[] = [
     ],
     gallery: [
       { src: '/socks-home.png', label: 'Homepage', alt: 'Socks & Co. homepage' },
-      {
-        src: '/socks-collab.png',
-        label: 'Limited edition · Nike collaboration',
-        alt: 'Socks & Co. x Nike collaboration store',
-      },
-      { src: '/socks-cart.png', label: 'Cart & checkout', alt: 'Socks & Co. cart and checkout' },
+      { src: '/socks-collab.png', label: 'Limited edition · Nike collaboration', alt: 'Socks & Co. x Nike collaboration store', fullPage: true },
+      { src: '/socks-cart.png', label: 'Cart & checkout', alt: 'Socks & Co. cart and checkout', fullPage: true },
     ],
     gallerySiteUrl: 'socksandco.com',
     palette: [
