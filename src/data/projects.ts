@@ -24,7 +24,7 @@ export const PROJECTS: Project[] = [
       'A bold, playful e-commerce experience for a direct-to-consumer sock brand — from identity to a high-converting storefront and a Nike collaboration drop.',
     accent: '#9181D6',
     caseStudy: true,
-    cover: '/socks-collab.png',
+    cover: '/socks-home.png',
   },
   {
     slug: 'narrativ',

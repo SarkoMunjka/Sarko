@@ -2,6 +2,7 @@ import { ArrowRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import BlurText from './BlurText'
 import { FadeIn } from './FadeIn'
+import { ScrollPreview } from './ScrollPreview'
 
 export function CaseStudies() {
   return (
@@ -37,12 +38,7 @@ export function CaseStudies() {
               to="/projects/socks-co"
               className="group relative block aspect-[329/246] cursor-pointer overflow-hidden rounded-2xl bg-[#9181D6]"
             >
-              <img
-                src="/socks-collab.png"
-                alt="Socks & Co."
-                className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
-                loading="lazy"
-              />
+              <ScrollPreview src="/socks-home.png" alt="Socks & Co. homepage" />
               <div className="absolute bottom-4 left-4 z-10 flex h-9 w-9 items-center overflow-hidden rounded-full bg-gray-900 transition-all duration-300 ease-in-out group-hover:w-[168px]">
                 <span className="flex h-9 w-9 shrink-0 items-center justify-center text-white">
                   <ArrowRight
