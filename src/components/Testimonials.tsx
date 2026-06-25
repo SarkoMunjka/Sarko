@@ -73,9 +73,8 @@ const TESTIMONIALS: TestimonialItem[] = [
   },
 ]
 
-const firstColumn = TESTIMONIALS.slice(0, 3)
-const secondColumn = TESTIMONIALS.slice(3, 6)
-const thirdColumn = TESTIMONIALS.slice(6, 9)
+const firstColumn = TESTIMONIALS.slice(0, 5)
+const secondColumn = TESTIMONIALS.slice(5, 9)
 
 export function Testimonials() {
   return (
@@ -112,13 +111,8 @@ export function Testimonials() {
             <TestimonialsColumn testimonials={firstColumn} duration={15} />
             <TestimonialsColumn
               testimonials={secondColumn}
-              className="hidden md:block"
+              className="hidden sm:block"
               duration={19}
-            />
-            <TestimonialsColumn
-              testimonials={thirdColumn}
-              className="hidden lg:block"
-              duration={17}
             />
           </div>
         </div>
