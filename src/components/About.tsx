@@ -35,7 +35,7 @@ export function About() {
             1
           </div>
           <span className="rounded-full border border-gray-200 px-3 py-1 text-[12px] font-medium text-gray-900 dark:border-white/15 dark:text-gray-200 sm:px-4 sm:py-1.5 sm:text-[13px]">
-            Introducing Axion
+            Introducing Mark Studio
           </span>
         </div>
 
@@ -63,13 +63,13 @@ export function About() {
           <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:gap-5">
             <img
               src={SMALL_IMAGE}
-              alt="Axion studio work"
+              alt="Mark Studio work"
               className="aspect-[438/346] w-full rounded-xl object-cover sm:w-[45%] sm:rounded-2xl"
               loading="lazy"
             />
             <img
               src={LARGE_IMAGE}
-              alt="Axion studio project"
+              alt="Mark Studio project"
               className="aspect-[900/600] w-full rounded-xl object-cover sm:w-[55%] sm:rounded-2xl"
               loading="lazy"
             />
@@ -81,7 +81,7 @@ export function About() {
           <div className="self-end">
             <img
               src={SMALL_IMAGE}
-              alt="Axion studio work"
+              alt="Mark Studio work"
               className="aspect-[438/346] w-full rounded-2xl object-cover"
               loading="lazy"
             />
@@ -106,7 +106,7 @@ export function About() {
           <div className="self-end">
             <img
               src={LARGE_IMAGE}
-              alt="Axion studio project"
+              alt="Mark Studio project"
               className="aspect-[3/2] w-full rounded-2xl object-cover"
               loading="lazy"
             />

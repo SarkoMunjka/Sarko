@@ -9,7 +9,7 @@ import {
 
 const TESTIMONIALS: TestimonialItem[] = [
   {
-    text: 'Axion translated a vague vision into a brand that finally feels like us. The launch doubled our demo requests in a single month.',
+    text: 'Mark Studio translated a vague vision into a brand that finally feels like us. The launch doubled our demo requests in a single month.',
     image:
       'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&h=150&fit=crop&crop=face',
     name: 'Maya Chen',
@@ -44,7 +44,7 @@ const TESTIMONIALS: TestimonialItem[] = [
     role: 'Creative Director, Forma',
   },
   {
-    text: 'Axion understood our audience before we finished the brief. The result is elegant, fast and built to convert.',
+    text: 'Mark Studio understood our audience before we finished the brief. The result is elegant, fast and built to convert.',
     image:
       'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face',
     name: 'Marcus Webb',
@@ -58,7 +58,7 @@ const TESTIMONIALS: TestimonialItem[] = [
     role: 'Product Lead, Haven',
   },
   {
-    text: 'We needed a partner who could move fast without cutting corners. Axion delivered on both, start to finish.',
+    text: 'We needed a partner who could move fast without cutting corners. Mark Studio delivered on both, start to finish.',
     image:
       'https://images.unsplash.com/photo-1519345182560-3f2917c472ef?w=150&h=150&fit=crop&crop=face',
     name: 'David Park',
@@ -101,7 +101,7 @@ export function Testimonials() {
                 as="p"
                 className="mt-5 max-w-md text-[15px] leading-[1.6] text-gray-600 dark:text-gray-400 sm:text-[17px]"
               >
-                See what partners say about working with Axion.
+                See what partners say about working with Mark Studio.
               </FadeIn>
             </motion.div>
           </div>

@@ -48,10 +48,10 @@ export function CallToAction() {
           <div className="mt-8 flex flex-col gap-4 sm:mt-10 sm:flex-row sm:items-center sm:gap-5">
             <RollButton label="Start a project" variant="light" />
             <a
-              href="mailto:hello@axion.studio"
+              href="mailto:hello@mark.studio"
               className="text-[14px] font-medium text-gray-700 transition-colors duration-300 hover:text-[#1a1a1a]"
             >
-              hello@axion.studio
+              hello@mark.studio
             </a>
           </div>
 

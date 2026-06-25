@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowRight, Clock, Menu, Moon, Sun, X } from 'lucide-react'
+import { Logo } from './Logo'
 import { TextRoll } from './TextRoll'
 import { useLondonTime } from '../hooks/useLondonTime'
 import { useTheme } from '../hooks/useTheme'
@@ -65,12 +66,10 @@ export function Navbar() {
         <div className="flex items-center gap-6">
           <Link
             to="/"
-            className="flex h-9 w-9 items-center justify-center rounded-full bg-gray-900 transition-colors duration-300 dark:bg-white sm:h-10 sm:w-10"
-            aria-label="Axion Studio home"
+            className="flex shrink-0 items-center rounded-lg transition-opacity duration-300 hover:opacity-90"
+            aria-label="Mark Studio home"
           >
-            <span className="text-[10px] font-bold tracking-tight text-white dark:text-gray-900 sm:text-[11px]">
-              AX
-            </span>
+            <Logo className="h-8 w-auto sm:h-9" />
           </Link>
           <div className="hidden items-center gap-6 md:flex">
             {NAV_LINKS.map((link) =>
