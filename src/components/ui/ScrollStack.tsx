@@ -47,10 +47,31 @@ interface ScrollStackProps {
   onStackComplete?: () => void
 }
 
-function readScrollTop(lenis: Lenis | null, scroller: HTMLDivElement | null, useWindowScroll: boolean) {
+function prefersNativeTouchScroll() {
+  return window.matchMedia('(pointer: coarse)').matches
+}
+
+function getViewportHeight() {
+  return window.visualViewport?.height ?? window.innerHeight
+}
+
+function readScrollTop(
+  lenis: Lenis | null,
+  scroller: HTMLDivElement | null,
+  useWindowScroll: boolean,
+  useNativeScroll: boolean,
+) {
+  if (useWindowScroll && useNativeScroll) {
+    return window.scrollY
+  }
   if (lenis) return lenis.scroll
   if (useWindowScroll) return window.scrollY
   return scroller?.scrollTop ?? 0
+}
+
+function clampScrollTop(scrollTop: number, containerHeight: number) {
+  const maxScroll = Math.max(0, document.documentElement.scrollHeight - containerHeight)
+  return Math.max(0, Math.min(scrollTop, maxScroll))
 }
 
 function measureLayoutPositions(
@@ -98,6 +119,7 @@ export default function ScrollStack({
   const stackCompletedRef = useRef(false)
   const animationFrameRef = useRef<number | null>(null)
   const lenisRef = useRef<Lenis | null>(null)
+  const useNativeScrollRef = useRef(false)
   const cardsRef = useRef<HTMLElement[]>([])
   const layoutRef = useRef<LayoutPositions>({ cardTops: [], endTop: 0 })
   const lastTransformsRef = useRef<Map<number, CardTransform>>(new Map())
@@ -120,7 +142,12 @@ export default function ScrollStack({
     if (!scroller || !cardsRef.current.length) return
 
     const endElement = scroller.querySelector('.scroll-stack-end') as HTMLElement | null
-    const scrollTop = readScrollTop(lenisRef.current, scroller, useWindowScroll)
+    const scrollTop = readScrollTop(
+      lenisRef.current,
+      scroller,
+      useWindowScroll,
+      useNativeScrollRef.current,
+    )
 
     layoutRef.current = measureLayoutPositions(cardsRef.current, endElement, scrollTop)
   }, [useWindowScroll])
@@ -129,10 +156,16 @@ export default function ScrollStack({
     const scroller = scrollerRef.current
     if (!scroller || !cardsRef.current.length) return
 
-    const scrollTop = readScrollTop(lenisRef.current, scroller, useWindowScroll)
-    const containerHeight = useWindowScroll
-      ? window.innerHeight
-      : scroller.clientHeight
+    const containerHeight = useWindowScroll ? getViewportHeight() : scroller.clientHeight
+    const rawScrollTop = readScrollTop(
+      lenisRef.current,
+      scroller,
+      useWindowScroll,
+      useNativeScrollRef.current,
+    )
+    const scrollTop = useWindowScroll
+      ? clampScrollTop(rawScrollTop, containerHeight)
+      : rawScrollTop
 
     const stackPositionPx = parsePercentage(stackPosition, containerHeight)
     const scaleEndPositionPx = parsePercentage(scaleEndPosition, containerHeight)
@@ -237,16 +270,24 @@ export default function ScrollStack({
 
     cardsRef.current = cards
     const transformsCache = lastTransformsRef.current
+    const useNativeScroll = useWindowScroll && prefersNativeTouchScroll()
+    useNativeScrollRef.current = useNativeScroll
 
     cards.forEach((card, i) => {
       if (i < cards.length - 1) {
         card.style.marginBottom = `${itemDistance}px`
       }
-      card.style.willChange = 'transform, filter'
       card.style.transformOrigin = 'top center'
       card.style.backfaceVisibility = 'hidden'
       card.style.transform = 'translateZ(0)'
-      card.style.perspective = '1000px'
+
+      if (useNativeScroll) {
+        card.style.willChange = 'transform'
+        card.style.perspective = 'none'
+      } else {
+        card.style.willChange = 'transform, filter'
+        card.style.perspective = '1000px'
+      }
     })
 
     remeasureLayout()
@@ -254,19 +295,18 @@ export default function ScrollStack({
 
     let lenis: Lenis | null = null
 
-    if (useWindowScroll) {
+    if (useWindowScroll && !useNativeScroll) {
       lenis = new Lenis({
         duration: 1.2,
         easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
         smoothWheel: true,
-        touchMultiplier: 2,
+        touchMultiplier: 1,
         infinite: false,
         wheelMultiplier: 1,
         lerp: 0.1,
-        syncTouch: true,
-        syncTouchLerp: 0.075,
+        syncTouch: false,
       })
-    } else {
+    } else if (!useWindowScroll) {
       const content = scroller.querySelector('.scroll-stack-inner')
       if (!content) return () => undefined
 
@@ -276,12 +316,12 @@ export default function ScrollStack({
         duration: 1.2,
         easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
         smoothWheel: true,
-        touchMultiplier: 2,
+        touchMultiplier: useNativeScroll ? 1 : 2,
         infinite: false,
         gestureOrientation: 'vertical',
         wheelMultiplier: 1,
         lerp: 0.1,
-        syncTouch: true,
+        syncTouch: !useNativeScroll,
         syncTouchLerp: 0.075,
       })
     }
@@ -295,6 +335,10 @@ export default function ScrollStack({
     }
 
     window.addEventListener('resize', onResize)
+    window.addEventListener('orientationchange', onResize)
+
+    const visualViewport = window.visualViewport
+    visualViewport?.addEventListener('resize', onResize)
 
     const resizeObserver = new ResizeObserver(onResize)
     resizeObserver.observe(scroller)
@@ -309,6 +353,8 @@ export default function ScrollStack({
 
     return () => {
       window.removeEventListener('resize', onResize)
+      window.removeEventListener('orientationchange', onResize)
+      visualViewport?.removeEventListener('resize', onResize)
       resizeObserver.disconnect()
 
       if (animationFrameRef.current) {
@@ -317,6 +363,7 @@ export default function ScrollStack({
 
       lenis?.destroy()
       lenisRef.current = null
+      useNativeScrollRef.current = false
       stackCompletedRef.current = false
       cardsRef.current = []
       transformsCache.clear()
