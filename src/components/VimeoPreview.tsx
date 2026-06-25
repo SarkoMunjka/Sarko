@@ -29,18 +29,22 @@ export function VimeoEmbed({
   className = '',
   autoplay = true,
   fit = 'fill',
-}: VimeoEmbedProps & { fit?: 'fill' | 'cover' }) {
+}: VimeoEmbedProps & { fit?: 'fill' | 'cover' | 'contain' }) {
   const coverClass =
     'left-1/2 top-1/2 h-[56.25vw] min-h-full min-w-full w-[177.78vh] -translate-x-1/2 -translate-y-1/2'
   const fillClass = 'inset-0 h-full w-full scale-[1.02]'
+  const containClass = 'relative w-full aspect-[3420/1870]'
+
+  const fitClass =
+    fit === 'cover' ? coverClass : fit === 'contain' ? containClass : fillClass
 
   return (
     <iframe
       src={vimeoEmbedUrl(videoId, autoplay)}
       title="Project preview"
-      className={`pointer-events-none absolute border-0 ${
-        fit === 'cover' ? coverClass : fillClass
-      } ${className}`}
+      className={`pointer-events-none border-0 ${
+        fit === 'contain' ? '' : 'absolute'
+      } ${fitClass} ${className}`}
       allow="autoplay; fullscreen; picture-in-picture"
       referrerPolicy="strict-origin-when-cross-origin"
     />
@@ -72,7 +76,7 @@ export function VimeoHoverPreview({
     <img
       src={posterSrc}
       alt=""
-      className="h-full w-full object-cover object-top"
+      className="h-full w-full object-contain object-top"
       loading="lazy"
     />
   ) : (
@@ -81,7 +85,7 @@ export function VimeoHoverPreview({
 
   return (
     <div
-      className={`absolute inset-0 overflow-hidden ${className}`}
+      className={`absolute inset-0 overflow-hidden bg-[#15110D] ${className}`}
       onMouseEnter={() => setHovering(true)}
       onMouseLeave={() => setHovering(false)}
     >
@@ -93,8 +97,8 @@ export function VimeoHoverPreview({
         {posterNode}
       </div>
       {hovering && (
-        <div className="absolute inset-0 overflow-hidden">
-          <VimeoEmbed videoId={videoId} autoplay fit="cover" />
+        <div className="absolute inset-0 flex items-start justify-center">
+          <VimeoEmbed videoId={videoId} autoplay fit="contain" />
         </div>
       )}
     </div>
