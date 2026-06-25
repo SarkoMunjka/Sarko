@@ -104,32 +104,13 @@ export function CaseStudyPage() {
       </header>
 
       <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
-        <FadeIn>
-          <div
-            className={`relative overflow-hidden rounded-3xl ${
-              study.coverVimeoId ? 'aspect-[16/10] sm:aspect-[16/8]' : ''
-            }`}
-            style={{ backgroundColor: accent }}
-          >
-            {study.coverVimeoId ? (
-              <>
-                <img
-                  src={study.coverImage}
-                  alt={`${study.name} homepage`}
-                  className="absolute inset-0 h-full w-full object-cover object-top"
-                  loading="lazy"
-                />
-                <VimeoEmbed videoId={study.coverVimeoId} />
-              </>
-            ) : (
-              <img
-                src={study.coverImage}
-                alt={`${study.name} homepage`}
-                className="block h-auto w-full"
-                loading="lazy"
-              />
-            )}
-          </div>
+        <FadeIn className="aspect-[16/10] overflow-hidden rounded-3xl sm:aspect-[16/8]">
+          <img
+            src={study.coverImage}
+            alt={`${study.name} homepage`}
+            className="h-full w-full object-cover object-top"
+            loading="lazy"
+          />
         </FadeIn>
       </div>
 
