@@ -81,40 +81,46 @@ export function Testimonials() {
   return (
     <section className="relative overflow-hidden bg-white pb-16 pt-16 transition-colors duration-300 dark:bg-[#0a0a0a] sm:pb-20 sm:pt-20 lg:pb-28 lg:pt-28">
       <div className="relative z-10 mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
-        <SectionBadge number="5" label="Kind words" />
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-          viewport={{ once: true }}
-        >
-          <BlurText
-            as="h2"
-            animateBy="words"
-            delay={60}
-            text={'Teams keep coming back\nfor the details.'}
-            className="max-w-3xl font-medium leading-[1.12] tracking-[-0.02em] text-gray-900 dark:text-white text-[clamp(1.5rem,4vw,3.2rem)]"
-          />
-          <FadeIn
-            as="p"
-            className="mt-5 max-w-xl text-[15px] leading-[1.6] text-gray-600 dark:text-gray-400 sm:text-[17px]"
-          >
-            See what partners say about working with Axion.
-          </FadeIn>
-        </motion.div>
+        <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] lg:items-start lg:gap-10 xl:gap-16">
+          {/* Left — heading copy */}
+          <div className="lg:sticky lg:top-28 lg:pt-2">
+            <SectionBadge number="5" label="Kind words" />
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+              viewport={{ once: true }}
+            >
+              <BlurText
+                as="h2"
+                animateBy="words"
+                delay={60}
+                text={'Teams keep coming back\nfor the details.'}
+                className="max-w-xl font-medium leading-[1.12] tracking-[-0.02em] text-gray-900 dark:text-white text-[clamp(1.5rem,4vw,3.2rem)]"
+              />
+              <FadeIn
+                as="p"
+                className="mt-5 max-w-md text-[15px] leading-[1.6] text-gray-600 dark:text-gray-400 sm:text-[17px]"
+              >
+                See what partners say about working with Axion.
+              </FadeIn>
+            </motion.div>
+          </div>
 
-        <div className="mt-10 flex justify-center gap-6 overflow-hidden [mask-image:linear-gradient(to_bottom,transparent,black_20%,black_80%,transparent)] max-h-[740px] sm:mt-12">
-          <TestimonialsColumn testimonials={firstColumn} duration={15} />
-          <TestimonialsColumn
-            testimonials={secondColumn}
-            className="hidden md:block"
-            duration={19}
-          />
-          <TestimonialsColumn
-            testimonials={thirdColumn}
-            className="hidden lg:block"
-            duration={17}
-          />
+          {/* Right — scrolling columns */}
+          <div className="mt-10 flex justify-end gap-4 overflow-hidden [mask-image:linear-gradient(to_bottom,transparent,black_15%,black_85%,transparent)] max-h-[640px] sm:mt-12 sm:gap-5 sm:max-h-[700px] lg:mt-0 lg:max-h-[740px] lg:gap-6">
+            <TestimonialsColumn testimonials={firstColumn} duration={15} />
+            <TestimonialsColumn
+              testimonials={secondColumn}
+              className="hidden md:block"
+              duration={19}
+            />
+            <TestimonialsColumn
+              testimonials={thirdColumn}
+              className="hidden lg:block"
+              duration={17}
+            />
+          </div>
         </div>
       </div>
     </section>
