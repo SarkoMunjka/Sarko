@@ -127,19 +127,30 @@ export function CaseStudyPage() {
       </header>
 
       <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
-        <FadeIn
-          className={`relative aspect-[16/10] overflow-hidden rounded-3xl sm:aspect-[16/8] ${
-            study.coverVimeoId ? 'bg-[#15110D]' : 'bg-white'
-          }`}
-        >
-          <img
-            src={study.coverImage}
-            alt={`${study.name} homepage`}
-            className="absolute inset-0 h-full w-full object-cover object-top"
-            loading="eager"
-          />
-          {study.coverVimeoId && <VimeoEmbed videoId={study.coverVimeoId} />}
-        </FadeIn>
+        {study.coverFullPage ? (
+          <div className="overflow-hidden rounded-3xl bg-white">
+            <img
+              src={study.coverImage}
+              alt={`${study.name} homepage`}
+              className="block h-auto w-full"
+              loading="eager"
+            />
+          </div>
+        ) : (
+          <FadeIn
+            className={`relative aspect-[16/10] overflow-hidden rounded-3xl sm:aspect-[16/8] ${
+              study.coverVimeoId ? 'bg-[#15110D]' : 'bg-white'
+            }`}
+          >
+            <img
+              src={study.coverImage}
+              alt={`${study.name} homepage`}
+              className="absolute inset-0 h-full w-full object-cover object-top"
+              loading="eager"
+            />
+            {study.coverVimeoId && <VimeoEmbed videoId={study.coverVimeoId} />}
+          </FadeIn>
+        )}
       </div>
 
       <section className="bg-white transition-colors duration-300 dark:bg-[#0a0a0a]">
@@ -251,13 +262,18 @@ export function CaseStudyPage() {
 
           <div className="mx-auto flex max-w-[1000px] flex-col gap-12 sm:gap-16">
             {study.gallery.map((g, index) => (
-              <FadeIn key={g.src} delay={(index % 2) * 0.06}>
-                <div className="mb-4 flex items-center gap-2.5">
-                  <span className="h-2 w-2 rounded-full" style={{ backgroundColor: accent }} />
-                  <span className="text-[13px] font-medium text-gray-700 dark:text-gray-300">
-                    {g.label}
-                  </span>
-                </div>
+              <div key={g.src}>
+                <FadeIn delay={(index % 2) * 0.06}>
+                  <div className="mb-4 flex items-center gap-2.5">
+                    <span
+                      className="h-2 w-2 rounded-full"
+                      style={{ backgroundColor: accent }}
+                    />
+                    <span className="text-[13px] font-medium text-gray-700 dark:text-gray-300">
+                      {g.label}
+                    </span>
+                  </div>
+                </FadeIn>
                 <BrowserFrame url={study.gallerySiteUrl}>
                   {g.fullPage ? (
                     <div className="bg-white">
@@ -279,7 +295,7 @@ export function CaseStudyPage() {
                     </div>
                   )}
                 </BrowserFrame>
-              </FadeIn>
+              </div>
             ))}
           </div>
         </div>

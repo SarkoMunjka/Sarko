@@ -21,6 +21,8 @@ export interface CaseStudyContent {
     quote?: { text: string; attribution: string; serif?: boolean }
   }
   coverImage: string
+  /** Show the full-page screenshot on the cover (no crop). */
+  coverFullPage?: boolean
   /** NovaFrame only — autoplay Vimeo over the cover hero image. */
   coverVimeoId?: string
   ctaHeading: string
@@ -75,7 +77,7 @@ export const CASE_STUDIES: CaseStudyContent[] = [
       },
     ],
     gallery: [
-      { src: '/socks-home.png', label: 'Homepage', alt: 'Socks & Co. homepage' },
+      { src: '/socks-home.png', label: 'Homepage', alt: 'Socks & Co. homepage', fullPage: true },
       { src: '/socks-collab.png', label: 'Limited edition · Nike collaboration', alt: 'Socks & Co. x Nike collaboration store', fullPage: true },
       { src: '/socks-cart.png', label: 'Cart & checkout', alt: 'Socks & Co. cart and checkout', fullPage: true },
     ],
@@ -104,6 +106,7 @@ export const CASE_STUDIES: CaseStudyContent[] = [
       },
     },
     coverImage: '/socks-home.png',
+    coverFullPage: true,
     ctaHeading: 'Have a brand worth bragging about?',
     ctaSubtext: "Let's build the experience that gets you there.",
   },
