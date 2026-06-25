@@ -55,7 +55,11 @@ export function Navbar() {
     )
 
   return (
-    <nav className="relative z-20 mx-auto w-full max-w-[1440px] p-2 sm:p-3">
+    <nav
+      className={`relative mx-auto w-full max-w-[1440px] p-2 sm:p-3 ${
+        menuOpen ? 'z-[1100]' : 'z-50'
+      }`}
+    >
       <div className="flex items-center justify-between rounded-full bg-white p-[5px] transition-colors duration-300 dark:bg-[#1a1a1a]">
         {/* Left: logo + links */}
         <div className="flex items-center gap-6">
@@ -116,7 +120,7 @@ export function Navbar() {
 
       {/* Mobile menu overlay */}
       <div
-        className={`fixed inset-0 z-50 md:hidden ${
+        className={`fixed inset-0 z-[1200] md:hidden ${
           menuOpen ? '' : 'pointer-events-none'
         }`}
         aria-hidden={!menuOpen}
