@@ -128,14 +128,14 @@ export function Process() {
 
   return (
     <section className="section-tone-muted-up relative pb-16 pt-16 transition-colors duration-300 sm:pb-20 sm:pt-20 lg:pb-28 lg:pt-28">
-      <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
+      <div className="mx-auto flex w-full max-w-[1440px] flex-col items-center px-5 text-center sm:px-8 lg:px-12">
         <SectionBadge number="4" label="How we work" borderClass="border-gray-300" />
         <BlurText
           as="h2"
           animateBy="words"
           delay={60}
           text={'A clear path from first\nidea to final launch.'}
-          className="mb-12 max-w-3xl font-medium leading-[1.12] tracking-[-0.02em] text-gray-900 dark:text-white text-[clamp(1.5rem,4vw,3.2rem)] sm:mb-14 lg:mb-16"
+          className="mx-auto mb-12 max-w-3xl font-medium leading-[1.12] tracking-[-0.02em] text-gray-900 dark:text-white text-[clamp(1.5rem,4vw,3.2rem)] sm:mb-14 lg:mb-16"
         />
       </div>
 
