@@ -1,3 +1,5 @@
+import { useLanguage } from '../hooks/useLanguage'
+
 interface LogoProps {
   className?: string
   /** `light` inverts for pale surfaces; `dark` keeps the light mark on dark backgrounds */
@@ -8,6 +10,7 @@ export function Logo({
   className = 'h-9 w-auto',
   tone = 'dark',
 }: LogoProps) {
+  const { t } = useLanguage()
   const toneClass = tone === 'light' ? 'invert dark:invert-0' : ''
 
   return (

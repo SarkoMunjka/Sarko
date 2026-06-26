@@ -13,6 +13,7 @@ import { PartnerIcon } from './PartnerIcon'
 import BlurText from './BlurText'
 import { FadeIn } from './FadeIn'
 import { useTheme } from '../hooks/useTheme'
+import { useLanguage } from '../hooks/useLanguage'
 
 const SHADER_COLORS = {
   light: { colorA: '#ffffff', colorB: '#f0f0f0', base: '#ffffff' },
@@ -21,6 +22,7 @@ const SHADER_COLORS = {
 
 export function Hero() {
   const { theme } = useTheme()
+  const { t } = useLanguage()
   const shader = SHADER_COLORS[theme]
   const heroRef = useRef<HTMLElement>(null)
   const [shaderActive, setShaderActive] = useState(true)
@@ -85,7 +87,7 @@ export function Hero() {
             y={10}
             className="mb-5 text-[13px] tracking-wide text-gray-900 dark:text-gray-100 sm:mb-8 sm:text-[14px]"
           >
-            Mark Studio
+            {t.hero.brand}
           </FadeIn>
           <BlurText
             as="h1"
@@ -93,7 +95,7 @@ export function Hero() {
             animateBy="words"
             direction="top"
             delay={60}
-            text={'We craft digital experiences\nfor brands ready to dominate\ntheir category online.'}
+            text={t.hero.headline}
             className="font-medium leading-[1.08] tracking-[-0.03em] text-gray-900 dark:text-white text-[clamp(1.75rem,7vw,4.2rem)] sm:text-[clamp(2.5rem,5vw,4.2rem)]"
           />
 
@@ -102,7 +104,7 @@ export function Hero() {
               href="#contact"
               className="group inline-flex items-center gap-2 self-start rounded-full bg-[#F26522] py-2 pl-5 pr-2 text-[13px] font-medium text-white transition-colors hover:bg-[#e05a1a] sm:pl-6 sm:text-[14px]"
             >
-              <TextRoll>Start a project</TextRoll>
+              <TextRoll>{t.nav.startProject}</TextRoll>
               <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white transition-transform duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:-rotate-45 sm:h-8 sm:w-8">
                 <ArrowRight size={16} className="text-[#F26522]" />
               </span>
@@ -111,10 +113,10 @@ export function Hero() {
             <div className="group inline-flex items-center gap-2.5 self-start rounded-[4px] bg-white px-3 py-2 shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition-shadow duration-300 hover:shadow-[0_4px_16px_rgba(0,0,0,0.12)] dark:bg-[#1a1a1a] dark:shadow-[0_2px_8px_rgba(0,0,0,0.4)] dark:hover:shadow-[0_4px_16px_rgba(0,0,0,0.55)]">
               <PartnerIcon className="h-5 w-5 fill-current text-[#E8704E] sm:h-6 sm:w-6" />
               <span className="text-[13px] font-medium text-gray-900 dark:text-white sm:text-[14px]">
-                Certified Partner
+                {t.hero.certifiedPartner}
               </span>
               <span className="rounded bg-gray-900 px-1.5 py-0.5 text-[10px] text-white dark:bg-white dark:text-gray-900 sm:px-2 sm:text-[11px]">
-                Featured
+                {t.hero.featured}
               </span>
             </div>
           </div>

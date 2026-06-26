@@ -7,6 +7,7 @@ import { FadeIn } from '../components/FadeIn'
 import { BrowserFrame } from '../components/BrowserFrame'
 import { VimeoEmbed } from '../components/VimeoPreview'
 import { getCaseStudy } from '../data/caseStudies'
+import { useLanguage } from '../hooks/useLanguage'
 
 function SectionLabel({
   children,
@@ -25,7 +26,15 @@ function SectionLabel({
   )
 }
 
-function LiveSiteButton({ href, accent }: { href?: string; accent: string }) {
+function LiveSiteButton({
+  href,
+  accent,
+  label,
+}: {
+  href?: string
+  accent: string
+  label: string
+}) {
   const className =
     'group inline-flex items-center gap-2 rounded-full py-2 pl-5 pr-2 text-[13px] font-medium text-white sm:text-[14px]'
   const icon = (
@@ -43,7 +52,7 @@ function LiveSiteButton({ href, accent }: { href?: string; accent: string }) {
         className={`${className} transition-opacity hover:opacity-90`}
         style={{ backgroundColor: accent }}
       >
-        Visit live site
+        {label}
         {icon}
       </a>
     )
@@ -55,7 +64,7 @@ function LiveSiteButton({ href, accent }: { href?: string; accent: string }) {
       style={{ backgroundColor: accent }}
       aria-disabled="true"
     >
-      Visit live site
+      {label}
       {icon}
     </span>
   )
@@ -63,7 +72,8 @@ function LiveSiteButton({ href, accent }: { href?: string; accent: string }) {
 
 export function CaseStudyPage() {
   const { slug } = useParams<{ slug: string }>()
-  const study = slug ? getCaseStudy(slug) : undefined
+  const { locale, t } = useLanguage()
+  const study = slug ? getCaseStudy(slug, locale) : undefined
 
   if (!study) {
     return <Navigate to="/projects" replace />
@@ -83,7 +93,7 @@ export function CaseStudyPage() {
             className="inline-flex items-center gap-1.5 text-[13px] font-medium text-gray-600 transition-colors hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
           >
             <ArrowLeft size={15} />
-            All projects
+            {t.caseStudyPage.allProjects}
           </Link>
         </FadeIn>
 
@@ -109,7 +119,11 @@ export function CaseStudyPage() {
         </FadeIn>
 
         <div className="mt-8 flex flex-wrap items-center gap-4">
-          <LiveSiteButton href={study.liveUrl} accent={accent} />
+          <LiveSiteButton
+            href={study.liveUrl}
+            accent={accent}
+            label={t.caseStudyPage.visitLiveSite}
+          />
         </div>
 
         <dl className="mt-12 grid grid-cols-2 gap-6 border-t border-gray-300 pt-8 dark:border-white/10 lg:grid-cols-4">
@@ -135,7 +149,7 @@ export function CaseStudyPage() {
         >
           <img
             src={study.coverImage}
-            alt={`${study.name} homepage`}
+            alt={`${study.name} ${t.caseStudyPage.homepageAlt}`}
             className="absolute inset-0 h-full w-full object-cover object-top"
             loading="eager"
           />
@@ -146,7 +160,7 @@ export function CaseStudyPage() {
       <section className="bg-white transition-colors duration-300 dark:bg-[#0a0a0a]">
         <div className="mx-auto grid w-full max-w-[1440px] gap-10 px-5 py-16 sm:px-8 sm:py-20 lg:grid-cols-[1fr_1.6fr] lg:gap-16 lg:px-12 lg:py-28">
           <div>
-            <SectionLabel accent={accent}>Overview</SectionLabel>
+            <SectionLabel accent={accent}>{t.caseStudyPage.overview}</SectionLabel>
             <BlurText
               as="h2"
               animateBy="words"
@@ -171,7 +185,7 @@ export function CaseStudyPage() {
 
       <section className="bg-[#F5F5F5] transition-colors duration-300 dark:bg-[#121212]">
         <div className="mx-auto w-full max-w-[1440px] px-5 py-16 sm:px-8 sm:py-20 lg:px-12 lg:py-28">
-          <SectionLabel accent={accent}>The challenge</SectionLabel>
+          <SectionLabel accent={accent}>{t.caseStudyPage.challenge}</SectionLabel>
           <BlurText
             as="h2"
             animateBy="words"
@@ -190,12 +204,12 @@ export function CaseStudyPage() {
 
       <section className="bg-white transition-colors duration-300 dark:bg-[#0a0a0a]">
         <div className="mx-auto w-full max-w-[1440px] px-5 py-16 sm:px-8 sm:py-20 lg:px-12 lg:py-28">
-          <SectionLabel accent={accent}>The approach</SectionLabel>
+          <SectionLabel accent={accent}>{t.caseStudyPage.approach}</SectionLabel>
           <BlurText
             as="h2"
             animateBy="words"
             delay={55}
-            text="What we did"
+            text={t.caseStudyPage.whatWeDid}
             className="mt-5 font-medium leading-[1.12] tracking-[-0.02em] text-gray-900 dark:text-white text-[clamp(1.5rem,4vw,3rem)]"
           />
           <div className="mt-12 grid gap-x-8 gap-y-10 sm:grid-cols-2">
@@ -225,12 +239,12 @@ export function CaseStudyPage() {
 
       <section className="bg-[#F5F5F5] transition-colors duration-300 dark:bg-[#121212]">
         <div className="mx-auto w-full max-w-[1440px] px-5 py-16 sm:px-8 sm:py-20 lg:px-12 lg:py-28">
-          <SectionLabel accent={accent}>The work</SectionLabel>
+          <SectionLabel accent={accent}>{t.caseStudyPage.theWork}</SectionLabel>
           <BlurText
             as="h2"
             animateBy="words"
             delay={55}
-            text="A look across the experience"
+            text={t.caseStudyPage.galleryHeading}
             className="mb-12 mt-5 max-w-3xl font-medium leading-[1.12] tracking-[-0.02em] text-gray-900 dark:text-white text-[clamp(1.5rem,4vw,3rem)]"
           />
 
@@ -239,7 +253,7 @@ export function CaseStudyPage() {
               <div className="mb-4 flex items-center gap-2.5">
                 <span className="h-2 w-2 rounded-full" style={{ backgroundColor: accent }} />
                 <span className="text-[13px] font-medium text-gray-700 dark:text-gray-300">
-                  Site walkthrough
+                  {t.caseStudyPage.siteWalkthrough}
                 </span>
               </div>
               <BrowserFrame url={study.gallerySiteUrl}>
@@ -282,7 +296,7 @@ export function CaseStudyPage() {
 
       <section className="bg-white transition-colors duration-300 dark:bg-[#0a0a0a]">
         <div className="mx-auto w-full max-w-[1440px] px-5 py-16 sm:px-8 sm:py-20 lg:px-12 lg:py-28">
-          <SectionLabel accent={accent}>Brand system</SectionLabel>
+          <SectionLabel accent={accent}>{t.caseStudyPage.brandSystem}</SectionLabel>
           <BlurText
             as="h2"
             animateBy="words"
@@ -372,7 +386,7 @@ export function CaseStudyPage() {
                 href="/#contact"
                 className="group inline-flex items-center gap-2 rounded-full bg-[#F26522] py-2 pl-5 pr-2 text-[13px] font-medium text-white transition-colors hover:bg-[#e05a1a] sm:text-[14px]"
               >
-                Start a project
+                {t.nav.startProject}
                 <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white transition-transform duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:-rotate-45 sm:h-8 sm:w-8">
                   <ArrowRight size={16} className="text-[#F26522]" />
                 </span>
@@ -381,7 +395,7 @@ export function CaseStudyPage() {
                 to="/projects"
                 className="inline-flex items-center gap-2 rounded-full border border-white/20 px-5 py-2 text-[13px] font-medium text-white transition-colors hover:bg-white/10 sm:text-[14px]"
               >
-                All projects
+                {t.caseStudyPage.allProjects}
               </Link>
             </div>
           </div>
