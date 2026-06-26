@@ -57,20 +57,20 @@ function useDesktopStack() {
 
 function ProcessStepCard({ step }: { step: Step }) {
   return (
-    <div className="flex items-start justify-between gap-6">
-      <div className="min-w-0 flex-1">
-        <span className="text-[13px] font-semibold uppercase tracking-wide text-[#F26522]">
+    <div className="grid grid-cols-1 items-start gap-5 sm:grid-cols-[minmax(0,1fr)_auto] sm:gap-8 lg:gap-12">
+      <div className="min-w-0">
+        <span className="text-[12px] font-semibold uppercase tracking-[0.12em] text-[#F26522] sm:text-[13px]">
           Step {step.number}
         </span>
-        <h3 className="mt-3 text-[clamp(1.35rem,3vw,1.75rem)] font-semibold leading-tight tracking-[-0.02em] text-gray-900 dark:text-white">
+        <h3 className="mt-3 text-[clamp(1.35rem,2.5vw,2rem)] font-semibold leading-tight tracking-[-0.02em] text-gray-900 dark:text-white">
           {step.title}
         </h3>
-        <p className="mt-3 max-w-lg text-[15px] leading-[1.65] text-gray-600 dark:text-gray-400 sm:text-[16px]">
+        <p className="mt-3 max-w-2xl text-[15px] leading-[1.65] text-gray-600 dark:text-gray-400 sm:text-[16px]">
           {step.description}
         </p>
       </div>
       <span
-        className="hidden shrink-0 text-[clamp(3rem,8vw,4.5rem)] font-medium leading-none tracking-tight text-[#F26522]/20 sm:block"
+        className="text-[clamp(2.75rem,8vw,5.5rem)] font-medium leading-none tracking-tight text-[#F26522]/15 sm:text-right"
         aria-hidden="true"
       >
         {step.number}
@@ -80,11 +80,11 @@ function ProcessStepCard({ step }: { step: Step }) {
 }
 
 const cardClassName =
-  'rounded-3xl border border-gray-200 bg-white p-8 shadow-[0_8px_30px_rgba(0,0,0,0.06)] transition-colors duration-300 dark:border-white/10 dark:bg-[#1a1a1a] dark:shadow-[0_8px_30px_rgba(0,0,0,0.35)] sm:p-10'
+  'rounded-2xl border border-gray-200 bg-white p-6 transition-colors duration-300 hover:border-gray-900 dark:border-white/10 dark:bg-[#1a1a1a] dark:hover:border-white sm:p-8 lg:p-10'
 
 function MobileStickyStack({ steps }: { steps: Step[] }) {
   return (
-    <div className="mx-auto w-full max-w-[720px] px-5 sm:px-8">
+    <div className="mx-auto w-full max-w-[1100px] px-5 sm:px-8 lg:px-12">
       {steps.map((step, index) => (
         <article
           key={step.number}
@@ -110,8 +110,8 @@ function DesktopScrollStack({ steps }: { steps: Step[] }) {
       itemStackDistance={28}
       stackPosition="22%"
       scaleEndPosition="12%"
-      baseScale={0.9}
-      itemScale={0.025}
+      baseScale={0.92}
+      itemScale={0.02}
       className="mx-auto w-full max-w-[1440px]"
     >
       {steps.map((step) => (
@@ -128,14 +128,14 @@ export function Process() {
 
   return (
     <section className="section-tone-muted-up relative pb-16 pt-16 transition-colors duration-300 sm:pb-20 sm:pt-20 lg:pb-28 lg:pt-28">
-      <div className="mx-auto flex w-full max-w-[1440px] flex-col items-center px-5 text-center sm:px-8 lg:px-12">
+      <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
         <SectionBadge number="4" label="How we work" borderClass="border-gray-300" />
         <BlurText
           as="h2"
           animateBy="words"
           delay={60}
           text={'A clear path from first\nidea to final launch.'}
-          className="mb-10 max-w-3xl font-medium leading-[1.12] tracking-[-0.02em] text-gray-900 dark:text-white text-[clamp(1.5rem,4vw,3.2rem)] sm:mb-12 lg:mb-14"
+          className="mb-12 max-w-3xl font-medium leading-[1.12] tracking-[-0.02em] text-gray-900 dark:text-white text-[clamp(1.5rem,4vw,3.2rem)] sm:mb-14 lg:mb-16"
         />
       </div>
 

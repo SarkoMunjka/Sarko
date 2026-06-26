@@ -5,7 +5,7 @@ interface LogoProps {
 }
 
 export function Logo({
-  className = 'h-10 w-auto',
+  className = 'h-9 w-auto',
   tone = 'dark',
 }: LogoProps) {
   const toneClass = tone === 'light' ? 'invert dark:invert-0' : ''
@@ -14,9 +14,9 @@ export function Logo({
     <img
       src="/mark-studio-logo.png"
       alt="Mark Studio"
-      className={`block object-contain ${toneClass} ${className}`}
-      width={140}
-      height={44}
+      className={`block shrink-0 object-contain object-left ${toneClass} ${className}`}
+      width={200}
+      height={52}
     />
   )
 }

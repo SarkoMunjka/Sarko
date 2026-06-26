@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Hero } from '../components/Hero'
 import { About } from '../components/About'
 import { CaseStudies } from '../components/CaseStudies'
@@ -9,7 +9,7 @@ import { CallToAction } from '../components/CallToAction'
 import { Footer } from '../components/Footer'
 
 const BOTTOM_FADE_THRESHOLD = 150
-const PAST_HERO_RATIO = 0.6
+const SECTION_3_ID = 'work'
 
 function BottomPageFade() {
   const fadeRef = useRef<HTMLDivElement>(null)
@@ -24,10 +24,9 @@ function BottomPageFade() {
       const scrollY = window.scrollY
       const viewport = window.innerHeight
       const docHeight = document.documentElement.scrollHeight
-      const pastHero = scrollY > viewport * PAST_HERO_RATIO
       const atBottom = docHeight - (scrollY + viewport) < BOTTOM_FADE_THRESHOLD
 
-      fade.style.opacity = pastHero && !atBottom ? '1' : '0'
+      fade.style.opacity = atBottom ? '0' : '1'
       ticking = false
     }
 
@@ -51,12 +50,36 @@ function BottomPageFade() {
     <div
       ref={fadeRef}
       aria-hidden="true"
-      className="pointer-events-none fixed inset-x-0 bottom-0 z-[100] h-24 bg-gradient-to-t from-white via-white/75 to-transparent opacity-0 transition-opacity duration-300 dark:from-[#0a0a0a] dark:via-[#0a0a0a]/75"
+      className="pointer-events-none fixed inset-x-0 bottom-0 z-[100] h-24 bg-gradient-to-t from-white via-white/75 to-transparent dark:from-[#0a0a0a] dark:via-[#0a0a0a]/75"
     />
   )
 }
 
+function useBottomFadeFromSection3() {
+  const [active, setActive] = useState(false)
+
+  useEffect(() => {
+    const section = document.getElementById(SECTION_3_ID)
+    if (!section) return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        const { isIntersecting, boundingClientRect } = entry
+        setActive(isIntersecting || boundingClientRect.top < 0)
+      },
+      { threshold: 0 },
+    )
+
+    observer.observe(section)
+    return () => observer.disconnect()
+  }, [])
+
+  return active
+}
+
 export function Home() {
+  const bottomFadeActive = useBottomFadeFromSection3()
+
   return (
     <>
       <Hero />
@@ -67,7 +90,7 @@ export function Home() {
       <Testimonials />
       <CallToAction />
       <Footer />
-      <BottomPageFade />
+      {bottomFadeActive ? <BottomPageFade /> : null}
     </>
   )
 }

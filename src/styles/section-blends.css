@@ -4,7 +4,6 @@
   --tone-surface: #ffffff;
   --tone-muted: #f5f5f5;
   --tone-hero: #efefef;
-  --tone-footer: #111827;
   --section-blend: clamp(7rem, 16vw, 12rem);
 }
 
@@ -48,9 +47,12 @@
   );
 }
 
-/* Muted section → Footer (CTA) */
+/* CTA section — sharp into footer on light, soft blend on dark */
 .section-tone-muted-footer {
   background-color: var(--tone-muted);
+}
+
+.dark .section-tone-muted-footer {
   background-image: linear-gradient(
     to bottom,
     var(--tone-muted) 0,

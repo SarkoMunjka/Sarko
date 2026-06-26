@@ -63,13 +63,13 @@ export function Navbar() {
     >
       <div className="flex items-center justify-between rounded-full bg-white p-[5px] transition-colors duration-300 dark:bg-[#1a1a1a]">
         {/* Left: logo + links */}
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-5 sm:gap-6">
           <Link
             to="/"
-            className="flex shrink-0 items-center rounded-lg transition-opacity duration-300 hover:opacity-90"
+            className="flex shrink-0 items-center rounded-lg pl-1.5 transition-opacity duration-300 hover:opacity-90 sm:pl-2"
             aria-label="Mark Studio home"
           >
-            <Logo tone="light" className="h-10 w-auto sm:h-11" />
+            <Logo tone="light" className="h-8 w-auto sm:h-9" />
           </Link>
           <div className="hidden items-center gap-6 md:flex">
             {NAV_LINKS.map((link) =>
