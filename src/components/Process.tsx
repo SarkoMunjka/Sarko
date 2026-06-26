@@ -59,10 +59,10 @@ function ProcessStepCard({ step }: { step: Step }) {
   return (
     <div className="grid grid-cols-1 items-start gap-5 sm:grid-cols-[minmax(0,1fr)_auto] sm:gap-8 lg:gap-12">
       <div className="min-w-0">
-        <span className="text-[12px] font-semibold uppercase tracking-[0.12em] text-[#F26522] sm:text-[13px]">
+        <span className="text-[12px] font-medium uppercase tracking-[0.12em] text-gray-500 dark:text-gray-400 sm:text-[13px]">
           Step {step.number}
         </span>
-        <h3 className="mt-3 text-[clamp(1.35rem,2.5vw,2rem)] font-semibold leading-tight tracking-[-0.02em] text-gray-900 dark:text-white">
+        <h3 className="mt-3 text-[clamp(1.35rem,2.5vw,2rem)] font-semibold leading-tight tracking-[-0.02em] text-[#F26522]">
           {step.title}
         </h3>
         <p className="mt-3 max-w-2xl text-[15px] leading-[1.65] text-gray-600 dark:text-gray-400 sm:text-[16px]">
@@ -70,7 +70,7 @@ function ProcessStepCard({ step }: { step: Step }) {
         </p>
       </div>
       <span
-        className="text-[clamp(2.75rem,8vw,5.5rem)] font-medium leading-none tracking-tight text-[#F26522]/15 sm:text-right"
+        className="text-[clamp(2.75rem,8vw,5.5rem)] font-medium leading-none tracking-tight text-gray-200 dark:text-white/10 sm:text-right"
         aria-hidden="true"
       >
         {step.number}
