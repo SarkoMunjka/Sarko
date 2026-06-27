@@ -61,6 +61,7 @@ export interface Translations {
     badge: string
     headline: string
     body: string
+    bodyLines: [string, string, string]
     cta: string
     imageWork: string
     imageProject: string

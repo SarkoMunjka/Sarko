@@ -95,7 +95,11 @@ export function About() {
                 as="p"
                 className="whitespace-nowrap text-[16px] font-medium leading-[1.65] text-gray-900 dark:text-gray-200 sm:text-[18px]"
               >
-                {t.about.body}
+                {t.about.bodyLines[0]}
+                <br />
+                {t.about.bodyLines[1]}
+                <br />
+                {t.about.bodyLines[2]}
               </FadeIn>
               <div className="mt-6">
                 <StudioButton />
