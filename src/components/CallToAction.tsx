@@ -1,20 +1,11 @@
 import { RollButton } from './RollButton'
 import BlurText from './BlurText'
 import { FadeIn } from './FadeIn'
-
-interface Stat {
-  value: string
-  label: string
-}
-
-const STATS: Stat[] = [
-  { value: '150+', label: 'Projects shipped' },
-  { value: '40+', label: 'Brands partnered' },
-  { value: '12', label: 'Industry awards' },
-  { value: '98%', label: 'Client retention' },
-]
+import { useLanguage } from '../hooks/useLanguage'
 
 export function CallToAction() {
+  const { t } = useLanguage()
+
   return (
     <section
       id="contact"
@@ -27,26 +18,25 @@ export function CallToAction() {
             y={10}
             className="mb-5 text-[13px] tracking-wide text-white/80 sm:mb-7 sm:text-[14px]"
           >
-            Let&rsquo;s work together
+            {t.cta.eyebrow}
           </FadeIn>
           <BlurText
             as="h2"
             responsiveBreak
             animateBy="words"
             delay={60}
-            text={'Let\u2019s build something\nworth remembering.'}
+            text={t.cta.headline}
             className="font-medium leading-[1.08] tracking-[-0.03em] text-white text-[clamp(1.75rem,7vw,4.2rem)] sm:text-[clamp(2.5rem,5vw,4.2rem)]"
           />
           <FadeIn
             as="p"
             className="mt-6 max-w-xl text-[15px] leading-[1.6] text-white/85 sm:text-[17px]"
           >
-            Tell us where you want your brand to go. We will map the route and
-            craft the experience that gets you there.
+            {t.cta.body}
           </FadeIn>
 
           <div className="mt-8 flex flex-col gap-4 sm:mt-10 sm:flex-row sm:items-center sm:gap-5">
-            <RollButton label="Start a project" variant="light" />
+            <RollButton label={t.nav.startProject} variant="light" />
             <a
               href="mailto:hello@mark.studio"
               className="text-[14px] font-medium text-white/85 transition-colors duration-300 hover:text-white"
@@ -56,7 +46,7 @@ export function CallToAction() {
           </div>
 
           <div className="mt-12 grid grid-cols-2 gap-8 border-t border-white/20 pt-10 sm:mt-16 lg:grid-cols-4">
-            {STATS.map((stat, index) => (
+            {t.cta.stats.map((stat, index) => (
               <FadeIn key={stat.label} delay={index * 0.08}>
                 <div className="text-[28px] font-medium tracking-tight text-white sm:text-[36px]">
                   {stat.value}

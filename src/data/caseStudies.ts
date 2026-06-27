@@ -1,3 +1,5 @@
+import { CASE_STUDIES_SR } from './caseStudies.sr'
+
 export interface CaseStudyContent {
   slug: string
   name: string
@@ -439,5 +441,13 @@ export const CASE_STUDIES: CaseStudyContent[] = [
   },
 ]
 
-export const getCaseStudy = (slug: string): CaseStudyContent | undefined =>
-  CASE_STUDIES.find((c) => c.slug === slug)
+export const getCaseStudy = (
+  slug: string,
+  locale: 'en' | 'sr' = 'en',
+): CaseStudyContent | undefined => {
+  const list = locale === 'sr' ? CASE_STUDIES_SR : CASE_STUDIES
+  return list.find((c) => c.slug === slug)
+}
+
+export const getCaseStudies = (locale: 'en' | 'sr' = 'en'): CaseStudyContent[] =>
+  locale === 'sr' ? CASE_STUDIES_SR : CASE_STUDIES

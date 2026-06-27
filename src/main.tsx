@@ -5,13 +5,16 @@ import './index.css'
 import './styles/section-blends.css'
 import App from './App.tsx'
 import { ThemeProvider } from './hooks/useTheme'
+import { LanguageProvider } from './hooks/useLanguage'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <ThemeProvider>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </ThemeProvider>
+    <LanguageProvider>
+      <ThemeProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </ThemeProvider>
+    </LanguageProvider>
   </StrictMode>,
 )

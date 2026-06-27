@@ -1,3 +1,6 @@
+import type { Locale } from '../i18n'
+import { getTranslations } from '../i18n'
+
 export interface Project {
   slug: string
   name: string
@@ -80,5 +83,15 @@ export const PROJECTS: Project[] = [
   },
 ]
 
-export const getProject = (slug: string): Project | undefined =>
-  PROJECTS.find((p) => p.slug === slug)
+export const getProjects = (locale: Locale = 'en'): Project[] => {
+  if (locale === 'en') return PROJECTS
+  const copy = getTranslations(locale).projects
+  return PROJECTS.map((project) => ({
+    ...project,
+    category: copy[project.slug]?.category ?? project.category,
+    blurb: copy[project.slug]?.blurb ?? project.blurb,
+  }))
+}
+
+export const getProject = (slug: string, locale: Locale = 'en'): Project | undefined =>
+  getProjects(locale).find((p) => p.slug === slug)

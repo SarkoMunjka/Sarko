@@ -4,6 +4,7 @@ import { FadeIn } from './FadeIn'
 import { ScrollPreview } from './ScrollPreview'
 import { VimeoHoverPreview } from './VimeoPreview'
 import type { Project } from '../data/projects'
+import { useLanguage } from '../hooks/useLanguage'
 
 interface ProjectCardProps {
   project: Project
@@ -19,6 +20,7 @@ export function ProjectCard({
   variant = 'home',
   showCaseStudyBadge = variant === 'projects',
 }: ProjectCardProps) {
+  const { t } = useLanguage()
   const aspectClass =
     variant === 'home' ? 'aspect-[329/246]' : 'aspect-[16/11] sm:rounded-3xl'
   const roundedClass = variant === 'home' ? 'rounded-2xl' : 'rounded-2xl'
@@ -45,14 +47,14 @@ export function ProjectCard({
             />
           </span>
           <span className="whitespace-nowrap pr-3 text-[13px] font-medium text-gray-900 opacity-0 transition-opacity delay-100 duration-300 group-hover:opacity-100 dark:text-white">
-            View case study
+            {t.projectCard.viewCaseStudy}
           </span>
         </div>
       )}
 
       {showCaseStudyBadge && project.caseStudy && (
         <span className="absolute right-4 top-4 z-10 flex items-center gap-1 rounded-full bg-white/90 px-3 py-1 text-[12px] font-semibold text-gray-900 backdrop-blur-sm">
-          Case study
+          {t.projectCard.caseStudy}
           <ArrowUpRight size={13} />
         </span>
       )}
