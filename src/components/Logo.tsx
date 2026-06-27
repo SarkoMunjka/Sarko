@@ -16,7 +16,7 @@ export function Logo({
   return (
     <img
       src="/mark-studio-logo.png"
-      alt="Mark Studio"
+      alt={t.meta.title}
       className={`block shrink-0 object-contain object-left ${toneClass} ${className}`}
       width={200}
       height={52}
