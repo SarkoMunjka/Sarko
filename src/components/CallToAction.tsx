@@ -1,18 +1,61 @@
+import { useLayoutEffect, useRef } from 'react'
+import { motion, useReducedMotion, useScroll, useTransform } from 'motion/react'
 import { RollButton } from './RollButton'
 import BlurText from './BlurText'
 import { FadeIn } from './FadeIn'
 import { useLanguage } from '../hooks/useLanguage'
 
+const MOBILE_QUERY = '(max-width: 767px)'
+
 export function CallToAction() {
   const { t } = useLanguage()
+  const sectionRef = useRef<HTMLElement>(null)
+  const isMobileRef = useRef(false)
+  const prefersReducedMotion = useReducedMotion()
+
+  useLayoutEffect(() => {
+    const media = window.matchMedia(MOBILE_QUERY)
+    const onChange = () => {
+      isMobileRef.current = media.matches
+    }
+
+    onChange()
+    media.addEventListener('change', onChange)
+    return () => media.removeEventListener('change', onChange)
+  }, [])
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start end', 'start 0.42'],
+  })
+
+  const scale = useTransform(scrollYProgress, (progress) => {
+    if (prefersReducedMotion) return 1
+    const min = isMobileRef.current ? 0.97 : 0.92
+    return min + progress * (1 - min)
+  })
+
+  const borderRadius = useTransform(scrollYProgress, (progress) => {
+    if (prefersReducedMotion) return 24
+    const start = isMobileRef.current ? 28 : 40
+    return start + progress * (24 - start)
+  })
 
   return (
     <section
+      ref={sectionRef}
       id="contact"
       className="section-tone-muted-footer relative pb-16 pt-16 transition-colors duration-300 sm:pb-20 sm:pt-20 lg:pb-28 lg:pt-28"
     >
       <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
-        <div className="rounded-3xl border border-white/15 bg-[#F26522] px-6 py-14 shadow-[0_20px_60px_rgba(242,101,34,0.28)] sm:px-10 sm:py-20 lg:px-16 lg:py-24">
+        <motion.div
+          style={{
+            scale,
+            borderRadius,
+            transformOrigin: 'center center',
+          }}
+          className="border border-white/15 bg-[#F26522] px-6 py-14 shadow-[0_20px_60px_rgba(242,101,34,0.28)] will-change-transform sm:px-10 sm:py-20 lg:px-16 lg:py-24"
+        >
           <FadeIn
             as="p"
             y={10}
@@ -57,7 +100,7 @@ export function CallToAction() {
               </FadeIn>
             ))}
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   )
