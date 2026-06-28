@@ -26,19 +26,25 @@ export function CallToAction() {
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
-    offset: ['start end', 'start 0.42'],
+    offset: ['start 0.95', 'start 0.22'],
   })
 
   const scale = useTransform(scrollYProgress, (progress) => {
     if (prefersReducedMotion) return 1
-    const min = isMobileRef.current ? 0.97 : 0.92
+    const min = isMobileRef.current ? 0.92 : 0.84
     return min + progress * (1 - min)
   })
 
   const borderRadius = useTransform(scrollYProgress, (progress) => {
     if (prefersReducedMotion) return 24
-    const start = isMobileRef.current ? 28 : 40
+    const start = isMobileRef.current ? 36 : 52
     return start + progress * (24 - start)
+  })
+
+  const opacity = useTransform(scrollYProgress, (progress) => {
+    if (prefersReducedMotion) return 1
+    const min = isMobileRef.current ? 0.9 : 0.82
+    return min + progress * (1 - min)
   })
 
   return (
@@ -52,6 +58,7 @@ export function CallToAction() {
           style={{
             scale,
             borderRadius,
+            opacity,
             transformOrigin: 'center center',
           }}
           className="border border-white/15 bg-[#F26522] px-6 py-14 shadow-[0_20px_60px_rgba(242,101,34,0.28)] will-change-transform sm:px-10 sm:py-20 lg:px-16 lg:py-24"
