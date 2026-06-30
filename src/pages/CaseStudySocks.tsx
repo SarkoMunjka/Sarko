@@ -122,8 +122,8 @@ export function CaseStudySocks() {
         </FadeIn>
 
         <div className="mt-8 flex flex-wrap items-center gap-4">
-          <Link
-            to="/demo/socks-co"
+          <a
+            href="/#contact"
             className="group inline-flex items-center gap-2 rounded-full py-2 pl-5 pr-2 text-[13px] font-medium text-white transition-opacity hover:opacity-90 sm:text-[14px]"
             style={{ backgroundColor: ACCENT }}
           >
@@ -131,7 +131,7 @@ export function CaseStudySocks() {
             <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white transition-transform duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:-rotate-45 sm:h-8 sm:w-8">
               <ArrowUpRight size={16} style={{ color: ACCENT }} />
             </span>
-          </Link>
+          </a>
         </div>
 
         <dl className="mt-12 grid grid-cols-2 gap-6 border-t border-gray-300 pt-8 dark:border-white/10 lg:grid-cols-4">
