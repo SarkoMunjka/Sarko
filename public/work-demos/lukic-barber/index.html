@@ -77,20 +77,36 @@
   nav {
     position:fixed; inset:0 0 auto 0; z-index:50;
     padding:22px var(--page-pad-x);
-    transition:background .35s var(--ease), padding .35s var(--ease), border-color .35s, color .35s;
-    border-bottom:1px solid transparent; color:var(--text-on-dark); background:transparent;
+    background:transparent; border:none;
+    color:var(--text-on-dark); pointer-events:none;
   }
   nav.scrolled {
-    background:rgba(212,200,184,.94); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
-    border-bottom-color:var(--line-light); padding-block:14px; padding-inline:0;
+    padding:14px var(--page-pad-x);
     color:var(--text-on-light);
   }
   .nav__inner {
     width:100%; display:flex; align-items:center; justify-content:space-between;
-    transition:max-width .35s var(--ease), padding .35s var(--ease), margin .35s var(--ease);
+    pointer-events:auto;
+    transition:
+      max-width .4s var(--ease),
+      padding .4s var(--ease),
+      margin .4s var(--ease),
+      background .4s var(--ease),
+      border-color .4s var(--ease),
+      border-radius .4s var(--ease),
+      box-shadow .4s var(--ease),
+      backdrop-filter .4s var(--ease);
   }
   nav.scrolled .nav__inner {
-    max-width:var(--content-max); margin:0 auto; padding-inline:var(--page-pad-x);
+    max-width:var(--content-max);
+    margin:0 auto;
+    padding:12px 24px;
+    background:rgba(212,200,184,.96);
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+    border:1px solid var(--line-light);
+    border-radius:4px;
+    box-shadow:0 10px 36px rgba(26,26,26,.1);
   }
   .logo { font-family:"Oswald"; font-weight:700; font-size:22px; letter-spacing:.06em; text-transform:uppercase; display:flex; align-items:center; gap:7px; }
   .logo__name { transition: color .35s var(--ease); }
@@ -287,11 +303,13 @@
 <div class="progress" id="progress"></div>
 
 <nav id="nav">
-  <div class="logo"><span class="logo__name">Lukić</span> <span class="accent">Barber</span></div>
-  <div class="nav-links">
-    <a href="#work">Radovi</a>
-    <a href="#reviews">Utisci</a>
-    <a href="#" data-open-book class="btn">Rezerviši <span class="arr" aria-hidden="true">→</span></a>
+  <div class="nav__inner">
+    <div class="logo"><span class="logo__name">Lukić</span> <span class="accent">Barber</span></div>
+    <div class="nav-links">
+      <a href="#work">Radovi</a>
+      <a href="#reviews">Utisci</a>
+      <a href="#" data-open-book class="btn">Rezerviši <span class="arr" aria-hidden="true">→</span></a>
+    </div>
   </div>
 </nav>
 
