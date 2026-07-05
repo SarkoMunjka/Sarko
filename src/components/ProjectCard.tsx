@@ -1,6 +1,7 @@
 import { ArrowRight, ArrowUpRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { FadeIn } from './FadeIn'
+import { DemoSitePreview } from './DemoSitePreview'
 import { ScrollPreview } from './ScrollPreview'
 import { VimeoHoverPreview } from './VimeoPreview'
 import type { Project } from '../data/projects'
@@ -32,6 +33,8 @@ export function ProjectCard({
     >
       {project.vimeoId ? (
         <VimeoHoverPreview videoId={project.vimeoId} posterSrc={project.poster} />
+      ) : project.demoUrl ? (
+        <DemoSitePreview src={project.demoUrl} alt={project.name} />
       ) : project.cover ? (
         <ScrollPreview src={project.cover} alt={project.name} />
       ) : (

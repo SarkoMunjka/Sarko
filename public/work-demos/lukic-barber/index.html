@@ -294,7 +294,28 @@
     .marquee__track { flex-wrap:wrap; justify-content:center; width:100%; transform:none !important; }
     .marquee__strip { flex-wrap:wrap; justify-content:center; padding-right:0; }
   }
+
+  /* Card embed on Mark Studio homepage — hero + nav only, no scroll */
+  html.embed-preview,
+  html.embed-preview body {
+    overflow: hidden !important;
+    height: 100%;
+    max-height: 100vh;
+  }
+  html.embed-preview .grain,
+  html.embed-preview .progress,
+  html.embed-preview .hero__cue { display: none !important; }
+  html.embed-preview .hero { height: 100svh !important; }
+  html.embed-preview .hero ~ * { display: none !important; }
+  html.embed-preview .cap .cap__in { opacity: 0 !important; transform: translateY(26px) !important; }
+  html.embed-preview .cap:first-child .cap__in { opacity: 1 !important; transform: none !important; }
+  html.embed-preview nav { pointer-events: none; }
 </style>
+<script>
+  if (new URLSearchParams(location.search).has('embed')) {
+    document.documentElement.classList.add('embed-preview');
+  }
+</script>
 </head>
 <body>
 <div class="grain"></div>
