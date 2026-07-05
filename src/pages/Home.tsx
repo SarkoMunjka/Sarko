@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Hero } from '../components/Hero'
 import { About } from '../components/About'
 import { CaseStudies } from '../components/CaseStudies'
@@ -7,38 +7,78 @@ import { Process } from '../components/Process'
 import { Testimonials } from '../components/Testimonials'
 import { CallToAction } from '../components/CallToAction'
 import { Footer } from '../components/Footer'
-import GradualBlur from '../components/GradualBlur'
 
 const BOTTOM_FADE_THRESHOLD = 150
+const SECTION_3_ID = 'work'
 
-export function Home() {
-  const [pastHero, setPastHero] = useState(false)
-  const [atBottom, setAtBottom] = useState(false)
+function BottomPageFade() {
+  const fadeRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    const onScroll = () => {
+    const fade = fadeRef.current
+    if (!fade) return
+
+    let ticking = false
+
+    const update = () => {
       const scrollY = window.scrollY
       const viewport = window.innerHeight
       const docHeight = document.documentElement.scrollHeight
+      const atBottom = docHeight - (scrollY + viewport) < BOTTOM_FADE_THRESHOLD
 
-      setPastHero(scrollY > viewport * 0.6)
-
-      const distanceFromBottom = docHeight - (scrollY + viewport)
-      setAtBottom(distanceFromBottom < BOTTOM_FADE_THRESHOLD)
+      fade.style.opacity = atBottom ? '0' : '1'
+      ticking = false
     }
-    onScroll()
+
+    const onScroll = () => {
+      if (ticking) return
+      ticking = true
+      requestAnimationFrame(update)
+    }
+
+    update()
     window.addEventListener('scroll', onScroll, { passive: true })
     window.addEventListener('resize', onScroll)
+
     return () => {
       window.removeEventListener('scroll', onScroll)
       window.removeEventListener('resize', onScroll)
     }
   }, [])
 
-  const blurStyle = useMemo(
-    () => ({ opacity: atBottom ? 0 : 1, transition: 'opacity 0.35s ease' }),
-    [atBottom],
+  return (
+    <div
+      ref={fadeRef}
+      aria-hidden="true"
+      className="pointer-events-none fixed inset-x-0 bottom-0 z-[100] h-24 bg-gradient-to-t from-white via-white/75 to-transparent dark:from-[#0a0a0a] dark:via-[#0a0a0a]/75"
+    />
   )
+}
+
+function useBottomFadeFromSection3() {
+  const [active, setActive] = useState(false)
+
+  useEffect(() => {
+    const section = document.getElementById(SECTION_3_ID)
+    if (!section) return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        const { isIntersecting, boundingClientRect } = entry
+        setActive(isIntersecting || boundingClientRect.top < 0)
+      },
+      { threshold: 0 },
+    )
+
+    observer.observe(section)
+    return () => observer.disconnect()
+  }, [])
+
+  return active
+}
+
+export function Home() {
+  const bottomFadeActive = useBottomFadeFromSection3()
 
   return (
     <>
@@ -50,20 +90,7 @@ export function Home() {
       <Testimonials />
       <CallToAction />
       <Footer />
-
-      {pastHero && (
-        <GradualBlur
-          target="page"
-          position="bottom"
-          height="6rem"
-          strength={2}
-          divCount={5}
-          curve="bezier"
-          exponential
-          opacity={1}
-          style={blurStyle}
-        />
-      )}
+      {bottomFadeActive ? <BottomPageFade /> : null}
     </>
   )
 }
