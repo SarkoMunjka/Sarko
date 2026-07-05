@@ -63,9 +63,9 @@ h1,h2,h3,.display { font-family: "Oswald", sans-serif; font-weight: 600; line-he
 
 .slots { display:grid; grid-template-columns: repeat(auto-fill, minmax(88px, 1fr)); gap:10px; margin-top:8px; }
 .slot {
-  border:1px solid var(--line); border-radius:12px; padding:12px 8px; text-align:center;
-  font-size:14px; font-weight:600; background:var(--surface); cursor:pointer; transition: .2s var(--ease);
-  color: var(--text);
+  border:1px solid var(--line); border-radius:4px; padding:12px 8px; text-align:center;
+  font-size:14px; font-weight:600; background:var(--sand); cursor:pointer; transition: .2s var(--ease);
+  color: var(--ink);
 }
 .slot:hover:not(.taken):not(.picked):not(:disabled) { border-color: var(--accent); color: var(--text); }
 .slot.picked {

@@ -111,9 +111,10 @@
   .marquee__track.is-ready { animation:marquee-scroll var(--marquee-duration, 28s) linear infinite; }
   .marquee:hover .marquee__track.is-ready { animation-play-state:paused; }
   .marquee__set { display:flex; align-items:center; flex-shrink:0; gap:48px; }
-  .marquee__item { font-family:"Oswald"; font-size:17px; font-weight:500; letter-spacing:.1em; text-transform:uppercase; color:var(--muted-on-dark); white-space:nowrap; }
-  .marquee__sep { color:var(--accent); opacity:.9; font-size:13px; flex:none; user-select:none; }
-  @keyframes marquee-scroll { from { transform:translate3d(0,0,0); } to { transform:translate3d(var(--marquee-shift, -50%),0,0); } }
+  .marquee__unit { display:flex; align-items:center; gap:20px; flex-shrink:0; }
+  .marquee__item { font-family:"Oswald"; font-size:17px; font-weight:500; letter-spacing:.1em; text-transform:uppercase; color:var(--muted-on-dark); white-space:nowrap; line-height:1; }
+  .marquee__sep { color:var(--accent); opacity:.9; font-size:13px; flex:none; user-select:none; line-height:1; width:13px; text-align:center; }
+  @keyframes marquee-scroll { from { transform:translate3d(0,0,0); } to { transform:translate3d(-50%,0,0); } }
 
   .statement { padding:0; }
   .statement .band { position:relative; min-height:64vh; display:flex; align-items:center; overflow:hidden;
@@ -148,14 +149,19 @@
   .pkg .btn { width:100%; justify-content:center; }
   .pkg .btn.ghost { color:var(--ink); border-color:var(--line-strong); }
 
-  .bento { display:grid; grid-template-columns:repeat(4,1fr); grid-auto-rows:185px; gap:14px; }
-  @media (max-width:880px){ .bento{ grid-template-columns:repeat(2,1fr); } }
-  .tile { position:relative; border-radius:4px; border:1px solid var(--line-dark); overflow:hidden; background:var(--charcoal-2); transition:transform .35s var(--ease),border-color .3s; }
-  .tile img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .5s var(--ease); filter:saturate(.9) contrast(1.05); }
-  .tile:hover { border-color:rgba(166,75,53,.5); }
-  .tile:hover img { transform:scale(1.05); }
-  .tile.big { grid-column:span 2; grid-row:span 2; }
-  .tile.wide { grid-column:span 2; }
+  .gallery-columns { display:flex; justify-content:center; gap:16px; height:min(420px, 58vw); max-height:480px; margin-top:8px; }
+  .gallery-lane {
+    overflow:hidden; height:100%; flex:0 0 120px;
+    -webkit-mask-image:linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
+    mask-image:linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
+  }
+  .gallery-track { display:flex; flex-direction:column; gap:16px; width:120px; will-change:transform; }
+  .gallery-track--a { animation:gallery-v 38s linear infinite; }
+  .gallery-track--b { animation:gallery-v-rev 44s linear infinite; }
+  .gallery-columns:hover .gallery-track { animation-play-state:paused; }
+  @keyframes gallery-v { to { transform:translateY(-50%); } }
+  @keyframes gallery-v-rev { from { transform:translateY(-50%); } to { transform:translateY(0); } }
+  .gallery-img { aspect-ratio:1; width:120px; border-radius:4px; object-fit:cover; display:block; filter:saturate(.92) contrast(1.04); border:1px solid var(--line-dark); }
 
   #reviews { padding-bottom: 100px; overflow: hidden; }
   .reviews-intro { margin-bottom: 48px; }
@@ -223,6 +229,9 @@
     .hero__cue{ display:none; }
     .reviews-track { flex-wrap: wrap; width: 100%; justify-content: center; }
     .reviews-lane { -webkit-mask-image: none; mask-image: none; overflow: visible; }
+    .gallery-columns { height: auto; flex-wrap: wrap; }
+    .gallery-lane { -webkit-mask-image: none; mask-image: none; overflow: visible; height: auto; flex: 1 1 120px; max-width: 280px; }
+    .gallery-track { flex-direction: row; flex-wrap: wrap; width: 100%; justify-content: center; gap: 12px; }
   }
 </style>
 </head>
@@ -275,15 +284,7 @@
 </header>
 
 <div class="marquee" aria-hidden="true">
-  <div class="marquee__track" id="marqueeTrack">
-    <div class="marquee__set" id="marqueeSet">
-      <span class="marquee__item">Klasično šišanje</span><span class="marquee__sep">✦</span>
-      <span class="marquee__item">Buzz cut</span><span class="marquee__sep">✦</span>
-      <span class="marquee__item">Fade</span><span class="marquee__sep">✦</span>
-      <span class="marquee__item">Brijanje</span><span class="marquee__sep">✦</span>
-      <span class="marquee__item">Pranje kose</span><span class="marquee__sep">✦</span>
-    </div>
-  </div>
+  <div class="marquee__track" id="marqueeTrack"></div>
 </div>
 
 <section class="statement">
@@ -326,7 +327,14 @@
       <h2>Svaki rez, doteran.</h2>
       <p>Fadeovi, brade i završnice iz stolice.</p>
     </div>
-    <div class="bento" id="bento"></div>
+    <div class="gallery-columns" id="galleryColumns" aria-label="Galerija radova">
+      <div class="gallery-lane">
+        <div class="gallery-track gallery-track--a" id="galleryTrackA"></div>
+      </div>
+      <div class="gallery-lane">
+        <div class="gallery-track gallery-track--b" id="galleryTrackB"></div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -379,17 +387,20 @@
   const nav = document.getElementById('nav');
   const progress = document.getElementById('progress');
 
-  const TILES = [
-    { s: 'shot-01', c: 'big' }, { s: 'shot-03' }, { s: 'shot-08' },
-    { s: 'shot-05', c: 'wide' }, { s: 'shot-06' }, { s: 'shot-11' }, { s: 'shot-10' },
-  ];
-  const bento = document.getElementById('bento');
-  TILES.forEach(t => {
-    const d = document.createElement('div');
-    d.className = 'tile focus-in focus-in--image' + (t.c ? ' ' + t.c : '');
-    d.innerHTML = `<img loading="lazy" src="img/${t.s}.jpg" alt="Rad berbernice" />`;
-    bento.appendChild(d);
-  });
+  const GALLERY_A = ['shot-01', 'shot-05', 'shot-08', 'shot-10'];
+  const GALLERY_B = ['shot-03', 'shot-06', 'shot-11'];
+
+  function galleryImg(name) {
+    return `<img class="gallery-img" src="img/${name}.jpg" alt="Rad berbernice" width="120" height="120" loading="lazy" />`;
+  }
+
+  function fillGalleryTrack(el, shots) {
+    const html = shots.map(galleryImg).join('');
+    el.innerHTML = html + html;
+  }
+
+  fillGalleryTrack(document.getElementById('galleryTrackA'), GALLERY_A);
+  fillGalleryTrack(document.getElementById('galleryTrackB'), GALLERY_B);
 
   const REVIEWS = [
     { text: 'Najbolji fade u Beogradu, bez preuveličavanja. Rezervisao sam online za minut i ušao tačno na vreme.', name: 'Marko J.', role: 'Vračar', img: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face' },
@@ -507,8 +518,7 @@
 
   (function initMarquee() {
     const track = document.getElementById('marqueeTrack');
-    const set = document.getElementById('marqueeSet');
-    if (!track || !set) return;
+    if (!track) return;
 
     const SERVICES = ['Klasično šišanje', 'Buzz cut', 'Fade', 'Brijanje', 'Pranje kose'];
 
@@ -516,29 +526,31 @@
       const el = document.createElement('div');
       el.className = 'marquee__set';
       SERVICES.forEach((label) => {
-        const item = document.createElement('span');
-        item.className = 'marquee__item';
-        item.textContent = label;
+        const unit = document.createElement('span');
+        unit.className = 'marquee__unit';
         const sep = document.createElement('span');
         sep.className = 'marquee__sep';
         sep.textContent = '✦';
-        el.append(item, sep);
+        const item = document.createElement('span');
+        item.className = 'marquee__item';
+        item.textContent = label;
+        unit.append(sep, item);
+        el.appendChild(unit);
       });
       return el;
     }
 
     function layout() {
+      track.classList.remove('is-ready');
       track.innerHTML = '';
       const first = buildSet();
       const second = first.cloneNode(true);
       second.setAttribute('aria-hidden', 'true');
       track.append(first, second);
 
-      const shift = first.offsetWidth;
-      track.style.setProperty('--marquee-shift', `-${shift}px`);
       const pxPerSec = 72;
-      track.style.setProperty('--marquee-duration', `${Math.max(shift / pxPerSec, 14)}s`);
-      track.classList.add('is-ready');
+      track.style.setProperty('--marquee-duration', `${Math.max(first.offsetWidth / pxPerSec, 14)}s`);
+      requestAnimationFrame(() => track.classList.add('is-ready'));
     }
 
     layout();
