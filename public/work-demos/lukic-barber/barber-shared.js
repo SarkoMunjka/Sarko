@@ -42,11 +42,16 @@ function writeJson(key, value) {
   localStorage.setItem(key, JSON.stringify(value))
 }
 
+function cloneData(obj) {
+  if (typeof structuredClone === 'function') return structuredClone(obj)
+  return JSON.parse(JSON.stringify(obj))
+}
+
 export function getDemoSettings() {
   const stored = readJson(DEMO_SETTINGS_KEY, null)
-  if (!stored) return structuredClone(DEFAULT_SETTINGS)
+  if (!stored) return cloneData(DEFAULT_SETTINGS)
   return {
-    ...structuredClone(DEFAULT_SETTINGS),
+    ...cloneData(DEFAULT_SETTINGS),
     ...stored,
     schedule: { ...DEFAULT_SETTINGS.schedule, ...stored.schedule },
     blockedSlots: stored.blockedSlots || {},
@@ -223,6 +228,13 @@ export function deleteDemoBooking(id) {
   writeDemoBookings(readDemoBookings().filter((b) => b.id !== id))
 }
 
+export function updateDemoBookingStatus(id, status) {
+  const list = readDemoBookings()
+  const booking = list.find((b) => b.id === id)
+  if (booking) booking.status = status
+  writeDemoBookings(list)
+}
+
 export function getAdminSlotGrid(date) {
   const settings = getDemoSettings()
   if (settings.blockedDates.includes(date)) return []
@@ -332,6 +344,11 @@ export const barberApi = {
   deleteBooking: async (id) => {
     if (!getAdminToken()) throw new Error('Niste prijavljeni.')
     deleteDemoBooking(id)
+    return { ok: true }
+  },
+  updateBookingStatus: async (id, status) => {
+    if (!getAdminToken()) throw new Error('Niste prijavljeni.')
+    updateDemoBookingStatus(id, status)
     return { ok: true }
   },
   toggleSlot: async (date, time) => {
