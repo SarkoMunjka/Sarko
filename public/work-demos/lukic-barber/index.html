@@ -107,17 +107,11 @@
   @keyframes cue { 0%,100%{opacity:.3;transform:scaleY(.6);} 50%{opacity:1;transform:scaleY(1);} }
 
   .marquee {
-    width:100%; overflow:hidden; background:var(--charcoal);
+    width:100%; max-width:100vw; overflow:hidden; background:var(--charcoal);
     border-block:1px solid var(--line-dark); padding:22px 0;
   }
   .marquee__track { display:flex; width:max-content; will-change:transform; }
-  .marquee__track.is-ready { animation:marquee-scroll var(--marquee-duration, 24s) linear infinite; }
-  .marquee:hover .marquee__track.is-ready { animation-play-state:paused; }
-  @keyframes marquee-scroll {
-    from { transform:translate3d(0,0,0); }
-    to { transform:translate3d(calc(-1 * var(--marquee-shift, 0px)),0,0); }
-  }
-  .marquee__group { display:flex; align-items:center; flex-shrink:0; gap:48px; padding-right:48px; }
+  .marquee__strip { display:flex; align-items:center; flex-shrink:0; gap:48px; padding-right:48px; }
   .marquee__service {
     font-family:"Oswald"; font-size:17px; font-weight:500; letter-spacing:.1em;
     text-transform:uppercase; color:var(--muted-on-dark); white-space:nowrap; flex-shrink:0;
@@ -253,8 +247,8 @@
     .hero__cue{ display:none; }
     .reviews-track { flex-wrap: wrap; width: 100%; justify-content: center; }
     .reviews-lane { -webkit-mask-image: none; mask-image: none; overflow: visible; }
-    .marquee__track { flex-wrap:wrap; justify-content:center; width:100%; animation:none !important; }
-    .marquee__group { flex-wrap:wrap; justify-content:center; padding-right:0; }
+    .marquee__track { flex-wrap:wrap; justify-content:center; width:100%; transform:none !important; }
+    .marquee__strip { flex-wrap:wrap; justify-content:center; padding-right:0; }
   }
 </style>
 </head>
@@ -544,33 +538,69 @@
     const track = document.getElementById('marqueeTrack');
     if (!track) return;
 
-    const SERVICES = ['Klasično šišanje', 'Buzz cut', 'Fade', 'Brijanje', 'Pranje kose'];
+    const SERVICES = [
+      'Klasično šišanje', 'Buzz cut', 'Skin fade', 'Fade', 'Brijanje',
+      'Pranje kose', 'Šišanje + brada', 'Brijanje peškirom', 'Oblikovanje brade',
+      'Stilizovanje', 'Linije vratne', 'Završetak peškirom',
+    ];
 
-    function buildGroup() {
-      const group = document.createElement('div');
-      group.className = 'marquee__group';
+    let cycleWidth = 0;
+    let offset = 0;
+    let raf = null;
+    let lastTime = null;
+    const speed = 90;
+
+    function buildStrip() {
+      const strip = document.createElement('div');
+      strip.className = 'marquee__strip';
       SERVICES.forEach((name) => {
         const el = document.createElement('span');
         el.className = 'marquee__service';
         el.textContent = name;
-        group.appendChild(el);
+        strip.appendChild(el);
       });
-      return group;
+      return strip;
+    }
+
+    function measureCycle() {
+      const probe = buildStrip();
+      probe.style.cssText = 'position:absolute;visibility:hidden;pointer-events:none;';
+      document.body.appendChild(probe);
+      const w = probe.offsetWidth;
+      probe.remove();
+      return w;
     }
 
     function layout() {
-      track.classList.remove('is-ready');
+      if (raf) { cancelAnimationFrame(raf); raf = null; }
+      lastTime = null;
+      offset = 0;
+      track.style.transform = 'translate3d(0,0,0)';
       track.replaceChildren();
-      const first = buildGroup();
-      const second = first.cloneNode(true);
-      second.setAttribute('aria-hidden', 'true');
-      track.append(first, second);
 
-      const shift = first.offsetWidth;
-      track.style.setProperty('--marquee-shift', `${shift}px`);
-      track.style.setProperty('--marquee-duration', `${Math.max(shift / 80, 14)}s`);
+      cycleWidth = measureCycle();
+      if (!cycleWidth) return;
 
-      if (!reduce) requestAnimationFrame(() => track.classList.add('is-ready'));
+      const vw = window.innerWidth;
+      const copies = Math.max(4, Math.ceil((vw * 2) / cycleWidth) + 2);
+      for (let i = 0; i < copies; i++) {
+        const strip = buildStrip();
+        if (i > 0) strip.setAttribute('aria-hidden', 'true');
+        track.appendChild(strip);
+      }
+
+      if (!reduce) raf = requestAnimationFrame(tick);
+    }
+
+    function tick(time) {
+      if (lastTime !== null && cycleWidth > 0) {
+        const dt = (time - lastTime) / 1000;
+        offset += speed * dt;
+        if (offset >= cycleWidth) offset -= cycleWidth;
+        track.style.transform = `translate3d(${-offset}px,0,0)`;
+      }
+      lastTime = time;
+      raf = requestAnimationFrame(tick);
     }
 
     layout();
