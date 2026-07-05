@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="sr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin — Lukić Barber</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="barber-shared.css" />
+</head>
+<body>
+  <header class="topbar">
+    <a href="index.html" class="logo">Lukić <span class="accent">Barber</span></a>
+    <div style="display:flex;gap:16px;align-items:center;">
+      <a href="book.html">Rezervacije</a>
+      <button class="btn ghost sm" type="button" id="logoutBtn" hidden>Odjavi se</button>
+    </div>
+  </header>
+
+  <section class="login-box focus-in" id="loginView">
+    <h1>Admin panel</h1>
+    <p class="lead" style="margin-bottom:20px;">Prijavite se da biste podesili radno vreme i upravljali terminima.</p>
+    <form id="loginForm">
+      <div class="field">
+        <label for="password">Lozinka</label>
+        <input id="password" type="password" required placeholder="Admin lozinka" />
+      </div>
+      <button class="btn" type="submit">Prijavi se</button>
+      <div class="msg" id="loginMsg"></div>
+    </form>
+    <p style="margin-top:16px;font-size:12px;color:var(--muted);">Demo lozinka: <code>lukic2026</code></p>
+  </section>
+
+  <main class="panel" id="adminView" hidden>
+    <div class="focus-in" style="margin-bottom:28px;">
+      <h1>Upravljanje rezervacijama</h1>
+      <p class="lead">Podesite radno vreme, prihvatanje online termina i pregledajte rezervacije.</p>
+    </div>
+
+    <div class="admin-grid">
+      <section class="card focus-in">
+        <h2>Opšta podešavanja</h2>
+        <label style="display:flex;align-items:center;gap:10px;font-size:14px;margin-bottom:14px;">
+          <input type="checkbox" id="acceptBookings" />
+          Prihvataj online rezervacije
+        </label>
+        <div class="field">
+          <label for="slotInterval">Interval termina (min)</label>
+          <select id="slotInterval">
+            <option value="15">15</option>
+            <option value="30">30</option>
+            <option value="45">45</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="blockedDates">Blokirani datumi (YYYY-MM-DD, zarez)</label>
+          <input id="blockedDates" placeholder="2026-12-31, 2027-01-01" />
+        </div>
+      </section>
+
+      <section class="card focus-in">
+        <h2>Radno vreme</h2>
+        <div id="scheduleRows"></div>
+      </section>
+
+      <section class="card focus-in">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px;">
+          <h2>Rezervacije</h2>
+          <button class="btn ghost sm" type="button" id="refreshBookings">Osveži</button>
+        </div>
+        <div style="overflow-x:auto;">
+          <table class="table" id="bookingsTable">
+            <thead>
+              <tr>
+                <th>Datum</th>
+                <th>Termin</th>
+                <th>Usluga</th>
+                <th>Klijent</th>
+                <th>Status</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <button class="btn focus-in" type="button" id="saveSettings">Sačuvaj podešavanja</button>
+      <div class="msg" id="adminMsg"></div>
+    </div>
+  </main>
+
+  <script type="module">
+    import { barberApi, initFocusReveal, setAdminToken, formatDateSr } from './barber-shared.js'
+
+    const DAY_LABELS = {
+      mon: 'Pon', tue: 'Uto', wed: 'Sre', thu: 'Čet', fri: 'Pet', sat: 'Sub', sun: 'Ned',
+    }
+
+    const loginView = document.getElementById('loginView')
+    const adminView = document.getElementById('adminView')
+    const loginForm = document.getElementById('loginForm')
+    const loginMsg = document.getElementById('loginMsg')
+    const adminMsg = document.getElementById('adminMsg')
+    const logoutBtn = document.getElementById('logoutBtn')
+
+    let currentSettings = null
+    let serviceMap = new Map()
+
+    function showAdminMsg(text, ok) {
+      adminMsg.textContent = text
+      adminMsg.className = `msg ${ok ? 'ok' : 'err'}`
+    }
+
+    function showLogin() {
+      loginView.hidden = false
+      adminView.hidden = true
+      logoutBtn.hidden = true
+    }
+
+    function showAdmin() {
+      loginView.hidden = true
+      adminView.hidden = false
+      logoutBtn.hidden = false
+      initFocusReveal('#adminView .focus-in')
+    }
+
+    function renderSchedule(settings) {
+      const host = document.getElementById('scheduleRows')
+      host.innerHTML = Object.entries(settings.schedule)
+        .map(([key, day]) => `
+          <div class="schedule-row" data-day="${key}">
+            <label><input type="checkbox" class="day-enabled" ${day.enabled ? 'checked' : ''} /> ${DAY_LABELS[key]}</label>
+            <span></span>
+            <input type="time" class="day-open" value="${day.open}" />
+            <input type="time" class="day-close" value="${day.close}" />
+          </div>`)
+        .join('')
+    }
+
+    function collectSettingsFromForm() {
+      const schedule = { ...currentSettings.schedule }
+      document.querySelectorAll('.schedule-row').forEach((row) => {
+        const key = row.dataset.day
+        schedule[key] = {
+          enabled: row.querySelector('.day-enabled').checked,
+          open: row.querySelector('.day-open').value,
+          close: row.querySelector('.day-close').value,
+        }
+      })
+
+      const blocked = document.getElementById('blockedDates').value
+        .split(',')
+        .map((s) => s.trim())
+        .filter(Boolean)
+
+      return {
+        ...currentSettings,
+        acceptBookings: document.getElementById('acceptBookings').checked,
+        slotIntervalMinutes: Number(document.getElementById('slotInterval').value),
+        blockedDates: blocked,
+        schedule,
+      }
+    }
+
+    function fillSettingsForm(settings) {
+      currentSettings = settings
+      serviceMap = new Map(settings.services.map((s) => [s.id, s.name]))
+      document.getElementById('acceptBookings').checked = settings.acceptBookings
+      document.getElementById('slotInterval').value = String(settings.slotIntervalMinutes)
+      document.getElementById('blockedDates').value = (settings.blockedDates || []).join(', ')
+      renderSchedule(settings)
+    }
+
+    async function loadBookings() {
+      const tbody = document.querySelector('#bookingsTable tbody')
+      tbody.innerHTML = '<tr><td colspan="6">Učitavanje...</td></tr>'
+      const { bookings } = await barberApi.getBookings()
+      if (!bookings.length) {
+        tbody.innerHTML = '<tr><td colspan="6">Nema rezervacija.</td></tr>'
+        return
+      }
+      tbody.innerHTML = bookings.map((b) => {
+        const service = serviceMap.get(b.serviceId) || b.serviceId
+        const statusCls = b.status === 'confirmed' ? 'ok' : 'cancel'
+        const statusLabel = b.status === 'confirmed' ? 'Potvrđeno' : 'Otkazano'
+        const action = b.status === 'confirmed'
+          ? `<button class="btn ghost sm" data-cancel="${b.id}">Otkaži</button>`
+          : ''
+        return `<tr>
+          <td>${formatDateSr(b.date)}</td>
+          <td>${b.startTime}</td>
+          <td>${service}</td>
+          <td>${b.name}<br><span style="color:var(--muted)">${b.phone}</span></td>
+          <td><span class="badge ${statusCls}">${statusLabel}</span></td>
+          <td>${action}</td>
+        </tr>`
+      }).join('')
+
+      tbody.querySelectorAll('[data-cancel]').forEach((btn) => {
+        btn.addEventListener('click', async () => {
+          if (!confirm('Otkazati ovu rezervaciju?')) return
+          await barberApi.cancelBooking(btn.dataset.cancel)
+          await loadBookings()
+          showAdminMsg('Rezervacija je otkazana. Termin je ponovo slobodan.', true)
+        })
+      })
+    }
+
+    async function loadAdmin() {
+      const { settings } = await barberApi.getAdminSettings()
+      fillSettingsForm(settings)
+      await loadBookings()
+      showAdmin()
+    }
+
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault()
+      try {
+        const { token } = await barberApi.login(loginForm.password.value)
+        setAdminToken(token)
+        await loadAdmin()
+      } catch (err) {
+        loginMsg.textContent = err.message
+        loginMsg.className = 'msg err'
+      }
+    })
+
+    logoutBtn.addEventListener('click', async () => {
+      try { await barberApi.logout() } catch { /* ignore */ }
+      setAdminToken('')
+      showLogin()
+    })
+
+    document.getElementById('saveSettings').addEventListener('click', async () => {
+      try {
+        const settings = collectSettingsFromForm()
+        await barberApi.saveAdminSettings(settings)
+        fillSettingsForm(settings)
+        showAdminMsg('Podešavanja su sačuvana.', true)
+      } catch (err) {
+        showAdminMsg(err.message, false)
+      }
+    })
+
+    document.getElementById('refreshBookings').addEventListener('click', () => {
+      loadBookings().catch((err) => showAdminMsg(err.message, false))
+    })
+
+    initFocusReveal('#loginView .focus-in')
+
+    if (sessionStorage.getItem('lukic_barber_admin_token')) {
+      loadAdmin().catch(() => {
+        setAdminToken('')
+        showLogin()
+      })
+    } else {
+      showLogin()
+    }
+  </script>
+</body>
+</html>

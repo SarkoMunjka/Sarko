@@ -1,0 +1,81 @@
+{
+  "settings": {
+    "slotIntervalMinutes": 30,
+    "acceptBookings": true,
+    "schedule": {
+      "mon": {
+        "enabled": true,
+        "open": "09:00",
+        "close": "20:00"
+      },
+      "tue": {
+        "enabled": true,
+        "open": "09:00",
+        "close": "20:00"
+      },
+      "wed": {
+        "enabled": true,
+        "open": "09:00",
+        "close": "20:00"
+      },
+      "thu": {
+        "enabled": true,
+        "open": "09:00",
+        "close": "20:00"
+      },
+      "fri": {
+        "enabled": true,
+        "open": "09:00",
+        "close": "21:00"
+      },
+      "sat": {
+        "enabled": true,
+        "open": "10:00",
+        "close": "18:00"
+      },
+      "sun": {
+        "enabled": false,
+        "open": "10:00",
+        "close": "16:00"
+      }
+    },
+    "services": [
+      {
+        "id": "sisanje",
+        "name": "Šišanje",
+        "durationMinutes": 30,
+        "priceRsd": 2500
+      },
+      {
+        "id": "sisanje-brada",
+        "name": "Šišanje + brada",
+        "durationMinutes": 45,
+        "priceRsd": 3500
+      },
+      {
+        "id": "komplet",
+        "name": "Komplet",
+        "durationMinutes": 60,
+        "priceRsd": 5000
+      }
+    ],
+    "blockedDates": []
+  },
+  "bookings": [
+    {
+      "id": "mr7ycv9s-r6kb1xk",
+      "serviceId": "sisanje",
+      "date": "2026-06-26",
+      "startTime": "10:00",
+      "durationMinutes": 30,
+      "name": "Test User",
+      "phone": "060111222",
+      "status": "confirmed",
+      "createdAt": "2026-07-05T15:35:03.760Z"
+    }
+  ],
+  "adminPassword": "lukic2026",
+  "sessions": {
+    "mr7ycz3u-h6yhi94mr7ycz3u-j78juax": 1783308908730
+  }
+}

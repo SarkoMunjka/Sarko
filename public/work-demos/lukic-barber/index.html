@@ -200,13 +200,21 @@
   footer { border-top:1px solid var(--line); padding:46px 0; color:var(--muted); font-size:14px; }
   .foot { display:flex; justify-content:space-between; flex-wrap:wrap; gap:18px; align-items:center; }
 
-  .reveal { opacity:0; transform:translateY(30px); transition:opacity .8s var(--ease),transform .8s var(--ease); }
-  .reveal.in { opacity:1; transform:none; }
+  .focus-in {
+    opacity: 0;
+    filter: blur(11px);
+    transform: translateY(20px) scale(1.015);
+    transition: opacity 1.15s var(--ease), filter 1.35s var(--ease), transform 1.15s var(--ease);
+    will-change: opacity, filter, transform;
+  }
+  .focus-in.is-visible { opacity: 1; filter: blur(0); transform: none; }
+  .focus-in--image { transform: translateY(14px) scale(1.03); }
+  .focus-in--image.is-visible { transform: none; }
 
   @media (prefers-reduced-motion: reduce){
     *{ animation:none !important; }
     html{ scroll-behavior:auto; }
-    .reveal{ opacity:1 !important; transform:none !important; }
+    .focus-in{ opacity:1 !important; filter:none !important; transform:none !important; transition:none !important; }
     .hero{ height:100svh !important; }
     .hero__pin{ position:relative; }
     .cap{ display:none !important; }
@@ -228,7 +236,7 @@
     <a href="#menu">Cenovnik</a>
     <a href="#work">Radovi</a>
     <a href="#reviews">Utisci</a>
-    <a href="#book" class="btn">Rezerviši <span class="arr" aria-hidden="true">→</span></a>
+    <a href="book.html" class="btn">Rezerviši <span class="arr" aria-hidden="true">→</span></a>
   </div>
 </nav>
 
@@ -258,7 +266,7 @@
         <div class="cap__in">
           <p class="closer">Izgledaj kako treba.</p>
           <div class="brand">Lukić <span class="accent">Barber</span></div>
-          <a href="#book" class="btn">Rezerviši termin <span class="arr" aria-hidden="true">→</span></a>
+          <a href="book.html" class="btn">Rezerviši termin <span class="arr" aria-hidden="true">→</span></a>
         </div>
       </div>
     </div>
@@ -275,32 +283,32 @@
 
 <section class="statement">
   <div class="band">
-    <div class="wrap"><h2 class="reveal">Ne samo šišamo.<br /><em>Doterivamo do detalja.</em></h2></div>
+    <div class="wrap"><h2 class="focus-in">Ne samo šišamo.<br /><em>Doterivamo do detalja.</em></h2></div>
   </div>
 </section>
 
 <section id="menu">
   <div class="wrap">
-    <div class="sec-head reveal">
+    <div class="sec-head focus-in">
       <div class="eyebrow">Cenovnik</div>
       <h2>Jedna stolica. Jedan standard.</h2>
       <p>Jasne cene. Svaka usluga završava peškirom i čistom linijom.</p>
     </div>
     <div class="pkgs">
-      <div class="pkg reveal">
+      <div class="pkg focus-in">
         <h3>Šišanje</h3><div class="price">2.500 <span>RSD</span></div>
         <ul><li>Skin fade ili makaze</li><li>Vrat i linije</li><li>Završetak peškirom</li><li>Stilizovanje</li><li>~30 min</li></ul>
-        <a href="#book" class="btn ghost">Rezerviši šišanje</a>
+        <a href="book.html?service=sisanje" class="btn ghost">Rezerviši šišanje</a>
       </div>
-      <div class="pkg feature reveal">
+      <div class="pkg feature focus-in">
         <div class="tag">NAJPOPULARNIJE</div><h3>Šišanje + brada</h3><div class="price">3.500 <span>RSD</span></div>
         <ul><li>Sve iz paketa Šišanje</li><li>Oblikovanje brade</li><li>Linija britvom</li><li>Ulje za bradu</li><li>~45 min</li></ul>
-        <a href="#book" class="btn">Rezerviši komplet <span class="arr" aria-hidden="true">→</span></a>
+        <a href="book.html?service=sisanje-brada" class="btn">Rezerviši komplet <span class="arr" aria-hidden="true">→</span></a>
       </div>
-      <div class="pkg reveal">
+      <div class="pkg focus-in">
         <h3>Komplet</h3><div class="price">5.000 <span>RSD</span></div>
         <ul><li>Šišanje + brada</li><li>Brijanje britvom i peškirom</li><li>Pune linije i stil</li><li>Puno iskustvo u stolici</li><li>~60 min</li></ul>
-        <a href="#book" class="btn ghost">Rezerviši komplet</a>
+        <a href="book.html?service=komplet" class="btn ghost">Rezerviši komplet</a>
       </div>
     </div>
   </div>
@@ -308,7 +316,7 @@
 
 <section id="work" style="background:var(--surface);">
   <div class="wrap">
-    <div class="sec-head reveal">
+    <div class="sec-head focus-in">
       <div class="eyebrow">Radovi</div>
       <h2>Svaki rez, doteran.</h2>
       <p>Fadeovi, brade i završnice iz stolice.</p>
@@ -319,7 +327,7 @@
 
 <section id="reviews">
   <div class="wrap reviews-intro">
-    <div class="sec-head reveal" style="margin-bottom:0;">
+    <div class="sec-head focus-in" style="margin-bottom:0;">
       <div class="eyebrow">Lepa reč</div>
       <h2>Beogradska stolica<br />po izboru.</h2>
       <p style="color:var(--muted); margin-top:18px; font-size:17px; max-width:520px;">Pogledajte šta klijenti kažu o iskustvu u Lukić Barber studiju.</p>
@@ -337,27 +345,16 @@
 
 <section id="book" class="book">
   <div class="wrap book-grid">
-    <div class="reveal">
+    <div class="focus-in">
       <div class="eyebrow">Rezervacija</div>
       <h2 style="font-size:clamp(34px,4.8vw,58px);">Spreman za<br />oštriji izgled?</h2>
-      <p style="color:var(--muted); margin:18px 0 28px;">Pošaljite podatke i rezervišite termin — slobodni termini gotovo svaki dan.</p>
+      <p style="color:var(--muted); margin:18px 0 28px;">Izaberite uslugu, datum i slobodan termin — zauzeti termini automatski nisu dostupni.</p>
       <div class="contact-line">Ili pozovite <a href="tel:+381601234567">060 123 4567</a></div>
     </div>
-    <div class="reveal">
-      <form id="bookForm">
-        <div class="frow">
-          <input name="name" placeholder="Vaše ime" required />
-          <input name="phone" type="tel" placeholder="Broj telefona" required />
-        </div>
-        <select name="service">
-          <option>Šišanje — 2.500 RSD</option>
-          <option selected>Šišanje + brada — 3.500 RSD</option>
-          <option>Komplet — 5.000 RSD</option>
-        </select>
-        <input name="when" placeholder="Željeni dan / termin" />
-        <button class="btn" type="submit" style="justify-content:center;">Rezerviši termin <span class="arr" aria-hidden="true">→</span></button>
-        <div class="ok" id="ok">✓ Rezervisano — javljamo se porukom da potvrdimo.</div>
-      </form>
+    <div class="focus-in" style="display:flex; flex-direction:column; gap:16px; align-items:flex-start;">
+      <p style="color:#d7cdbf; font-size:15px; max-width:380px;">Online zakazivanje u tri koraka: usluga, datum, vreme. Potvrda stiže porukom.</p>
+      <a href="book.html" class="btn" style="min-width:240px; justify-content:center;">Zakaži termin online <span class="arr" aria-hidden="true">→</span></a>
+      <a href="admin.html" style="color:var(--muted); font-size:13px; text-decoration:none; opacity:.65;">Admin panel</a>
     </div>
   </div>
 </section>
@@ -384,7 +381,7 @@
   const bento = document.getElementById('bento');
   TILES.forEach(t => {
     const d = document.createElement('div');
-    d.className = 'tile' + (t.c ? ' ' + t.c : '');
+    d.className = 'tile focus-in focus-in--image' + (t.c ? ' ' + t.c : '');
     d.innerHTML = `<img loading="lazy" src="img/${t.s}.jpg" alt="Rad berbernice" />`;
     bento.appendChild(d);
   });
@@ -502,21 +499,23 @@
   };
   addEventListener('scroll', onScroll, { passive: true }); onScroll();
 
-  document.querySelectorAll('.reveal').forEach((el) => {
-    const sibs = [...el.parentElement.children].filter(c => c.classList.contains('reveal'));
-    el.style.transitionDelay = (sibs.indexOf(el) * 70) + 'ms';
-  });
-  const io = new IntersectionObserver((es) => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .14 });
-  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  (function initFocusReveal() {
+    const nodes = document.querySelectorAll('.focus-in');
+    if (reduce) { nodes.forEach((el) => el.classList.add('is-visible')); return; }
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) { entry.target.classList.add('is-visible'); io.unobserve(entry.target); }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+    nodes.forEach((el, i) => {
+      const sibs = [...el.parentElement.children].filter((c) => c.classList.contains('focus-in'));
+      el.style.transitionDelay = `${Math.min((sibs.indexOf(el) || i) * 55, 320)}ms`;
+      io.observe(el);
+    });
+  })();
 
   const tick = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C8923E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="5 13 9 17 19 7"/></svg>`;
   document.querySelectorAll('.pkg li').forEach(li => li.insertAdjacentHTML('afterbegin', tick + ' '));
-
-  document.getElementById('bookForm').addEventListener('submit', e => {
-    e.preventDefault();
-    document.getElementById('ok').style.display = 'block';
-    e.target.querySelector('button').firstChild.textContent = 'Rezervisano ';
-  });
 </script>
 </body>
 </html>
