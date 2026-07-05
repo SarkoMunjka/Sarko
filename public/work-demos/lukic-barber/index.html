@@ -501,6 +501,8 @@
   fillReviewTrack(document.getElementById('reviewsTrackB'), REVIEWS.slice(4));
 
   const FRAMES = 120;
+  /** Stop scrub before the awkward tail frames (f113–f120). */
+  const SCRUB_LAST_INDEX = FRAMES - 10;
   const heroEl = document.getElementById('hero');
   const cv = document.getElementById('heroCanvas');
   const ctx = cv.getContext('2d');
@@ -554,7 +556,7 @@
       if (o !== c._o) { c._o = o; c.inner.style.opacity = o; c.inner.style.transform = `translateY(${(1 - o) * 26}px)`; }
     }
     if (heroCue) { const co = p > 0.02 ? 0 : 1; if (co !== heroCue._co) { heroCue._co = co; heroCue.style.opacity = co; } }
-    const target = p * (FRAMES - 1);
+    const target = p * SCRUB_LAST_INDEX;
     dispIdx += (target - dispIdx) * 0.5;
     if (Math.abs(target - dispIdx) < 0.4) dispIdx = target;
     const idx = clamp(Math.round(dispIdx), 0, FRAMES - 1);
