@@ -461,12 +461,19 @@
     { s: 'shot-05', c: 'wide' }, { s: 'shot-06' }, { s: 'shot-11' }, { s: 'shot-10' },
   ];
   const bento = document.getElementById('bento');
-  TILES.forEach(t => {
-    const d = document.createElement('div');
-    d.className = 'tile focus-in focus-in--image' + (t.c ? ' ' + t.c : '');
-    d.innerHTML = `<img loading="lazy" src="img/${t.s}.jpg" alt="Rad berbernice" />`;
-    bento.appendChild(d);
-  });
+  if (bento) {
+    TILES.forEach((t, i) => {
+      const d = document.createElement('div');
+      d.className = 'tile' + (t.c ? ' ' + t.c : '');
+      const img = document.createElement('img');
+      img.src = `img/${t.s}.jpg`;
+      img.alt = 'Rad berbernice';
+      img.decoding = 'async';
+      img.loading = i < 3 ? 'eager' : 'lazy';
+      d.appendChild(img);
+      bento.appendChild(d);
+    });
+  }
 
   const REVIEWS = [
     { text: 'Najbolji fade u gradu, bez preuveličavanja. Rezervirao sam online za minut i ušao tačno na vreme.', name: 'Marko J.', role: 'Vračar', img: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face' },
@@ -505,6 +512,9 @@
   const SCRUB_LAST_INDEX = FRAMES - 10;
   const heroEl = document.getElementById('hero');
   const cv = document.getElementById('heroCanvas');
+  if (!heroEl || !cv) {
+    console.warn('Hero scrub skipped — canvas not found.');
+  } else {
   const ctx = cv.getContext('2d');
   const heroPosterEl = document.getElementById('heroPoster');
   const heroCue = document.getElementById('heroCue');
@@ -583,6 +593,7 @@
     if (!reduce) { dirty = true; ensure(); }
   };
   addEventListener('scroll', onScroll, { passive: true }); onScroll();
+  }
 
   (function initMarquee() {
     const track = document.getElementById('marqueeTrack');
@@ -672,6 +683,18 @@
       io.observe(el);
     });
   })();
+</script>
+<script>
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-open-book]');
+    if (!btn) return;
+    e.preventDefault();
+    if (typeof window.__barberOpenBooking === 'function') {
+      window.__barberOpenBooking(btn.dataset.service || '');
+    } else {
+      window.__barberPendingBook = btn.dataset.service || '';
+    }
+  }, true);
 </script>
 <script type="module">
   import { initBookingModal } from './barber-shared.js';

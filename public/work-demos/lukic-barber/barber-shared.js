@@ -883,10 +883,9 @@ export function initBookingModal() {
     }
   })
 
-  document.querySelectorAll('[data-open-book]').forEach((el) => {
-    el.addEventListener('click', (e) => {
-      e.preventDefault()
-      openModal(el.dataset.service || '')
-    })
-  })
+  window.__barberOpenBooking = openModal
+  if (window.__barberPendingBook !== undefined) {
+    openModal(window.__barberPendingBook)
+    delete window.__barberPendingBook
+  }
 }
