@@ -53,85 +53,6 @@
   .section-dark { background:var(--charcoal); color:var(--text-on-dark); --text:var(--text-on-dark); --muted:var(--muted-on-dark); --line:var(--line-dark); --line-strong:rgba(245,240,232,.22); --surface:#353535; }
   .section-light { background:var(--sand); color:var(--text-on-light); }
 
-  /* ── Scroll-scrub cut dividers (scissors only, GSAP-style) ── */
-  .cut-scrub {
-    --cut-from: var(--charcoal);
-    --cut-to: var(--sand);
-    --cut-progress: 0;
-    --blade-open: 0;
-    position: relative;
-    width: 100%;
-    height: clamp(320px, 62vh, 520px);
-    margin-block: -1px;
-    z-index: 6;
-    pointer-events: none;
-  }
-  .cut-scrub__pin {
-    position: sticky;
-    top: clamp(72px, 18vh, 140px);
-    height: clamp(120px, 16vw, 168px);
-    overflow: hidden;
-  }
-  .cut-scrub__stage {
-    position: absolute;
-    inset: 0;
-  }
-  .cut-scrub__base {
-    position: absolute; inset: 0;
-    background: var(--cut-to);
-  }
-  .cut-scrub__shave {
-    position: absolute; inset: 0;
-    background: var(--cut-from);
-    clip-path: inset(0 0 0 calc(var(--cut-progress) * 100%));
-    will-change: clip-path;
-  }
-  .cut-scrub__hairline {
-    position: absolute;
-    top: 50%; left: 0;
-    width: 100%; height: 32px;
-    transform: translateY(-50%);
-    clip-path: inset(0 calc((1 - var(--cut-progress)) * 100% + 2%) 0 0);
-    opacity: calc(0.5 + var(--cut-progress) * 0.5);
-  }
-  .cut-scrub__hairline path {
-    fill: none;
-    stroke: var(--accent);
-    stroke-width: 2.8;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    vector-effect: non-scaling-stroke;
-  }
-  .cut-scrub__tool {
-    position: absolute;
-    top: 50%;
-    left: calc(var(--cut-progress) * 100%);
-    width: clamp(68px, 9.5vw, 96px);
-    height: clamp(68px, 9.5vw, 96px);
-    transform: translate(-50%, -58%);
-    filter: drop-shadow(0 10px 22px rgba(0,0,0,.42));
-    z-index: 2;
-    will-change: left;
-  }
-  .cut-scrub__tool svg { width: 100%; height: 100%; display: block; }
-  .cut-scrub__blade-a {
-    transform-origin: 34px 28px;
-    transform: rotate(calc(var(--blade-open) * 1deg));
-  }
-  .cut-scrub__blade-b {
-    transform-origin: 34px 28px;
-    transform: rotate(calc(var(--blade-open) * -1deg));
-  }
-  .cut-scrub__speck {
-    position: absolute;
-    width: 5px; height: 8px;
-    border-radius: 1px;
-    background: var(--muted-on-light);
-    top: 56%;
-    opacity: 0;
-    will-change: transform, opacity;
-  }
-
   .eyebrow { display:inline-flex; align-items:center; gap:10px; color: var(--accent); font-weight: 600; letter-spacing: .24em; font-size: 11.5px; text-transform: uppercase; margin-bottom: 22px; }
   .eyebrow::before { content:""; width:24px; height:1px; background: var(--accent); opacity:.85; }
 
@@ -372,10 +293,6 @@
     .reviews-lane { -webkit-mask-image: none; mask-image: none; overflow: visible; }
     .marquee__track { flex-wrap:wrap; justify-content:center; width:100%; transform:none !important; }
     .marquee__strip { flex-wrap:wrap; justify-content:center; padding-right:0; }
-    .cut-scrub { height: auto !important; }
-    .cut-scrub__pin { position: relative; top: auto; }
-    .cut-scrub__shave { clip-path: inset(0 0 0 50%) !important; }
-    .cut-scrub__tool { left: 50% !important; }
   }
 
   /* Card embed on Mark Studio homepage — hero + nav only, no scroll */
@@ -390,7 +307,6 @@
   html.embed-preview .hero__cue { display: none !important; }
   html.embed-preview .hero { height: 100svh !important; }
   html.embed-preview .hero ~ * { display: none !important; }
-  html.embed-preview .cut-scrub { display: none !important; }
   html.embed-preview .cap .cap__in { opacity: 0 !important; transform: translateY(26px) !important; }
   html.embed-preview .cap:first-child .cap__in { opacity: 1 !important; transform: none !important; }
   html.embed-preview nav { pointer-events: none; }
@@ -470,37 +386,6 @@
   </div>
 </section>
 
-<div class="cut-scrub" data-cut-scrub style="--cut-from:var(--charcoal);--cut-to:var(--sand)" aria-hidden="true">
-  <div class="cut-scrub__pin">
-    <div class="cut-scrub__stage">
-      <div class="cut-scrub__base"></div>
-      <div class="cut-scrub__shave"></div>
-      <svg class="cut-scrub__hairline" viewBox="0 0 360 28" preserveAspectRatio="none" aria-hidden="true">
-        <path d="M0,14 L18,22 L36,10 L54,20 L72,9 L90,19 L108,12 L126,22 L144,11 L162,20 L180,8 L198,18 L216,13 L234,22 L252,10 L270,19 L288,12 L306,21 L324,9 L342,18 L360,14" />
-      </svg>
-      <div class="cut-scrub__tool">
-        <svg viewBox="0 0 72 72" fill="none" aria-hidden="true">
-          <g class="cut-scrub__blade-b">
-            <path d="M34 28 L56 10 L60 14 L38 34 Z" fill="#EDE6DC" stroke="#1A1A1A" stroke-width="1.4" stroke-linejoin="round"/>
-            <path d="M16 56 L32 30 L28 34 L12 52 Z" fill="#2B2B2B"/>
-          </g>
-          <circle cx="34" cy="28" r="5.5" fill="#A64B35" stroke="#1A1A1A" stroke-width="1.2"/>
-          <g class="cut-scrub__blade-a">
-            <path d="M34 28 L56 50 L52 54 L30 34 Z" fill="#EDE6DC" stroke="#1A1A1A" stroke-width="1.4" stroke-linejoin="round"/>
-            <path d="M16 16 L32 30 L28 34 L12 18 Z" fill="#2B2B2B"/>
-          </g>
-        </svg>
-      </div>
-      <span class="cut-scrub__speck" style="left:14%"></span>
-      <span class="cut-scrub__speck" style="left:28%;width:4px;height:6px"></span>
-      <span class="cut-scrub__speck" style="left:44%"></span>
-      <span class="cut-scrub__speck" style="left:61%;width:4px;height:5px"></span>
-      <span class="cut-scrub__speck" style="left:78%"></span>
-      <span class="cut-scrub__speck" style="left:91%;width:3px;height:7px"></span>
-    </div>
-  </div>
-</div>
-
 <section id="reviews" class="section section-light">
   <div class="wrap">
     <div class="sec-head sec-head--frame focus-in">
@@ -518,37 +403,6 @@
     </div>
   </div>
 </section>
-
-<div class="cut-scrub" data-cut-scrub style="--cut-from:var(--sand);--cut-to:var(--charcoal)" aria-hidden="true">
-  <div class="cut-scrub__pin">
-    <div class="cut-scrub__stage">
-      <div class="cut-scrub__base"></div>
-      <div class="cut-scrub__shave"></div>
-      <svg class="cut-scrub__hairline" viewBox="0 0 360 28" preserveAspectRatio="none" aria-hidden="true">
-        <path d="M0,14 L16,8 L32,18 L48,11 L64,21 L80,9 L96,19 L112,12 L128,22 L144,10 L160,20 L176,13 L192,22 L208,9 L224,18 L240,12 L256,21 L272,10 L288,19 L304,11 L320,20 L336,8 L352,17 L360,14" />
-      </svg>
-      <div class="cut-scrub__tool">
-        <svg viewBox="0 0 72 72" fill="none" aria-hidden="true">
-          <g class="cut-scrub__blade-b">
-            <path d="M34 28 L56 10 L60 14 L38 34 Z" fill="#EDE6DC" stroke="#1A1A1A" stroke-width="1.4" stroke-linejoin="round"/>
-            <path d="M16 56 L32 30 L28 34 L12 52 Z" fill="#2B2B2B"/>
-          </g>
-          <circle cx="34" cy="28" r="5.5" fill="#A64B35" stroke="#1A1A1A" stroke-width="1.2"/>
-          <g class="cut-scrub__blade-a">
-            <path d="M34 28 L56 50 L52 54 L30 34 Z" fill="#EDE6DC" stroke="#1A1A1A" stroke-width="1.4" stroke-linejoin="round"/>
-            <path d="M16 16 L32 30 L28 34 L12 18 Z" fill="#2B2B2B"/>
-          </g>
-        </svg>
-      </div>
-      <span class="cut-scrub__speck" style="left:14%"></span>
-      <span class="cut-scrub__speck" style="left:28%;width:4px;height:6px"></span>
-      <span class="cut-scrub__speck" style="left:44%"></span>
-      <span class="cut-scrub__speck" style="left:61%;width:4px;height:5px"></span>
-      <span class="cut-scrub__speck" style="left:78%"></span>
-      <span class="cut-scrub__speck" style="left:91%;width:3px;height:7px"></span>
-    </div>
-  </div>
-</div>
 
 <section id="location" class="section section-dark location">
   <div class="wrap location-grid">
@@ -802,44 +656,6 @@
     layout();
     if (document.fonts?.ready) document.fonts.ready.then(layout);
     addEventListener('resize', layout, { passive: true });
-  })();
-
-  (function initCutScrubs() {
-    const scrubs = document.querySelectorAll('[data-cut-scrub]');
-    if (!scrubs.length) return;
-
-    function bladeOpen(progress) {
-      const phase = (progress * 12) % 1;
-      return phase < 0.4 ? (phase / 0.4) * 20 : ((1 - phase) / 0.6) * 20;
-    }
-
-    function updateCutScrubs() {
-      scrubs.forEach((el) => {
-        const pin = el.querySelector('.cut-scrub__pin');
-        if (!pin) return;
-
-        const scrollable = Math.max(el.offsetHeight - pin.offsetHeight, 1);
-        const rect = el.getBoundingClientRect();
-        const p = reduce ? 0.5 : clamp(-rect.top / scrollable, 0, 1);
-
-        el.style.setProperty('--cut-progress', String(p));
-        el.style.setProperty('--blade-open', String(bladeOpen(p)));
-
-        el.querySelectorAll('.cut-scrub__speck').forEach((speck) => {
-          const pos = parseFloat(speck.style.left) / 100;
-          const local = clamp((p - pos + 0.06) / 0.14, 0, 1);
-          const visible = local > 0 && local < 1;
-          speck.style.opacity = visible ? String(0.85 * (1 - local)) : '0';
-          speck.style.transform = visible
-            ? `translateY(${local * 26}px) rotate(${local * 48}deg)`
-            : 'none';
-        });
-      });
-    }
-
-    updateCutScrubs();
-    addEventListener('scroll', updateCutScrubs, { passive: true });
-    addEventListener('resize', updateCutScrubs, { passive: true });
   })();
 
   (function initFocusReveal() {
