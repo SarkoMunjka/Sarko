@@ -13,7 +13,7 @@
   <header class="topbar">
     <a href="index.html" class="logo">Lukić <span class="accent">Barber</span></a>
     <div style="display:flex;gap:16px;align-items:center;">
-      <a href="book.html">Rezervacije</a>
+      <a href="index.html" data-open-book>Rezervacije</a>
       <button class="btn ghost sm" type="button" id="logoutBtn" hidden>Odjavi se</button>
     </div>
   </header>
@@ -92,7 +92,7 @@
   </main>
 
   <script type="module">
-    import { barberApi, initFocusReveal, setAdminToken, formatDateSr } from './barber-shared.js'
+    import { barberApi, initFocusReveal, setAdminToken, getAdminToken, formatDateSr, initBookingModal } from './barber-shared.js'
 
     const DAY_LABELS = {
       mon: 'Pon', tue: 'Uto', wed: 'Sre', thu: 'Čet', fri: 'Pet', sat: 'Sub', sun: 'Ned',
@@ -249,8 +249,9 @@
     })
 
     initFocusReveal('#loginView .focus-in')
+    initBookingModal()
 
-    if (sessionStorage.getItem('lukic_barber_admin_token')) {
+    if (getAdminToken()) {
       loadAdmin().catch(() => {
         setAdminToken('')
         showLogin()

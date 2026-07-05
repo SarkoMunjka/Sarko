@@ -15,45 +15,58 @@
     <a href="index.html">← Nazad na sajt</a>
   </header>
 
-  <main class="panel focus-in">
+  <main class="panel focus-in is-visible">
     <h1>Rezervišite termin</h1>
-    <p class="lead">Izaberite uslugu, datum i slobodan termin. Zauzeti termini nisu dostupni.</p>
+    <p class="lead">Izaberite uslugu i datum, zatim slobodan termin. Vaši podaci se pojavljuju ispod.</p>
 
     <form id="bookingForm">
-      <div class="field">
-        <label for="serviceId">Usluga</label>
-        <select id="serviceId" name="serviceId" required></select>
+      <div class="book-modal__step1">
+        <div class="field">
+          <label for="serviceId">Usluga</label>
+          <select id="serviceId" name="serviceId" required></select>
+        </div>
+
+        <div class="field">
+          <label for="date">Datum</label>
+          <input id="date" name="date" type="date" required />
+        </div>
+
+        <div class="field">
+          <label>Termin</label>
+          <p class="book-modal__hint" id="slotsHint">Izaberite uslugu i datum.</p>
+          <div class="slots" id="slots"></div>
+        </div>
       </div>
 
-      <div class="field">
-        <label for="date">Datum</label>
-        <input id="date" name="date" type="date" required />
+      <div class="book-modal__step2 focus-in" id="step2" hidden>
+        <p class="book-modal__step-label">Vaši podaci</p>
+        <div class="field">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" placeholder="vas@email.com" required />
+        </div>
+        <div class="field">
+          <label for="name">Ime i prezime</label>
+          <input id="name" name="name" placeholder="Vaše ime" required />
+        </div>
+        <div class="field">
+          <label for="phone">Telefon</label>
+          <input id="phone" name="phone" type="tel" placeholder="06x xxx xxxx" required />
+        </div>
+        <button class="btn book-modal__submit" type="submit" id="submitBtn">Potvrdi rezervaciju</button>
       </div>
 
-      <div class="field">
-        <label>Termin</label>
-        <p id="slotsHint" style="color:var(--muted);font-size:13px;">Izaberite uslugu i datum da vidite slobodne termine.</p>
-        <div class="slots" id="slots"></div>
-        <input type="hidden" id="time" name="time" required />
-      </div>
-
-      <div class="field">
-        <label for="name">Ime i prezime</label>
-        <input id="name" name="name" placeholder="Vaše ime" required />
-      </div>
-
-      <div class="field">
-        <label for="phone">Telefon</label>
-        <input id="phone" name="phone" type="tel" placeholder="06x xxx xxxx" required />
-      </div>
-
-      <button class="btn" type="submit" id="submitBtn" disabled>Potvrdi rezervaciju</button>
       <div class="msg" id="formMsg"></div>
     </form>
   </main>
 
   <script type="module">
-    import { barberApi, initFocusReveal, minBookableDate } from './barber-shared.js'
+    import {
+      barberApi,
+      getAvailability,
+      initFocusReveal,
+      minBookableDate,
+      revealElement,
+    } from './barber-shared.js'
 
     initFocusReveal()
 
@@ -61,7 +74,7 @@
     const dateEl = document.getElementById('date')
     const slotsEl = document.getElementById('slots')
     const slotsHint = document.getElementById('slotsHint')
-    const timeEl = document.getElementById('time')
+    const step2 = document.getElementById('step2')
     const submitBtn = document.getElementById('submitBtn')
     const formMsg = document.getElementById('formMsg')
     const form = document.getElementById('bookingForm')
@@ -69,7 +82,6 @@
     dateEl.min = minBookableDate()
     dateEl.value = dateEl.min
 
-    let settings = null
     let pickedTime = ''
 
     function showMsg(text, ok) {
@@ -77,12 +89,17 @@
       formMsg.className = `msg ${ok ? 'ok' : 'err'}`
     }
 
-    function updateSubmit() {
-      submitBtn.disabled = !(pickedTime && form.name.value.trim() && form.phone.value.trim())
+    function maybeRevealStep2() {
+      if (serviceEl.value && dateEl.value) {
+        revealElement(step2)
+      } else {
+        step2.hidden = true
+        step2.classList.remove('is-visible')
+      }
     }
 
     async function loadSettings() {
-      settings = await barberApi.getSettings()
+      const settings = await barberApi.getSettings()
       if (!settings.acceptBookings) {
         showMsg('Online rezervacije su trenutno isključene. Pozovite salon.', false)
         form.querySelectorAll('input,select,button').forEach((el) => { el.disabled = true })
@@ -95,55 +112,56 @@
       if (preselect && settings.services.some((s) => s.id === preselect)) {
         serviceEl.value = preselect
       }
-      await loadSlots()
+      renderSlots()
     }
 
-    async function loadSlots() {
+    function renderSlots() {
       pickedTime = ''
-      timeEl.value = ''
-      updateSubmit()
       slotsEl.innerHTML = ''
 
       const date = dateEl.value
       const serviceId = serviceEl.value
-      if (!date || !serviceId) return
-
-      slotsHint.textContent = 'Učitavanje termina...'
-      try {
-        const { slots } = await barberApi.getAvailability(date, serviceId)
-        if (!slots.length) {
-          slotsHint.textContent = 'Nema dostupnih termina za ovaj dan.'
-          return
-        }
-        slotsHint.textContent = 'Kliknite slobodan termin:'
-        slotsEl.innerHTML = slots
-          .map((slot) => {
-            const cls = slot.available ? 'slot' : 'slot taken'
-            return `<button type="button" class="${cls}" data-time="${slot.time}" ${slot.available ? '' : 'disabled'}>${slot.time}</button>`
-          })
-          .join('')
-
-        slotsEl.querySelectorAll('.slot:not(.taken)').forEach((btn) => {
-          btn.addEventListener('click', () => {
-            slotsEl.querySelectorAll('.slot').forEach((b) => b.classList.remove('picked'))
-            btn.classList.add('picked')
-            pickedTime = btn.dataset.time
-            timeEl.value = pickedTime
-            updateSubmit()
-          })
-        })
-      } catch (err) {
-        slotsHint.textContent = err.message
+      if (!date || !serviceId) {
+        slotsHint.textContent = 'Izaberite uslugu i datum.'
+        step2.hidden = true
+        step2.classList.remove('is-visible')
+        return
       }
+
+      maybeRevealStep2()
+
+      const slots = getAvailability(date, serviceId)
+      if (!slots.length) {
+        slotsHint.textContent = 'Nema dostupnih termina za ovaj dan.'
+        return
+      }
+
+      slotsHint.textContent = 'Kliknite slobodan termin:'
+      slotsEl.innerHTML = slots
+        .map((slot) => {
+          const cls = slot.available ? 'slot' : 'slot taken'
+          return `<button type="button" class="${cls}" data-time="${slot.time}" ${slot.available ? '' : 'disabled'}>${slot.time}</button>`
+        })
+        .join('')
+
+      slotsEl.querySelectorAll('.slot:not(.taken)').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          slotsEl.querySelectorAll('.slot').forEach((b) => b.classList.remove('picked'))
+          btn.classList.add('picked')
+          pickedTime = btn.dataset.time
+        })
+      })
     }
 
-    serviceEl.addEventListener('change', loadSlots)
-    dateEl.addEventListener('change', loadSlots)
-    form.name.addEventListener('input', updateSubmit)
-    form.phone.addEventListener('input', updateSubmit)
+    serviceEl.addEventListener('change', renderSlots)
+    dateEl.addEventListener('change', renderSlots)
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault()
+      if (!pickedTime) {
+        showMsg('Izaberite termin pre potvrde.', false)
+        return
+      }
       submitBtn.disabled = true
       try {
         await barberApi.createBooking({
@@ -151,18 +169,18 @@
           date: dateEl.value,
           time: pickedTime,
           name: form.name.value.trim(),
+          email: form.email.value.trim(),
           phone: form.phone.value.trim(),
         })
         showMsg('✓ Termin je rezervisan. Javićemo vam se porukom da potvrdimo.', true)
-        form.reset()
-        dateEl.value = minBookableDate()
-        pickedTime = ''
-        await loadSlots()
+        step2.hidden = true
+        slotsEl.innerHTML = ''
+        slotsHint.textContent = 'Hvala — vidimo se u salonu.'
       } catch (err) {
         showMsg(err.message, false)
-        await loadSlots()
+        renderSlots()
       } finally {
-        updateSubmit()
+        submitBtn.disabled = false
       }
     })
 

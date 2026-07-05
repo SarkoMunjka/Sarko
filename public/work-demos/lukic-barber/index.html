@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="barber-shared.css" />
 <style>
   :root {
     --bg: #0C0B0A;
@@ -236,7 +237,7 @@
     <a href="#menu">Cenovnik</a>
     <a href="#work">Radovi</a>
     <a href="#reviews">Utisci</a>
-    <a href="book.html" class="btn">Rezerviši <span class="arr" aria-hidden="true">→</span></a>
+    <a href="#" data-open-book class="btn">Rezerviši <span class="arr" aria-hidden="true">→</span></a>
   </div>
 </nav>
 
@@ -266,7 +267,7 @@
         <div class="cap__in">
           <p class="closer">Izgledaj kako treba.</p>
           <div class="brand">Lukić <span class="accent">Barber</span></div>
-          <a href="book.html" class="btn">Rezerviši termin <span class="arr" aria-hidden="true">→</span></a>
+          <a href="#" data-open-book class="btn">Rezerviši termin <span class="arr" aria-hidden="true">→</span></a>
         </div>
       </div>
     </div>
@@ -298,17 +299,17 @@
       <div class="pkg focus-in">
         <h3>Šišanje</h3><div class="price">2.500 <span>RSD</span></div>
         <ul><li>Skin fade ili makaze</li><li>Vrat i linije</li><li>Završetak peškirom</li><li>Stilizovanje</li><li>~30 min</li></ul>
-        <a href="book.html?service=sisanje" class="btn ghost">Rezerviši šišanje</a>
+        <a href="#" data-open-book data-service="sisanje" class="btn ghost">Rezerviši šišanje</a>
       </div>
       <div class="pkg feature focus-in">
         <div class="tag">NAJPOPULARNIJE</div><h3>Šišanje + brada</h3><div class="price">3.500 <span>RSD</span></div>
         <ul><li>Sve iz paketa Šišanje</li><li>Oblikovanje brade</li><li>Linija britvom</li><li>Ulje za bradu</li><li>~45 min</li></ul>
-        <a href="book.html?service=sisanje-brada" class="btn">Rezerviši komplet <span class="arr" aria-hidden="true">→</span></a>
+        <a href="#" data-open-book data-service="sisanje-brada" class="btn">Rezerviši komplet <span class="arr" aria-hidden="true">→</span></a>
       </div>
       <div class="pkg focus-in">
         <h3>Komplet</h3><div class="price">5.000 <span>RSD</span></div>
         <ul><li>Šišanje + brada</li><li>Brijanje britvom i peškirom</li><li>Pune linije i stil</li><li>Puno iskustvo u stolici</li><li>~60 min</li></ul>
-        <a href="book.html?service=komplet" class="btn ghost">Rezerviši komplet</a>
+        <a href="#" data-open-book data-service="komplet" class="btn ghost">Rezerviši komplet</a>
       </div>
     </div>
   </div>
@@ -353,7 +354,7 @@
     </div>
     <div class="focus-in" style="display:flex; flex-direction:column; gap:16px; align-items:flex-start;">
       <p style="color:#d7cdbf; font-size:15px; max-width:380px;">Online zakazivanje u tri koraka: usluga, datum, vreme. Potvrda stiže porukom.</p>
-      <a href="book.html" class="btn" style="min-width:240px; justify-content:center;">Zakaži termin online <span class="arr" aria-hidden="true">→</span></a>
+      <a href="#" data-open-book class="btn" style="min-width:240px; justify-content:center;">Zakaži termin online <span class="arr" aria-hidden="true">→</span></a>
       <a href="admin.html" style="color:var(--muted); font-size:13px; text-decoration:none; opacity:.65;">Admin panel</a>
     </div>
   </div>
@@ -516,6 +517,10 @@
 
   const tick = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C8923E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="5 13 9 17 19 7"/></svg>`;
   document.querySelectorAll('.pkg li').forEach(li => li.insertAdjacentHTML('afterbegin', tick + ' '));
+</script>
+<script type="module">
+  import { initBookingModal } from './barber-shared.js';
+  initBookingModal();
 </script>
 </body>
 </html>
