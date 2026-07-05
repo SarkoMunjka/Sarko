@@ -85,13 +85,13 @@ export const CASE_STUDIES_SR: CaseStudyContent[] = [
     ctaSubtext: 'Hajde da izgradimo iskustvo koje vas tamo vodi.',
   },
   {
-    slug: 'fade-co',
-    name: 'Fade & Co.',
+    slug: 'lukic-barber',
+    name: 'Lukić Barber',
     accent: '#C8923E',
     tagline: 'Berbernica · Brending · Web · 2026',
     intro:
-      'Premium berbernici u Surreyju trebao je digitalni identitet oštar kao njihovi fadeovi. Izgradili smo scroll homepage demo koji oživljava od prvog kadra — i pretvara posetioce u rezervisane termine.',
-    liveUrl: '/work-demos/fade-co/',
+      'Premium berbernica u Beogradu zaslužila je digitalni identitet oštar kao njihovi fadeovi. Izgradili smo scroll homepage demo na srpskom koji oživljava od prvog kadra — i pretvara posetioce u rezervisane termine.',
+    liveUrl: '/work-demos/lukic-barber/',
     meta: [
       { label: 'Uloga', value: 'Identitet · Web · Razvoj' },
       { label: 'Vremenski okvir', value: '2026 · 6 nedelja' },
@@ -101,19 +101,19 @@ export const CASE_STUDIES_SR: CaseStudyContent[] = [
     overview: {
       heading: 'Oštri rezovi,\nprecizan digital.',
       paragraphs: [
-        'Fade & Co. je imao zanat i klijentelu — ali online prisutnost nije odgovarala iskustvu u stolici. Generički šabloni i skriven tok rezervacije značili su da novi klijenti odlaze pre nego što vide rad.',
-        'Osmislili smo početnu stranicu koja vodi pokretom: scroll-scrub hero koji vodi posetioce kroz šišanje, zatim cene, galeriju i formu za rezervaciju u jednom dahu.',
+        'Lukić Barber je imao zanat i klijentelu — ali online prisutnost nije odgovarala iskustvu u stolici. Generički šabloni i skriven tok rezervacije značili su da novi klijenti odlaze pre nego što vide rad.',
+        'Osmislili smo početnu stranicu na srpskom koja vodi pokretom: scroll-scrub hero, horizontalne recenzije, cenovnik i forma za rezervaciju u jednom dahu.',
       ],
     },
     challenge: {
       heading: 'Lokalnu berbernicu učiniti\nnedvosmisleno premium.',
-      body: 'Takmičenje cenom nije bila opcija — Fade & Co. pobeđuje preciznošću, atmosferom i doslednošću. Sajt je morao to da prenese za nekoliko sekundi i učini rezervaciju jednostavnom kao ulazak u salon.',
+      body: 'Takmičenje cenom nije bila opcija — Lukić Barber pobeđuje preciznošću, atmosferom i doslednošću. Sajt je morao to da prenese za nekoliko sekundi i učini rezervaciju jednostavnom kao ulazak u salon.',
     },
     approach: [
       {
         no: '01',
         title: 'Brend koji deluje premium',
-        body: 'Mesingani akcenti, Oswald display tipografija i tamna, topla paleta — Fade & Co. kao prvi izbor u Surreyju, ne još jedna berbernica.',
+        body: 'Mesingani akcenti, Oswald display tipografija i tamna, topla paleta — Lukić Barber kao prvi izbor u Beogradu.',
       },
       {
         no: '02',
@@ -123,32 +123,32 @@ export const CASE_STUDIES_SR: CaseStudyContent[] = [
       {
         no: '03',
         title: 'Rezervacija koja konvertuje',
-        body: 'Jasni paketi usluga, društveni dokaz i jednostavna forma za rezervaciju — za walk-in i online termine.',
+        body: 'Jasni paketi usluga, društveni dokaz i jednostavna forma na srpskom — za walk-in i online termine.',
       },
       {
         no: '04',
         title: 'Rad koji prodaje zanat',
-        body: 'Bento galerija i zid utisaka gde fadeovi, linije i hot-towel završetci govore sami za sebe.',
+        body: 'Bento galerija i horizontalno klizeće utiske u stilu Mark Studio portfolija — fadeovi i završnice govore same za sebe.',
       },
     ],
     gallery: [
       {
-        src: '/work-demos/fade-co/hero-poster.jpg',
+        src: '/work-demos/lukic-barber/hero-poster.jpg',
         label: 'Početna · scroll hero',
-        alt: 'Fade & Co. hero početne stranice',
+        alt: 'Lukić Barber hero početne stranice',
       },
       {
-        src: '/work-demos/fade-co/img/shot-01.jpg',
+        src: '/work-demos/lukic-barber/img/shot-01.jpg',
         label: 'Radovi',
-        alt: 'Fade & Co. galerija',
+        alt: 'Lukić Barber galerija',
       },
       {
-        src: '/work-demos/fade-co/img/shot-08.jpg',
+        src: '/work-demos/lukic-barber/img/shot-08.jpg',
         label: 'Rezervacija',
-        alt: 'Fade & Co. sekcija za rezervaciju',
+        alt: 'Lukić Barber sekcija za rezervaciju',
       },
     ],
-    gallerySiteUrl: 'fadeandco.com',
+    gallerySiteUrl: 'lukicbarber.rs',
     palette: [
       { name: 'Ink', hex: '#0C0B0A' },
       { name: 'Surface', hex: '#14110E' },
@@ -169,10 +169,10 @@ export const CASE_STUDIES_SR: CaseStudyContent[] = [
       ],
       quote: {
         text: 'Scroll hero je zaustavljao ljude — rezervacije su skočile nedelju dana posle lansiranja. Konačno osećamo kao naš salon.',
-        attribution: 'Vlasnik, Fade & Co.',
+        attribution: 'Vlasnik, Lukić Barber',
       },
     },
-    coverImage: '/work-demos/fade-co/hero-poster.jpg',
+    coverImage: '/work-demos/lukic-barber/hero-poster.jpg',
     ctaHeading: 'Želite početnu stranicu koja se kreće?',
     ctaSubtext: 'Hajde da izgradimo scroll iskustvo koje vaš brend zaslužuje.',
   },

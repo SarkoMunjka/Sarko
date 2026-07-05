@@ -36,15 +36,15 @@ export const PROJECTS: Project[] = [
     cover: '/socks-home.png',
   },
   {
-    slug: 'fade-co',
-    name: 'Fade & Co.',
+    slug: 'lukic-barber',
+    name: 'Lukić Barber',
     category: 'Barbershop · Web',
     year: '2026',
     blurb:
-      'A premium Surrey barbershop — scroll-scrub hero, service menu and booking flow built to feel as sharp as the cuts.',
+      'Premium berbernica u Beogradu — scroll-scrub hero, cenovnik i rezervacija oštri od rezova.',
     accent: '#C8923E',
     caseStudy: true,
-    cover: '/work-demos/fade-co/hero-poster.jpg',
+    cover: '/work-demos/lukic-barber/hero-poster.jpg',
   },
   {
     slug: 'novaframe',

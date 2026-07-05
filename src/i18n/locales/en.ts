@@ -216,10 +216,10 @@ export const en: Translations = {
       blurb:
         'A bold, playful e-commerce experience for a direct-to-consumer sock brand — from identity to a high-converting storefront and a Nike collaboration drop.',
     },
-    'fade-co': {
+    'lukic-barber': {
       category: 'Barbershop · Web',
       blurb:
-        'A premium Surrey barbershop — scroll-scrub hero, service menu and booking flow built to feel as sharp as the cuts.',
+        'A premium Belgrade barbershop — scroll-scrub hero, service menu and booking flow built to feel as sharp as the cuts.',
     },
     novaframe: {
       category: 'Wedding film · Web',

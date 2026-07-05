@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="sr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Rezervacija — Lukić Barber</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="barber-shared.css" />
+  <style>
+    .book-page { max-width: 580px; margin: 0 auto; padding: 48px 28px 80px; }
+    .book-page h1 {
+      font-family: "Oswald", sans-serif;
+      font-size: clamp(1.75rem, 4.5vw, 2.15rem);
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .book-page .lead { color: var(--muted); font-size: 14px; margin-bottom: 28px; }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a href="index.html" class="logo">Lukić <span class="accent">Barber</span></a>
+    <a href="index.html">← Nazad na sajt</a>
+  </header>
+
+  <main class="book-page focus-in is-visible">
+    <h1>Zakaži termin</h1>
+    <p class="lead">Izaberite uslugu, datum i vreme ispod.</p>
+
+    <form id="bookingForm">
+      <div class="book-picker" data-booking-picker>
+        <p class="book-section-label">Usluga</p>
+        <div class="book-services" data-services></div>
+
+        <p class="book-section-label book-section-label--spaced">Datum</p>
+        <div class="book-cal" data-calendar></div>
+
+        <div class="book-time-block" data-time-block hidden>
+          <p class="book-section-label book-section-label--spaced">Vreme</p>
+          <p class="book-modal__hint" data-slots-hint></p>
+          <div class="slots book-slots" data-slots></div>
+        </div>
+      </div>
+
+      <div class="book-modal__step2 focus-in" id="step2" hidden>
+        <p class="book-section-label book-section-label--spaced">Vaši podaci</p>
+        <div class="field">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" placeholder="vas@email.com" required />
+        </div>
+        <div class="field">
+          <label for="name">Ime i prezime</label>
+          <input id="name" name="name" placeholder="Vaše ime" required />
+        </div>
+        <div class="field">
+          <label for="phone">Telefon</label>
+          <input id="phone" name="phone" type="tel" placeholder="06x xxx xxxx" required />
+        </div>
+        <button class="btn book-modal__submit" type="submit" id="submitBtn">Potvrdi rezervaciju</button>
+      </div>
+
+      <div class="msg" id="formMsg"></div>
+    </form>
+  </main>
+
+  <script type="module">
+    import {
+      barberApi,
+      initFocusReveal,
+      revealElement,
+      wireBookingPicker,
+    } from './barber-shared.js'
+
+    initFocusReveal()
+
+    const form = document.getElementById('bookingForm')
+    const step2 = document.getElementById('step2')
+    const submitBtn = document.getElementById('submitBtn')
+    const formMsg = document.getElementById('formMsg')
+    const pickerRoot = document.querySelector('[data-booking-picker]')
+
+    let picker = null
+
+    function showMsg(text, ok) {
+      formMsg.textContent = text
+      formMsg.className = `msg ${ok ? 'ok' : 'err'}`
+    }
+
+    picker = wireBookingPicker(pickerRoot, {
+      onChange: ({ serviceId, date }) => {
+        if (serviceId && date) revealElement(step2)
+        else {
+          step2.hidden = true
+          step2.classList.remove('is-visible')
+        }
+      },
+    })
+
+    const preselect = new URLSearchParams(location.search).get('service')
+    picker.load(preselect || '').catch((err) => showMsg(err.message, false))
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault()
+      const { serviceId, date, time } = picker.getState()
+      if (!serviceId || !date) {
+        showMsg('Izaberite uslugu i datum.', false)
+        return
+      }
+      if (!time) {
+        showMsg('Izaberite termin pre potvrde.', false)
+        return
+      }
+      submitBtn.disabled = true
+      try {
+        await barberApi.createBooking({
+          serviceId,
+          date,
+          time,
+          name: form.name.value.trim(),
+          email: form.email.value.trim(),
+          phone: form.phone.value.trim(),
+        })
+        showMsg('✓ Zahtev je poslat. Javićemo vam se kada potvrdimo termin.', true)
+        step2.hidden = true
+      } catch (err) {
+        showMsg(err.message, false)
+        picker.refreshSlots()
+      } finally {
+        submitBtn.disabled = false
+      }
+    })
+  </script>
+</body>
+</html>
