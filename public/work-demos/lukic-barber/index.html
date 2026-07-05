@@ -106,22 +106,21 @@
   .hero__cue .bar { width:1px; height:36px; background:linear-gradient(var(--accent),transparent); animation:cue 2s var(--ease) infinite; }
   @keyframes cue { 0%,100%{opacity:.3;transform:scaleY(.6);} 50%{opacity:1;transform:scaleY(1);} }
 
-  .logo-cloud-section { background:var(--charcoal); padding:20px 0; }
-  .logo-cloud__rule {
-    height:1px; max-width:24rem; margin:0 auto 20px; background:var(--line-dark);
-    -webkit-mask-image:linear-gradient(to right, transparent, black, transparent);
-    mask-image:linear-gradient(to right, transparent, black, transparent);
+  .marquee {
+    width:100%; overflow:hidden; background:var(--charcoal);
+    border-block:1px solid var(--line-dark); padding:22px 0;
   }
-  .logo-cloud__rule--bottom { margin:20px auto 0; }
-  .infinite-slider { overflow:hidden; }
-  .infinite-slider__track {
-    display:flex; flex-direction:row; width:max-content; align-items:center;
-    gap:var(--slider-gap, 16px); will-change:transform;
+  .marquee__track { display:flex; width:max-content; will-change:transform; }
+  .marquee__track.is-ready { animation:marquee-scroll var(--marquee-duration, 24s) linear infinite; }
+  .marquee:hover .marquee__track.is-ready { animation-play-state:paused; }
+  @keyframes marquee-scroll {
+    from { transform:translate3d(0,0,0); }
+    to { transform:translate3d(calc(-1 * var(--marquee-shift, 0px)),0,0); }
   }
-  .logo-cloud__item {
-    flex-shrink:0; pointer-events:none; user-select:none; white-space:nowrap;
+  .marquee__group { display:flex; align-items:center; flex-shrink:0; gap:48px; padding-right:48px; }
+  .marquee__service {
     font-family:"Oswald"; font-size:17px; font-weight:500; letter-spacing:.1em;
-    text-transform:uppercase; color:var(--muted-on-dark);
+    text-transform:uppercase; color:var(--muted-on-dark); white-space:nowrap; flex-shrink:0;
   }
 
   .statement { padding:0; }
@@ -254,7 +253,8 @@
     .hero__cue{ display:none; }
     .reviews-track { flex-wrap: wrap; width: 100%; justify-content: center; }
     .reviews-lane { -webkit-mask-image: none; mask-image: none; overflow: visible; }
-    .infinite-slider__track { flex-wrap:wrap; justify-content:center; width:100%; padding:0 28px; }
+    .marquee__track { flex-wrap:wrap; justify-content:center; width:100%; animation:none !important; }
+    .marquee__group { flex-wrap:wrap; justify-content:center; padding-right:0; }
   }
 </style>
 </head>
@@ -306,12 +306,8 @@
   </div>
 </header>
 
-<div class="logo-cloud-section" aria-hidden="true">
-  <div class="logo-cloud__rule"></div>
-  <div class="infinite-slider" id="servicesSlider">
-    <div class="infinite-slider__track" id="servicesSliderTrack"></div>
-  </div>
-  <div class="logo-cloud__rule logo-cloud__rule--bottom"></div>
+<div class="marquee" aria-hidden="true">
+  <div class="marquee__track" id="marqueeTrack"></div>
 </div>
 
 <section class="statement">
@@ -544,68 +540,42 @@
   };
   addEventListener('scroll', onScroll, { passive: true }); onScroll();
 
-  (function initLogoCloud() {
-    const SERVICES = [
-      'Klasično šišanje',
-      'Buzz cut',
-      'Fade',
-      'Brijanje',
-      'Pranje kose',
-    ];
-
-    const track = document.getElementById('servicesSliderTrack');
+  (function initMarquee() {
+    const track = document.getElementById('marqueeTrack');
     if (!track) return;
 
-    SERVICES.forEach((name) => {
-      const el = document.createElement('span');
-      el.className = 'logo-cloud__item';
-      el.textContent = name;
-      track.appendChild(el);
-    });
-    SERVICES.forEach((name) => {
-      const el = document.createElement('span');
-      el.className = 'logo-cloud__item';
-      el.textContent = name;
-      track.appendChild(el);
-    });
+    const SERVICES = ['Klasično šišanje', 'Buzz cut', 'Fade', 'Brijanje', 'Pranje kose'];
 
-    if (reduce) return;
-
-    const gap = 16;
-    const speed = 100;
-    const reverse = false;
-    track.style.setProperty('--slider-gap', `${gap}px`);
-
-    let translation = 0;
-    let raf = null;
-    let lastTime = null;
-
-    function metrics() {
-      const size = track.getBoundingClientRect().width;
-      const contentSize = size + gap;
-      const from = reverse ? -contentSize / 2 : 0;
-      const to = reverse ? 0 : -contentSize / 2;
-      return { from, to };
+    function buildGroup() {
+      const group = document.createElement('div');
+      group.className = 'marquee__group';
+      SERVICES.forEach((name) => {
+        const el = document.createElement('span');
+        el.className = 'marquee__service';
+        el.textContent = name;
+        group.appendChild(el);
+      });
+      return group;
     }
 
-    function frame(time) {
-      if (lastTime !== null) {
-        const dt = (time - lastTime) / 1000;
-        const { from, to } = metrics();
-        translation += reverse ? speed * dt : -speed * dt;
-        if (reverse) {
-          if (translation >= to) translation = from + (translation - to);
-        } else if (translation <= to) {
-          translation = from + (translation - to);
-        }
-        track.style.transform = `translate3d(${translation}px, 0, 0)`;
-      }
-      lastTime = time;
-      raf = requestAnimationFrame(frame);
+    function layout() {
+      track.classList.remove('is-ready');
+      track.replaceChildren();
+      const first = buildGroup();
+      const second = first.cloneNode(true);
+      second.setAttribute('aria-hidden', 'true');
+      track.append(first, second);
+
+      const shift = first.offsetWidth;
+      track.style.setProperty('--marquee-shift', `${shift}px`);
+      track.style.setProperty('--marquee-duration', `${Math.max(shift / 80, 14)}s`);
+
+      if (!reduce) requestAnimationFrame(() => track.classList.add('is-ready'));
     }
 
-    raf = requestAnimationFrame(frame);
-    addEventListener('resize', () => { translation = 0; }, { passive: true });
+    layout();
+    if (document.fonts?.ready) document.fonts.ready.then(layout);
+    addEventListener('resize', layout, { passive: true });
   })();
 
   (function initFocusReveal() {
