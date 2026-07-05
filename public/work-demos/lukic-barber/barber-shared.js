@@ -744,7 +744,7 @@ function bookingModalHtml() {
     <div class="book-modal__panel" role="dialog" aria-modal="true" aria-labelledby="bookModalTitle">
       <button type="button" class="book-modal__close" data-close-book aria-label="Zatvori">×</button>
       <h2 class="book-modal__title" id="bookModalTitle">Zakaži termin</h2>
-      <p class="book-modal__lead">Izaberite uslugu, datum i vreme ispod.</p>
+      <p class="book-modal__lead">Usluga, datum i vreme — sve na jednom mestu.</p>
 
       <form id="bookModalForm" novalidate>
         <div class="book-picker" data-booking-picker>
