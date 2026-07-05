@@ -114,13 +114,13 @@ export const CASE_STUDIES: CaseStudyContent[] = [
     ctaSubtext: "Let's build the experience that gets you there.",
   },
   {
-    slug: 'fade-co',
-    name: 'Fade & Co.',
+    slug: 'lukic-barber',
+    name: 'Lukić Barber',
     accent: '#C8923E',
     tagline: 'Barbershop · Branding · Web · 2026',
     intro:
-      'A premium barbershop in Surrey needed a digital presence as sharp as their fades. We built a scroll-driven homepage demo that feels alive from the first frame — and converts browsers into booked chairs.',
-    liveUrl: '/work-demos/fade-co/',
+      'Premium berbernica u Beogradu zaslužila je digitalni identitet oštar kao njihovi fadeovi. Izgradili smo scroll homepage demo koji oživljava od prvog kadra — i pretvara posetioce u rezervisane termine.',
+    liveUrl: '/work-demos/lukic-barber/',
     meta: [
       { label: 'Role', value: 'Identity · Web · Build' },
       { label: 'Timeline', value: '2026 · 6 weeks' },
@@ -130,19 +130,19 @@ export const CASE_STUDIES: CaseStudyContent[] = [
     overview: {
       heading: 'Sharp cuts,\ndialed-in digital.',
       paragraphs: [
-        'Fade & Co. had the craft and the clientele — but their online presence didn\'t match the chair experience. Generic templates and a buried booking flow meant new customers bounced before they saw the work.',
-        'We designed a homepage that leads with motion: a scroll-scrub hero that walks visitors through the cut, then hands them off to pricing, gallery and a one-tap booking form.',
+        'Lukić Barber had the craft and the clientele — but their online presence didn\'t match the chair experience. Generic templates and a buried booking flow meant new customers bounced before they saw the work.',
+        'We designed a Serbian-language homepage that leads with motion: a scroll-scrub hero, horizontal review marquee, pricing and a one-tap booking form.',
       ],
     },
     challenge: {
       heading: 'Make a local barbershop\nfeel unmistakably premium.',
-      body: 'Competing on price wasn\'t the play — Fade & Co. wins on precision, atmosphere and consistency. The site had to communicate that in seconds and make booking feel as easy as walking in.',
+      body: 'Competing on price wasn\'t the play — Lukić Barber wins on precision, atmosphere and consistency. The site had to communicate that in seconds and make booking feel as easy as walking in.',
     },
     approach: [
       {
         no: '01',
         title: 'A brand that feels premium',
-        body: 'Brass accents, Oswald display type and a dark, warm palette — positioning Fade & Co. as Surrey\'s chair of choice, not another strip-mall trim.',
+        body: 'Brass accents, Oswald display type and a dark, warm palette — positioning Lukić Barber as Belgrade\'s chair of choice.',
       },
       {
         no: '02',
@@ -152,32 +152,32 @@ export const CASE_STUDIES: CaseStudyContent[] = [
       {
         no: '03',
         title: 'Conversion-first booking',
-        body: 'Clear service tiers, social proof and a frictionless booking form so walk-ins and online bookings both feel effortless.',
+        body: 'Clear service tiers, social proof and a frictionless booking form in Serbian so walk-ins and online bookings both feel effortless.',
       },
       {
         no: '04',
         title: 'Work that sells the craft',
-        body: 'A bento gallery and testimonial wall that let the fades, line-ups and hot-towel finishes do the talking.',
+        body: 'A bento gallery and horizontally scrolling testimonials that let the fades, line-ups and hot-towel finishes do the talking.',
       },
     ],
     gallery: [
       {
-        src: '/work-demos/fade-co/hero-poster.jpg',
+        src: '/work-demos/lukic-barber/hero-poster.jpg',
         label: 'Homepage · scroll hero',
-        alt: 'Fade & Co. homepage hero',
+        alt: 'Lukić Barber homepage hero',
       },
       {
-        src: '/work-demos/fade-co/img/shot-01.jpg',
+        src: '/work-demos/lukic-barber/img/shot-01.jpg',
         label: 'The work',
-        alt: 'Fade & Co. gallery section',
+        alt: 'Lukić Barber gallery section',
       },
       {
-        src: '/work-demos/fade-co/img/shot-08.jpg',
-        label: 'Book the chair',
-        alt: 'Fade & Co. booking section',
+        src: '/work-demos/lukic-barber/img/shot-08.jpg',
+        label: 'Booking',
+        alt: 'Lukić Barber booking section',
       },
     ],
-    gallerySiteUrl: 'fadeandco.com',
+    gallerySiteUrl: 'lukicbarber.rs',
     palette: [
       { name: 'Ink', hex: '#0C0B0A' },
       { name: 'Surface', hex: '#14110E' },
@@ -198,10 +198,10 @@ export const CASE_STUDIES: CaseStudyContent[] = [
       ],
       quote: {
         text: 'The scroll hero stopped people in their tracks — bookings jumped the week we launched. It finally feels like our shop.',
-        attribution: 'Owner, Fade & Co.',
+        attribution: 'Owner, Lukić Barber',
       },
     },
-    coverImage: '/work-demos/fade-co/hero-poster.jpg',
+    coverImage: '/work-demos/lukic-barber/hero-poster.jpg',
     ctaHeading: 'Want a homepage that moves?',
     ctaSubtext: "Let's build the scroll experience your brand deserves.",
   },

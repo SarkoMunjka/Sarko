@@ -216,10 +216,10 @@ export const sr: Translations = {
       blurb:
         'Smelo, razigrano e-commerce iskustvo za DTC brend čarapa — od identiteta do prodavnice koja konvertuje i Nike kolaboracije.',
     },
-    'fade-co': {
+    'lukic-barber': {
       category: 'Berbernica · Web',
       blurb:
-        'Premium berbernica u Surreyju — scroll-scrub hero, meni usluga i tok rezervacije oštar kao rezovi.',
+        'Premium berbernica u Beogradu — scroll-scrub hero, cenovnik i tok rezervacije oštar kao rezovi.',
     },
     novaframe: {
       category: 'Svadbeni film · Web',
