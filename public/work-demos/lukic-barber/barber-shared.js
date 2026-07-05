@@ -26,6 +26,7 @@ const DEFAULT_SETTINGS = {
     { id: 'peskiri', name: 'Brijanje sa vrućim peškirom', durationMinutes: 45, priceRsd: 3200 },
   ],
   blockedDates: [],
+  blockedSlots: {},
 }
 
 function readJson(key, fallback) {
@@ -42,7 +43,15 @@ function writeJson(key, value) {
 }
 
 export function getDemoSettings() {
-  return readJson(DEMO_SETTINGS_KEY, structuredClone(DEFAULT_SETTINGS))
+  const stored = readJson(DEMO_SETTINGS_KEY, null)
+  if (!stored) return structuredClone(DEFAULT_SETTINGS)
+  return {
+    ...structuredClone(DEFAULT_SETTINGS),
+    ...stored,
+    schedule: { ...DEFAULT_SETTINGS.schedule, ...stored.schedule },
+    blockedSlots: stored.blockedSlots || {},
+    blockedDates: stored.blockedDates || [],
+  }
 }
 
 export function saveDemoSettings(settings) {
@@ -128,8 +137,9 @@ export function getAvailability(date, serviceId) {
   const duration = service.durationMinutes
 
   const activeBookings = readDemoBookings().filter(
-    (b) => b.date === date && b.status === 'confirmed',
+    (b) => b.date === date && (b.status === 'confirmed' || b.status === 'pending'),
   )
+  const adminBlocked = new Set(settings.blockedSlots?.[date] || [])
   const seedTaken = new Set(getSeedTakenSlots(date, serviceId))
 
   const slots = []
@@ -147,7 +157,7 @@ export function getAvailability(date, serviceId) {
     const takenByBooking = activeBookings.some((booking) =>
       rangesOverlap(start, duration, timeToMinutes(booking.startTime), booking.durationMinutes),
     )
-    const taken = takenByBooking || seedTaken.has(time)
+    const taken = takenByBooking || adminBlocked.has(time) || seedTaken.has(time)
     slots.push({ time, available: !taken })
   }
 
@@ -178,7 +188,7 @@ export function createDemoBooking(payload) {
     name: payload.name,
     email: payload.email || '',
     phone: payload.phone,
-    status: 'confirmed',
+    status: 'pending',
     createdAt: new Date().toISOString(),
   }
 
@@ -200,6 +210,75 @@ export function cancelDemoBooking(id) {
   const booking = list.find((b) => b.id === id)
   if (booking) booking.status = 'cancelled'
   writeDemoBookings(list)
+}
+
+export function confirmDemoBooking(id) {
+  const list = readDemoBookings()
+  const booking = list.find((b) => b.id === id)
+  if (booking && booking.status === 'pending') booking.status = 'confirmed'
+  writeDemoBookings(list)
+}
+
+export function deleteDemoBooking(id) {
+  writeDemoBookings(readDemoBookings().filter((b) => b.id !== id))
+}
+
+export function getAdminSlotGrid(date) {
+  const settings = getDemoSettings()
+  if (settings.blockedDates.includes(date)) return []
+
+  const daySchedule = settings.schedule[dayKeyFromDate(date)]
+  if (!daySchedule?.enabled) return []
+
+  const interval = settings.slotIntervalMinutes
+  const open = timeToMinutes(daySchedule.open)
+  const close = timeToMinutes(daySchedule.close)
+  const blocked = new Set(settings.blockedSlots?.[date] || [])
+  const bookings = readDemoBookings().filter(
+    (b) => b.date === date && (b.status === 'pending' || b.status === 'confirmed'),
+  )
+
+  const slots = []
+  for (let start = open; start + interval <= close; start += interval) {
+    const time = minutesToTime(start)
+    const booked = bookings.some((b) =>
+      rangesOverlap(start, interval, timeToMinutes(b.startTime), b.durationMinutes),
+    )
+    let status = 'open'
+    if (booked) status = 'booked'
+    else if (blocked.has(time)) status = 'blocked'
+    slots.push({ time, status })
+  }
+  return slots
+}
+
+export function toggleAdminSlot(date, time) {
+  const settings = getDemoSettings()
+  const grid = getAdminSlotGrid(date)
+  const slot = grid.find((s) => s.time === time)
+  if (!slot || slot.status === 'booked') return settings
+
+  if (!settings.blockedSlots) settings.blockedSlots = {}
+  const list = settings.blockedSlots[date] || []
+
+  if (slot.status === 'blocked') {
+    settings.blockedSlots[date] = list.filter((t) => t !== time)
+    if (!settings.blockedSlots[date].length) delete settings.blockedSlots[date]
+  } else {
+    settings.blockedSlots[date] = [...list, time]
+  }
+
+  saveDemoSettings(settings)
+  return getDemoSettings()
+}
+
+export function toggleBlockedDate(date) {
+  const settings = getDemoSettings()
+  const idx = settings.blockedDates.indexOf(date)
+  if (idx >= 0) settings.blockedDates.splice(idx, 1)
+  else settings.blockedDates.push(date)
+  saveDemoSettings(settings)
+  return getDemoSettings()
 }
 
 export const barberApi = {
@@ -244,6 +323,24 @@ export const barberApi = {
     if (!getAdminToken()) throw new Error('Niste prijavljeni.')
     cancelDemoBooking(id)
     return { ok: true }
+  },
+  confirmBooking: async (id) => {
+    if (!getAdminToken()) throw new Error('Niste prijavljeni.')
+    confirmDemoBooking(id)
+    return { ok: true }
+  },
+  deleteBooking: async (id) => {
+    if (!getAdminToken()) throw new Error('Niste prijavljeni.')
+    deleteDemoBooking(id)
+    return { ok: true }
+  },
+  toggleSlot: async (date, time) => {
+    if (!getAdminToken()) throw new Error('Niste prijavljeni.')
+    return { settings: toggleAdminSlot(date, time) }
+  },
+  toggleDateBlock: async (date) => {
+    if (!getAdminToken()) throw new Error('Niste prijavljeni.')
+    return { settings: toggleBlockedDate(date) }
   },
 }
 
@@ -330,10 +427,14 @@ function renderServiceGrid(host, services, selectedId, onSelect) {
   })
 }
 
-function renderCalendar(host, viewYear, viewMonth, selectedDate, onSelectDate, onMonthChange) {
+function renderCalendar(host, viewYear, viewMonth, selectedDate, onSelectDate, onMonthChange, options = {}) {
+  const { adminMode = false, blockedDates = [] } = options
+  const settings = getDemoSettings()
+  const blockedSet = new Set(blockedDates.length ? blockedDates : settings.blockedDates || [])
   const first = new Date(viewYear, viewMonth, 1)
   const startOffset = first.getDay()
   const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate()
+  const today = minBookableDate()
 
   let daysHtml = ''
   for (let i = 0; i < startOffset; i++) {
@@ -341,16 +442,23 @@ function renderCalendar(host, viewYear, viewMonth, selectedDate, onSelectDate, o
   }
   for (let d = 1; d <= daysInMonth; d++) {
     const iso = dateToIso(viewYear, viewMonth, d)
-    const bookable = isDateBookable(iso)
+    const daySchedule = settings.schedule[dayKeyFromDate(iso)]
+    const isBlockedDay = blockedSet.has(iso)
+    const bookable = adminMode
+      ? daySchedule?.enabled && iso >= today
+      : isDateBookable(iso)
     const isSelected = iso === selectedDate
     const cls = [
       'book-cal__day',
       isSelected ? 'is-selected' : '',
-      !bookable ? 'is-disabled' : '',
+      isBlockedDay ? 'is-blocked-day' : '',
+      !bookable && !adminMode ? 'is-disabled' : '',
+      adminMode && !daySchedule?.enabled ? 'is-disabled' : '',
     ]
       .filter(Boolean)
       .join(' ')
-    daysHtml += `<button type="button" class="${cls}" data-date="${iso}" ${bookable ? '' : 'disabled'}>${d}</button>`
+    const disabled = adminMode ? !daySchedule?.enabled || iso < today : !bookable
+    daysHtml += `<button type="button" class="${cls}" data-date="${iso}" ${disabled ? 'disabled' : ''}>${d}</button>`
   }
 
   host.innerHTML = `
@@ -373,9 +481,87 @@ function renderCalendar(host, viewYear, viewMonth, selectedDate, onSelectDate, o
     onMonthChange(d.getFullYear(), d.getMonth())
   })
 
-  host.querySelectorAll('.book-cal__day:not(.is-empty):not(.is-disabled)').forEach((btn) => {
+  host.querySelectorAll('.book-cal__day:not(.is-empty):not(:disabled)').forEach((btn) => {
     btn.addEventListener('click', () => onSelectDate(btn.dataset.date))
   })
+}
+
+export function mountAdminAvailability(root, callbacks = {}) {
+  const calendarHost = root.querySelector('[data-admin-cal]')
+  const slotsHost = root.querySelector('[data-admin-slots]')
+  const dateLabel = root.querySelector('[data-admin-date-label]')
+  const blockDayBtn = root.querySelector('[data-block-day]')
+
+  const state = {
+    date: minBookableDate(),
+    viewYear: new Date().getFullYear(),
+    viewMonth: new Date().getMonth(),
+  }
+
+  function paintCalendar() {
+    const settings = getDemoSettings()
+    renderCalendar(
+      calendarHost,
+      state.viewYear,
+      state.viewMonth,
+      state.date,
+      (iso) => {
+        state.date = iso
+        paintCalendar()
+        paintSlots()
+        callbacks.onChange?.(state.date)
+      },
+      (y, m) => {
+        state.viewYear = y
+        state.viewMonth = m
+        paintCalendar()
+      },
+      { adminMode: true, blockedDates: settings.blockedDates },
+    )
+
+    if (dateLabel) dateLabel.textContent = formatDateSr(state.date)
+    if (blockDayBtn) {
+      const blocked = settings.blockedDates.includes(state.date)
+      blockDayBtn.textContent = blocked ? 'Otključaj dan' : 'Blokiraj ceo dan'
+      blockDayBtn.classList.toggle('is-danger', !blocked)
+    }
+  }
+
+  function paintSlots() {
+    const slots = getAdminSlotGrid(state.date)
+    if (!slots.length) {
+      slotsHost.innerHTML = '<p class="admin-hint">Dan nije dostupan ili je blokiran.</p>'
+      return
+    }
+    slotsHost.innerHTML = slots
+      .map((slot) => {
+        const cls = ['slot', 'slot--admin', `slot--${slot.status}`].join(' ')
+        const disabled = slot.status === 'booked' ? 'disabled' : ''
+        return `<button type="button" class="${cls}" data-time="${slot.time}" ${disabled}>${slot.time}</button>`
+      })
+      .join('')
+
+    slotsHost.querySelectorAll('.slot--admin:not([disabled])').forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        await barberApi.toggleSlot(state.date, btn.dataset.time)
+        paintCalendar()
+        paintSlots()
+      })
+    })
+  }
+
+  if (blockDayBtn) {
+    blockDayBtn.addEventListener('click', async () => {
+      await barberApi.toggleDateBlock(state.date)
+      paintCalendar()
+      paintSlots()
+    })
+  }
+
+  paintCalendar()
+  paintSlots()
+
+  return { refresh: () => { paintCalendar(); paintSlots() } }
 }
 
 function renderTimeSlots(host, hintEl, date, serviceId, pickedTime, onPick) {
@@ -650,7 +836,7 @@ export function initBookingModal() {
         email: document.getElementById('modalEmail').value.trim(),
         phone: document.getElementById('modalPhone').value.trim(),
       })
-      showMsg('✓ Termin je rezervisan. Javićemo vam se porukom da potvrdimo.', true)
+      showMsg('✓ Zahtev je poslat. Javićemo vam se kada potvrdimo termin.', true)
       step2.hidden = true
     } catch (err) {
       showMsg(err.message, false)

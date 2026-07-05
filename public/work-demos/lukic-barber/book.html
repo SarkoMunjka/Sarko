@@ -124,7 +124,7 @@
           email: form.email.value.trim(),
           phone: form.phone.value.trim(),
         })
-        showMsg('✓ Termin je rezervisan. Javićemo vam se porukom da potvrdimo.', true)
+        showMsg('✓ Zahtev je poslat. Javićemo vam se kada potvrdimo termin.', true)
         step2.hidden = true
       } catch (err) {
         showMsg(err.message, false)
