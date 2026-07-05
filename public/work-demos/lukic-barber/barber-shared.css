@@ -110,83 +110,217 @@ h1,h2,h3,.display { font-family: "Oswald", sans-serif; font-weight: 600; line-he
 .book-modal__backdrop {
   position: absolute;
   inset: 0;
-  background: rgba(8, 7, 6, 0.84);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: rgba(8, 7, 6, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 .book-modal__panel {
   position: relative;
-  width: min(520px, 100%);
-  max-height: min(92vh, 820px);
+  width: min(580px, 100%);
+  max-height: min(94vh, 900px);
   overflow-y: auto;
-  background: var(--surface);
-  border: 1px solid var(--line-strong);
-  border-radius: 20px;
-  padding: 32px 28px 28px;
-  box-shadow: 0 28px 90px rgba(0, 0, 0, 0.55);
+  background: #121110;
+  border: 1px solid rgba(255, 240, 222, 0.1);
+  border-radius: 16px;
+  padding: 36px 32px 32px;
+  box-shadow: 0 32px 100px rgba(0, 0, 0, 0.65);
 }
 .book-modal__close {
   position: absolute;
-  top: 14px;
-  right: 14px;
-  width: 36px;
-  height: 36px;
+  top: 16px;
+  right: 16px;
+  width: 34px;
+  height: 34px;
   border: 1px solid var(--line);
   border-radius: 999px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+  z-index: 2;
+}
+.book-modal__close:hover { border-color: var(--accent); color: var(--text); }
+.book-modal__title {
+  font-family: "Oswald", sans-serif;
+  font-size: clamp(1.75rem, 4.5vw, 2.15rem);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  line-height: 1.1;
+}
+.book-modal__lead {
+  color: var(--muted);
+  font-size: 14px;
+  margin-bottom: 28px;
+  line-height: 1.5;
+}
+.book-section-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+.book-section-label--spaced { margin-top: 28px; }
+
+/* Service grid — kao na referenci */
+.book-services {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+.book-service-btn {
+  min-height: 54px;
+  padding: 12px 10px;
+  border: 1px solid rgba(255, 240, 222, 0.14);
+  border-radius: 10px;
+  background: transparent;
+  color: var(--text);
+  font: 500 13px/1.35 "Inter", sans-serif;
+  text-align: center;
+  cursor: pointer;
+  transition: background 0.2s var(--ease), border-color 0.2s, color 0.2s, transform 0.2s;
+}
+.book-service-btn:hover:not(.is-selected) {
+  border-color: rgba(200, 146, 62, 0.45);
+}
+.book-service-btn.is-selected {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #1a1206;
+  font-weight: 600;
+}
+
+/* Custom kalendar */
+.book-cal { margin-top: 4px; }
+.book-cal__head {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  margin-bottom: 18px;
+}
+.book-cal__month {
+  font-family: "Oswald", sans-serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text);
+  min-width: 120px;
+  text-align: center;
+}
+.book-cal__nav {
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 8px;
   background: transparent;
   color: var(--muted);
   font-size: 22px;
   line-height: 1;
   cursor: pointer;
-  transition: border-color 0.2s, color 0.2s;
+  transition: color 0.2s, background 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.book-modal__close:hover { border-color: var(--accent); color: var(--text); }
-.book-modal__eyebrow {
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--accent);
+.book-cal__nav:hover {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.05);
+}
+.book-cal__weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
   margin-bottom: 10px;
 }
-.book-modal__title {
-  font-family: "Oswald", sans-serif;
-  font-size: clamp(1.6rem, 4vw, 2rem);
-  margin-bottom: 8px;
-}
-.book-modal__lead {
+.book-cal__weekday {
+  text-align: center;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
   color: var(--muted);
-  font-size: 14px;
-  margin-bottom: 22px;
+  padding: 4px 0;
 }
+.book-cal__days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+.book-cal__day {
+  aspect-ratio: 1;
+  max-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--text);
+  font: 500 14px "Inter", sans-serif;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s;
+}
+.book-cal__day:hover:not(.is-disabled):not(.is-selected):not(.is-empty) {
+  background: rgba(255, 255, 255, 0.06);
+}
+.book-cal__day.is-selected {
+  background: var(--accent);
+  color: #1a1206;
+  font-weight: 600;
+}
+.book-cal__day.is-disabled {
+  opacity: 0.22;
+  cursor: not-allowed;
+}
+.book-cal__day.is-empty {
+  pointer-events: none;
+  visibility: hidden;
+}
+
+.book-time-block[hidden] { display: none !important; }
+.book-time-block { margin-top: 4px; }
+.book-slots { margin-top: 10px; }
+
 .book-modal__hint {
   color: var(--muted);
   font-size: 13px;
   margin-bottom: 4px;
 }
 .book-modal__step2 {
-  margin-top: 8px;
-  padding-top: 22px;
-  border-top: 1px solid var(--line);
+  margin-top: 4px;
+  padding-top: 8px;
 }
 .book-modal__step2[hidden] { display: none !important; }
-.book-modal__step-label {
-  font-family: "Oswald", sans-serif;
-  font-size: 1.1rem;
-  margin-bottom: 14px;
-  color: #e8dfd2;
+.book-modal__submit { width: 100%; margin-top: 8px; }
+.book-modal__panel .field { margin-bottom: 14px; }
+.book-modal__panel .field label {
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--muted);
 }
-.book-modal__submit { width: 100%; margin-top: 4px; }
-.book-modal__panel .field input,
-.book-modal__panel .field select {
+.book-modal__panel .field input {
   width: 100%;
-  -webkit-appearance: none;
-  appearance: none;
+  background: #0c0b0a;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 14px 15px;
+  color: var(--text);
+  font: 15px "Inter", sans-serif;
 }
-.book-modal__panel input[type="date"] {
-  color-scheme: dark;
+.book-modal__panel .field input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-soft);
 }
-.book-modal__panel input[type="date"]::-webkit-calendar-picker-indicator {
-  filter: invert(0.8);
-  cursor: pointer;
+
+@media (max-width: 520px) {
+  .book-modal__panel { padding: 28px 20px 24px; }
+  .book-services { grid-template-columns: repeat(2, 1fr); }
+  .book-cal__head { gap: 16px; }
 }

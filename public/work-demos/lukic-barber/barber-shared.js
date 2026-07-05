@@ -18,9 +18,12 @@ const DEFAULT_SETTINGS = {
     sun: { enabled: false, open: '10:00', close: '16:00' },
   },
   services: [
-    { id: 'sisanje', name: 'Šišanje', durationMinutes: 30, priceRsd: 2500 },
+    { id: 'sisanje', name: 'Klasično šišanje', durationMinutes: 30, priceRsd: 2500 },
+    { id: 'brada', name: 'Sređivanje brade', durationMinutes: 30, priceRsd: 2200 },
     { id: 'sisanje-brada', name: 'Šišanje + brada', durationMinutes: 45, priceRsd: 3500 },
-    { id: 'komplet', name: 'Komplet', durationMinutes: 60, priceRsd: 5000 },
+    { id: 'komplet', name: 'Kompletan paket', durationMinutes: 60, priceRsd: 5000 },
+    { id: 'stil', name: 'Stilizovanje kose', durationMinutes: 20, priceRsd: 1500 },
+    { id: 'peskiri', name: 'Brijanje sa vrućim peškirom', durationMinutes: 45, priceRsd: 3200 },
   ],
   blockedDates: [],
 }
@@ -298,35 +301,246 @@ export function formatDateSr(dateStr) {
   }
 }
 
+const MONTH_LABELS = ['JAN', 'FEB', 'MAR', 'APR', 'MAJ', 'JUN', 'JUL', 'AVG', 'SEP', 'OKT', 'NOV', 'DEC']
+const WEEKDAY_LABELS = ['NE', 'PO', 'UT', 'SR', 'ČE', 'PE', 'SU']
+
+function dateToIso(y, m, d) {
+  return `${y}-${String(m + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`
+}
+
+function isDateBookable(iso) {
+  const settings = getDemoSettings()
+  if (settings.blockedDates.includes(iso)) return false
+  const daySchedule = settings.schedule[dayKeyFromDate(iso)]
+  if (!daySchedule?.enabled) return false
+  const today = minBookableDate()
+  return iso >= today
+}
+
+function renderServiceGrid(host, services, selectedId, onSelect) {
+  host.innerHTML = services
+    .map(
+      (s) =>
+        `<button type="button" class="book-service-btn${s.id === selectedId ? ' is-selected' : ''}" data-service-id="${s.id}">${s.name}</button>`,
+    )
+    .join('')
+
+  host.querySelectorAll('.book-service-btn').forEach((btn) => {
+    btn.addEventListener('click', () => onSelect(btn.dataset.serviceId))
+  })
+}
+
+function renderCalendar(host, viewYear, viewMonth, selectedDate, onSelectDate, onMonthChange) {
+  const first = new Date(viewYear, viewMonth, 1)
+  const startOffset = first.getDay()
+  const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate()
+
+  let daysHtml = ''
+  for (let i = 0; i < startOffset; i++) {
+    daysHtml += '<span class="book-cal__day is-empty" aria-hidden="true"></span>'
+  }
+  for (let d = 1; d <= daysInMonth; d++) {
+    const iso = dateToIso(viewYear, viewMonth, d)
+    const bookable = isDateBookable(iso)
+    const isSelected = iso === selectedDate
+    const cls = [
+      'book-cal__day',
+      isSelected ? 'is-selected' : '',
+      !bookable ? 'is-disabled' : '',
+    ]
+      .filter(Boolean)
+      .join(' ')
+    daysHtml += `<button type="button" class="${cls}" data-date="${iso}" ${bookable ? '' : 'disabled'}>${d}</button>`
+  }
+
+  host.innerHTML = `
+    <div class="book-cal__head">
+      <button type="button" class="book-cal__nav" data-cal-prev aria-label="Prethodni mesec">‹</button>
+      <span class="book-cal__month">${MONTH_LABELS[viewMonth]} ${viewYear}</span>
+      <button type="button" class="book-cal__nav" data-cal-next aria-label="Sledeći mesec">›</button>
+    </div>
+    <div class="book-cal__weekdays">
+      ${WEEKDAY_LABELS.map((d) => `<span class="book-cal__weekday">${d}</span>`).join('')}
+    </div>
+    <div class="book-cal__days">${daysHtml}</div>`
+
+  host.querySelector('[data-cal-prev]').addEventListener('click', () => {
+    const d = new Date(viewYear, viewMonth - 1, 1)
+    onMonthChange(d.getFullYear(), d.getMonth())
+  })
+  host.querySelector('[data-cal-next]').addEventListener('click', () => {
+    const d = new Date(viewYear, viewMonth + 1, 1)
+    onMonthChange(d.getFullYear(), d.getMonth())
+  })
+
+  host.querySelectorAll('.book-cal__day:not(.is-empty):not(.is-disabled)').forEach((btn) => {
+    btn.addEventListener('click', () => onSelectDate(btn.dataset.date))
+  })
+}
+
+function renderTimeSlots(host, hintEl, date, serviceId, pickedTime, onPick) {
+  if (!date || !serviceId) {
+    hintEl.textContent = ''
+    host.innerHTML = ''
+    return
+  }
+
+  const slots = getAvailability(date, serviceId)
+  if (!slots.length) {
+    hintEl.textContent = 'Nema dostupnih termina za ovaj dan.'
+    host.innerHTML = ''
+    return
+  }
+
+  hintEl.textContent = ''
+  host.innerHTML = slots
+    .map((slot) => {
+      const cls = ['slot', !slot.available ? 'taken' : '', slot.time === pickedTime ? 'picked' : '']
+        .filter(Boolean)
+        .join(' ')
+      return `<button type="button" class="${cls}" data-time="${slot.time}" ${slot.available ? '' : 'disabled'}>${slot.time}</button>`
+    })
+    .join('')
+
+  host.querySelectorAll('.slot:not(.taken)').forEach((btn) => {
+    btn.addEventListener('click', () => onPick(btn.dataset.time))
+  })
+}
+
+export function wireBookingPicker(root, callbacks = {}) {
+  const servicesHost = root.querySelector('[data-services]')
+  const calendarHost = root.querySelector('[data-calendar]')
+  const timeBlock = root.querySelector('[data-time-block]')
+  const slotsHost = root.querySelector('[data-slots]')
+  const slotsHint = root.querySelector('[data-slots-hint]')
+
+  const state = {
+    serviceId: '',
+    date: '',
+    time: '',
+    viewYear: new Date().getFullYear(),
+    viewMonth: new Date().getMonth(),
+    services: [],
+  }
+
+  function emitChange() {
+    callbacks.onChange?.({ ...state })
+  }
+
+  function paintServices() {
+    renderServiceGrid(servicesHost, state.services, state.serviceId, (id) => {
+      state.serviceId = id
+      state.time = ''
+      paintServices()
+      paintSlots()
+      emitChange()
+    })
+  }
+
+  function paintCalendar() {
+    renderCalendar(
+      calendarHost,
+      state.viewYear,
+      state.viewMonth,
+      state.date,
+      (iso) => {
+        state.date = iso
+        state.time = ''
+        paintCalendar()
+        paintSlots()
+        emitChange()
+      },
+      (y, m) => {
+        state.viewYear = y
+        state.viewMonth = m
+        paintCalendar()
+      },
+    )
+  }
+
+  function paintSlots() {
+    const ready = state.serviceId && state.date
+    if (timeBlock) timeBlock.hidden = !ready
+    if (!ready) {
+      if (slotsHost) slotsHost.innerHTML = ''
+      if (slotsHint) slotsHint.textContent = ''
+      return
+    }
+    renderTimeSlots(slotsHost, slotsHint, state.date, state.serviceId, state.time, (time) => {
+      state.time = time
+      paintSlots()
+      emitChange()
+    })
+  }
+
+  return {
+    async load(preselectService = '') {
+      const settings = await barberApi.getSettings()
+      state.services = settings.services
+      if (preselectService && state.services.some((s) => s.id === preselectService)) {
+        state.serviceId = preselectService
+      }
+      const today = new Date()
+      state.viewYear = today.getFullYear()
+      state.viewMonth = today.getMonth()
+      paintServices()
+      paintCalendar()
+      paintSlots()
+      emitChange()
+      return settings
+    },
+    reset() {
+      state.serviceId = ''
+      state.date = ''
+      state.time = ''
+      const today = new Date()
+      state.viewYear = today.getFullYear()
+      state.viewMonth = today.getMonth()
+      paintServices()
+      paintCalendar()
+      paintSlots()
+      emitChange()
+    },
+    setService(id) {
+      if (state.services.some((s) => s.id === id)) {
+        state.serviceId = id
+        state.time = ''
+        paintServices()
+        paintSlots()
+        emitChange()
+      }
+    },
+    getState: () => ({ ...state }),
+    refreshSlots: paintSlots,
+  }
+}
+
 function bookingModalHtml() {
   return `
   <div class="book-modal" id="bookModal" hidden aria-hidden="true">
     <div class="book-modal__backdrop" data-close-book></div>
     <div class="book-modal__panel" role="dialog" aria-modal="true" aria-labelledby="bookModalTitle">
       <button type="button" class="book-modal__close" data-close-book aria-label="Zatvori">×</button>
-      <p class="book-modal__eyebrow">Rezervacija</p>
-      <h2 class="book-modal__title" id="bookModalTitle">Zakažite termin</h2>
-      <p class="book-modal__lead">Izaberite uslugu i datum, zatim slobodan termin.</p>
+      <h2 class="book-modal__title" id="bookModalTitle">Zakaži termin</h2>
+      <p class="book-modal__lead">Izaberite uslugu, datum i vreme ispod.</p>
 
       <form id="bookModalForm" novalidate>
-        <div class="book-modal__step1">
-          <div class="field">
-            <label for="modalService">Usluga</label>
-            <select id="modalService" required></select>
-          </div>
-          <div class="field">
-            <label for="modalDate">Datum</label>
-            <input id="modalDate" type="date" required />
-          </div>
-          <div class="field">
-            <label>Termin</label>
-            <p class="book-modal__hint" id="modalSlotsHint">Izaberite uslugu i datum.</p>
-            <div class="slots" id="modalSlots"></div>
+        <div class="book-picker" data-booking-picker>
+          <p class="book-section-label">Usluga</p>
+          <div class="book-services" data-services></div>
+
+          <p class="book-section-label book-section-label--spaced">Datum</p>
+          <div class="book-cal" data-calendar></div>
+
+          <div class="book-time-block" data-time-block hidden>
+            <p class="book-section-label book-section-label--spaced">Vreme</p>
+            <p class="book-modal__hint" data-slots-hint></p>
+            <div class="slots book-slots" data-slots></div>
           </div>
         </div>
 
         <div class="book-modal__step2 focus-in" id="modalStep2" hidden>
-          <p class="book-modal__step-label">Vaši podaci</p>
+          <p class="book-section-label book-section-label--spaced">Vaši podaci</p>
           <div class="field">
             <label for="modalEmail">Email</label>
             <input id="modalEmail" type="email" placeholder="vas@email.com" required />
@@ -355,19 +569,12 @@ export function initBookingModal() {
 
   const modal = document.getElementById('bookModal')
   const form = document.getElementById('bookModalForm')
-  const serviceEl = document.getElementById('modalService')
-  const dateEl = document.getElementById('modalDate')
-  const slotsEl = document.getElementById('modalSlots')
-  const slotsHint = document.getElementById('modalSlotsHint')
   const step2 = document.getElementById('modalStep2')
   const msgEl = document.getElementById('modalMsg')
   const submitBtn = document.getElementById('modalSubmit')
+  const pickerRoot = modal.querySelector('[data-booking-picker]')
 
-  let pickedTime = ''
-  let settings = null
-
-  dateEl.min = minBookableDate()
-  dateEl.value = dateEl.min
+  let picker = null
 
   function showMsg(text, ok) {
     msgEl.textContent = text
@@ -385,16 +592,25 @@ export function initBookingModal() {
     document.body.style.overflow = ''
   }
 
+  function maybeRevealStep2({ serviceId, date }) {
+    if (serviceId && date) revealElement(step2)
+    else {
+      step2.hidden = true
+      step2.classList.remove('is-visible')
+    }
+  }
+
+  picker = wireBookingPicker(pickerRoot, {
+    onChange: (state) => maybeRevealStep2(state),
+  })
+
   function resetModal() {
-    pickedTime = ''
     step2.hidden = true
     step2.classList.remove('is-visible')
-    slotsEl.innerHTML = ''
-    slotsHint.textContent = 'Izaberite uslugu i datum.'
     clearMsg()
     form.reset()
-    dateEl.value = dateEl.min
     submitBtn.disabled = false
+    picker.reset()
   }
 
   function openModal(preselectService) {
@@ -402,71 +618,7 @@ export function initBookingModal() {
     modal.hidden = false
     modal.setAttribute('aria-hidden', 'false')
     document.body.style.overflow = 'hidden'
-
-    if (!settings) return
-    if (preselectService && settings.services.some((s) => s.id === preselectService)) {
-      serviceEl.value = preselectService
-    }
-    renderSlots()
-    serviceEl.focus()
-  }
-
-  async function loadSettings() {
-    settings = await barberApi.getSettings()
-    serviceEl.innerHTML = settings.services
-      .map(
-        (s) =>
-          `<option value="${s.id}">${s.name} — ${s.priceRsd.toLocaleString('sr-RS')} RSD · ${s.durationMinutes} min</option>`,
-      )
-      .join('')
-  }
-
-  function maybeRevealStep2() {
-    const ready = serviceEl.value && dateEl.value
-    if (!ready) {
-      step2.hidden = true
-      step2.classList.remove('is-visible')
-      return
-    }
-    revealElement(step2)
-  }
-
-  function renderSlots() {
-    pickedTime = ''
-    slotsEl.innerHTML = ''
-
-    const date = dateEl.value
-    const serviceId = serviceEl.value
-    if (!date || !serviceId) {
-      slotsHint.textContent = 'Izaberite uslugu i datum.'
-      step2.hidden = true
-      step2.classList.remove('is-visible')
-      return
-    }
-
-    maybeRevealStep2()
-
-    const slots = getAvailability(date, serviceId)
-    if (!slots.length) {
-      slotsHint.textContent = 'Nema dostupnih termina za ovaj dan.'
-      return
-    }
-
-    slotsHint.textContent = 'Kliknite slobodan termin:'
-    slotsEl.innerHTML = slots
-      .map((slot) => {
-        const cls = slot.available ? 'slot' : 'slot taken'
-        return `<button type="button" class="${cls}" data-time="${slot.time}" ${slot.available ? '' : 'disabled'}>${slot.time}</button>`
-      })
-      .join('')
-
-    slotsEl.querySelectorAll('.slot:not(.taken)').forEach((btn) => {
-      btn.addEventListener('click', () => {
-        slotsEl.querySelectorAll('.slot').forEach((b) => b.classList.remove('picked'))
-        btn.classList.add('picked')
-        pickedTime = btn.dataset.time
-      })
-    })
+    picker.load(preselectService).catch(() => {})
   }
 
   modal.querySelectorAll('[data-close-book]').forEach((el) => {
@@ -477,32 +629,32 @@ export function initBookingModal() {
     if (e.key === 'Escape' && !modal.hidden) closeModal()
   })
 
-  serviceEl.addEventListener('change', renderSlots)
-  dateEl.addEventListener('change', renderSlots)
-
   form.addEventListener('submit', async (e) => {
     e.preventDefault()
-    if (!pickedTime) {
+    const { serviceId, date, time } = picker.getState()
+    if (!serviceId || !date) {
+      showMsg('Izaberite uslugu i datum.', false)
+      return
+    }
+    if (!time) {
       showMsg('Izaberite termin pre potvrde.', false)
       return
     }
     submitBtn.disabled = true
     try {
       await barberApi.createBooking({
-        serviceId: serviceEl.value,
-        date: dateEl.value,
-        time: pickedTime,
+        serviceId,
+        date,
+        time,
         name: document.getElementById('modalName').value.trim(),
         email: document.getElementById('modalEmail').value.trim(),
         phone: document.getElementById('modalPhone').value.trim(),
       })
       showMsg('✓ Termin je rezervisan. Javićemo vam se porukom da potvrdimo.', true)
       step2.hidden = true
-      slotsEl.innerHTML = ''
-      slotsHint.textContent = 'Hvala — vidimo se u salonu.'
     } catch (err) {
       showMsg(err.message, false)
-      renderSlots()
+      picker.refreshSlots()
     } finally {
       submitBtn.disabled = false
     }
@@ -514,6 +666,4 @@ export function initBookingModal() {
       openModal(el.dataset.service || '')
     })
   })
-
-  loadSettings().catch(() => {})
 }
