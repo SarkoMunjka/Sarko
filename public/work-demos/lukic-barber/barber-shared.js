@@ -42,11 +42,16 @@ function writeJson(key, value) {
   localStorage.setItem(key, JSON.stringify(value))
 }
 
+function cloneData(obj) {
+  if (typeof structuredClone === 'function') return structuredClone(obj)
+  return JSON.parse(JSON.stringify(obj))
+}
+
 export function getDemoSettings() {
   const stored = readJson(DEMO_SETTINGS_KEY, null)
-  if (!stored) return structuredClone(DEFAULT_SETTINGS)
+  if (!stored) return cloneData(DEFAULT_SETTINGS)
   return {
-    ...structuredClone(DEFAULT_SETTINGS),
+    ...cloneData(DEFAULT_SETTINGS),
     ...stored,
     schedule: { ...DEFAULT_SETTINGS.schedule, ...stored.schedule },
     blockedSlots: stored.blockedSlots || {},
@@ -223,6 +228,13 @@ export function deleteDemoBooking(id) {
   writeDemoBookings(readDemoBookings().filter((b) => b.id !== id))
 }
 
+export function updateDemoBookingStatus(id, status) {
+  const list = readDemoBookings()
+  const booking = list.find((b) => b.id === id)
+  if (booking) booking.status = status
+  writeDemoBookings(list)
+}
+
 export function getAdminSlotGrid(date) {
   const settings = getDemoSettings()
   if (settings.blockedDates.includes(date)) return []
@@ -334,6 +346,11 @@ export const barberApi = {
     deleteDemoBooking(id)
     return { ok: true }
   },
+  updateBookingStatus: async (id, status) => {
+    if (!getAdminToken()) throw new Error('Niste prijavljeni.')
+    updateDemoBookingStatus(id, status)
+    return { ok: true }
+  },
   toggleSlot: async (date, time) => {
     if (!getAdminToken()) throw new Error('Niste prijavljeni.')
     return { settings: toggleAdminSlot(date, time) }
@@ -412,6 +429,10 @@ function isDateBookable(iso) {
   if (!daySchedule?.enabled) return false
   const today = minBookableDate()
   return iso >= today
+}
+
+function formatPriceRsd(amount) {
+  return `${Number(amount).toLocaleString('sr-Latn-RS')} RSD`
 }
 
 function renderServiceGrid(host, services, selectedId, onSelect) {
@@ -595,6 +616,7 @@ function renderTimeSlots(host, hintEl, date, serviceId, pickedTime, onPick) {
 
 export function wireBookingPicker(root, callbacks = {}) {
   const servicesHost = root.querySelector('[data-services]')
+  const priceHost = root.querySelector('[data-service-price]')
   const calendarHost = root.querySelector('[data-calendar]')
   const timeBlock = root.querySelector('[data-time-block]')
   const slotsHost = root.querySelector('[data-slots]')
@@ -613,14 +635,28 @@ export function wireBookingPicker(root, callbacks = {}) {
     callbacks.onChange?.({ ...state })
   }
 
+  function paintServicePrice() {
+    if (!priceHost) return
+    const service = state.services.find((s) => s.id === state.serviceId)
+    if (service?.priceRsd != null) {
+      priceHost.hidden = false
+      priceHost.textContent = formatPriceRsd(service.priceRsd)
+    } else {
+      priceHost.hidden = true
+      priceHost.textContent = ''
+    }
+  }
+
   function paintServices() {
     renderServiceGrid(servicesHost, state.services, state.serviceId, (id) => {
       state.serviceId = id
       state.time = ''
       paintServices()
+      paintServicePrice()
       paintSlots()
       emitChange()
     })
+    paintServicePrice()
   }
 
   function paintCalendar() {
@@ -708,12 +744,13 @@ function bookingModalHtml() {
     <div class="book-modal__panel" role="dialog" aria-modal="true" aria-labelledby="bookModalTitle">
       <button type="button" class="book-modal__close" data-close-book aria-label="Zatvori">×</button>
       <h2 class="book-modal__title" id="bookModalTitle">Zakaži termin</h2>
-      <p class="book-modal__lead">Izaberite uslugu, datum i vreme ispod.</p>
+      <p class="book-modal__lead">Usluga, datum i vreme — sve na jednom mestu.</p>
 
       <form id="bookModalForm" novalidate>
         <div class="book-picker" data-booking-picker>
           <p class="book-section-label">Usluga</p>
           <div class="book-services" data-services></div>
+          <p class="book-service-price" data-service-price hidden></p>
 
           <p class="book-section-label book-section-label--spaced">Datum</p>
           <div class="book-cal" data-calendar></div>

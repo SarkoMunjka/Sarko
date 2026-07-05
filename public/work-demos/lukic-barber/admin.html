@@ -4,345 +4,133 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Admin — Lukić Barber</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="barber-shared.css" />
 </head>
-<body>
-  <header class="topbar">
-    <a href="index.html" class="logo">Lukić <span class="accent">Barber</span></a>
-    <div style="display:flex;gap:16px;align-items:center;">
-      <a href="index.html">Sajt</a>
-      <button class="btn ghost sm" type="button" id="logoutBtn" hidden>Odjavi se</button>
-    </div>
-  </header>
+<body class="admin-page">
 
-  <section class="login-box focus-in" id="loginView">
-    <h1>Admin panel</h1>
-    <p class="lead" style="margin-bottom:20px;">Prijavite se da biste upravljali rezervacijama i terminima.</p>
-    <form id="loginForm">
-      <div class="field">
-        <label for="password">Lozinka</label>
-        <input id="password" type="password" required placeholder="Admin lozinka" />
-      </div>
-      <button class="btn" type="submit">Prijavi se</button>
-      <div class="msg" id="loginMsg"></div>
-    </form>
-    <p style="margin-top:16px;font-size:12px;color:var(--muted);">Demo lozinka: <code>lukic2026</code></p>
-  </section>
-
-  <main class="admin-shell" id="adminView" hidden>
-    <h1>Dashboard</h1>
-    <p class="lead">Pregled rezervacija, dostupnih termina i podešavanja salona.</p>
-
-    <div class="admin-stats" id="adminStats">
-      <div class="admin-stat">
-        <div class="admin-stat__num" id="statPending">0</div>
-        <div class="admin-stat__label">Čeka potvrdu</div>
-      </div>
-      <div class="admin-stat">
-        <div class="admin-stat__num" id="statConfirmed">0</div>
-        <div class="admin-stat__label">Potvrđeno</div>
-      </div>
-      <div class="admin-stat">
-        <div class="admin-stat__num" id="statToday">0</div>
-        <div class="admin-stat__label">Danas</div>
-      </div>
+  <!-- LOGIN -->
+  <div class="admin-login" id="loginView">
+    <div class="admin-login__brand">
+      <div class="admin-login__logo">Lukić <span class="accent">Barber</span></div>
+      <p class="admin-login__tag">Admin pristup</p>
     </div>
 
-    <nav class="admin-tabs" aria-label="Admin sekcije">
-      <button type="button" class="admin-tab is-active" data-tab="bookings">Rezervacije</button>
-      <button type="button" class="admin-tab" data-tab="availability">Dostupnost</button>
-      <button type="button" class="admin-tab" data-tab="settings">Podešavanja</button>
-    </nav>
-
-    <!-- Rezervacije -->
-    <section class="admin-panel" id="panelBookings">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;gap:12px;flex-wrap:wrap;">
-        <h2 style="font-family:Oswald,sans-serif;font-size:1.2rem;">Zakazani termini</h2>
-        <button class="btn ghost sm" type="button" id="refreshBookings">Osveži</button>
-      </div>
-      <div class="admin-booking-list" id="bookingsList"></div>
-    </section>
-
-    <!-- Dostupnost -->
-    <section class="admin-panel" id="panelAvailability" hidden>
-      <div class="admin-grid admin-grid--2">
-        <div class="card">
-          <h2>Kalendar</h2>
-          <p class="admin-hint" style="margin-bottom:16px;">Izaberite datum. Precrtani dani su blokirani.</p>
-          <div data-admin-cal></div>
+    <div class="admin-login__card">
+      <h2>Prijava</h2>
+      <p class="sub">Prijava vlasnika za upravljanje terminima.</p>
+      <form id="loginForm">
+        <div class="field">
+          <label for="email">Email</label>
+          <input id="email" type="email" placeholder="vlasnik@lukicbarber.rs" autocomplete="username" />
         </div>
-        <div class="card">
-          <div class="admin-avail-head">
-            <div>
-              <h2>Termini</h2>
-              <p class="admin-hint" data-admin-date-label></p>
-            </div>
-            <button type="button" class="btn ghost sm is-danger" data-block-day>Blokiraj ceo dan</button>
-          </div>
-          <p class="admin-hint" style="margin-bottom:12px;">Kliknite termin da ga otvorite ili zatvorite. Zauzeti su zaključani.</p>
-          <div class="slots" data-admin-slots></div>
+        <div class="field">
+          <label for="password">Lozinka</label>
+          <input id="password" type="password" required placeholder="••••••••" autocomplete="current-password" />
         </div>
-      </div>
-    </section>
+        <button class="btn admin-login__submit" type="submit">Prijavi se</button>
+        <div class="msg" id="loginMsg"></div>
+      </form>
+      <p class="admin-login__hint">Demo: bilo koji email + lozinka <code>lukic2026</code></p>
+    </div>
 
-    <!-- Podešavanja -->
-    <section class="admin-panel" id="panelSettings" hidden>
-      <div class="admin-grid">
-        <section class="card">
-          <h2>Opšta podešavanja</h2>
-          <label style="display:flex;align-items:center;gap:10px;font-size:14px;margin-bottom:14px;">
-            <input type="checkbox" id="acceptBookings" />
-            Prihvataj online rezervacije
-          </label>
+    <a href="index.html" class="admin-login__back">← Nazad na sajt</a>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div class="admin-app" id="adminView" hidden>
+    <header class="admin-topbar">
+      <div class="admin-topbar__brand">Lukić <span class="accent">Barber</span> · Admin</div>
+      <button class="btn ghost sm" type="button" id="logoutBtn">Odjavi se</button>
+    </header>
+
+    <main class="admin-shell">
+      <nav class="admin-navtabs" aria-label="Admin navigacija">
+        <button type="button" class="admin-navtab is-active" data-tab="bookings">Termini</button>
+        <button type="button" class="admin-navtab" data-tab="schedule">Raspored</button>
+      </nav>
+
+      <!-- TERMINI -->
+      <section class="admin-panel" id="panelBookings">
+        <h1 class="admin-page-title">Termini</h1>
+        <p class="admin-page-count" id="bookingsCount">0 rezervacija</p>
+
+        <div class="admin-filters">
           <div class="field">
-            <label for="slotInterval">Interval termina (min)</label>
-            <select id="slotInterval">
-              <option value="15">15</option>
-              <option value="30">30</option>
-              <option value="45">45</option>
+            <label for="filterBarber">Berberin</label>
+            <select id="filterBarber">
+              <option value="">Svi berberi</option>
+              <option value="lukic">Lukić</option>
             </select>
           </div>
-        </section>
-        <section class="card">
-          <h2>Radno vreme</h2>
-          <div id="scheduleRows"></div>
-        </section>
-        <button class="btn" type="button" id="saveSettings">Sačuvaj podešavanja</button>
-      </div>
-    </section>
+          <div class="field">
+            <label for="filterDate">Datum</label>
+            <input id="filterDate" type="date" />
+          </div>
+          <div class="field">
+            <label for="filterStatus">Status</label>
+            <select id="filterStatus">
+              <option value="">Svi statusi</option>
+              <option value="pending">Na čekanju</option>
+              <option value="confirmed">Potvrđeno</option>
+            </select>
+          </div>
+        </div>
 
-    <div class="msg" id="adminMsg" style="margin-top:20px;"></div>
-  </main>
+        <div class="admin-booking-list" id="bookingsList"></div>
+      </section>
 
-  <script type="module">
-    import {
-      barberApi,
-      initFocusReveal,
-      setAdminToken,
-      getAdminToken,
-      formatDateSr,
-      mountAdminAvailability,
-    } from './barber-shared.js'
+      <!-- RASPORED -->
+      <section class="admin-panel" id="panelSchedule" hidden>
+        <h1 class="admin-page-title">Raspored</h1>
+        <p class="admin-page-count">Podesite slobodne dane i termine.</p>
 
-    const DAY_LABELS = {
-      mon: 'Pon', tue: 'Uto', wed: 'Sre', thu: 'Čet', fri: 'Pet', sat: 'Sub', sun: 'Ned',
-    }
-
-    const loginView = document.getElementById('loginView')
-    const adminView = document.getElementById('adminView')
-    const loginForm = document.getElementById('loginForm')
-    const loginMsg = document.getElementById('loginMsg')
-    const adminMsg = document.getElementById('adminMsg')
-    const logoutBtn = document.getElementById('logoutBtn')
-    const bookingsList = document.getElementById('bookingsList')
-
-    let currentSettings = null
-    let serviceMap = new Map()
-    let availManager = null
-
-    function showAdminMsg(text, ok) {
-      adminMsg.textContent = text
-      adminMsg.className = `msg ${ok ? 'ok' : 'err'}`
-    }
-
-    function showLogin() {
-      loginView.hidden = false
-      adminView.hidden = true
-      logoutBtn.hidden = true
-    }
-
-    function showAdmin() {
-      loginView.hidden = true
-      adminView.hidden = false
-      logoutBtn.hidden = false
-    }
-
-    function switchTab(name) {
-      document.querySelectorAll('.admin-tab').forEach((t) => {
-        t.classList.toggle('is-active', t.dataset.tab === name)
-      })
-      document.getElementById('panelBookings').hidden = name !== 'bookings'
-      document.getElementById('panelAvailability').hidden = name !== 'availability'
-      document.getElementById('panelSettings').hidden = name !== 'settings'
-      if (name === 'availability' && availManager) availManager.refresh()
-    }
-
-    document.querySelectorAll('.admin-tab').forEach((tab) => {
-      tab.addEventListener('click', () => switchTab(tab.dataset.tab))
-    })
-
-    function renderSchedule(settings) {
-      const host = document.getElementById('scheduleRows')
-      host.innerHTML = Object.entries(settings.schedule)
-        .map(([key, day]) => `
-          <div class="schedule-row" data-day="${key}">
-            <label><input type="checkbox" class="day-enabled" ${day.enabled ? 'checked' : ''} /> ${DAY_LABELS[key]}</label>
-            <span></span>
-            <input type="time" class="day-open" value="${day.open}" />
-            <input type="time" class="day-close" value="${day.close}" />
-          </div>`)
-        .join('')
-    }
-
-    function collectSettingsFromForm() {
-      const schedule = { ...currentSettings.schedule }
-      document.querySelectorAll('.schedule-row').forEach((row) => {
-        const key = row.dataset.day
-        schedule[key] = {
-          enabled: row.querySelector('.day-enabled').checked,
-          open: row.querySelector('.day-open').value,
-          close: row.querySelector('.day-close').value,
-        }
-      })
-      return {
-        ...currentSettings,
-        acceptBookings: document.getElementById('acceptBookings').checked,
-        slotIntervalMinutes: Number(document.getElementById('slotInterval').value),
-        schedule,
-        blockedDates: currentSettings.blockedDates || [],
-        blockedSlots: currentSettings.blockedSlots || {},
-      }
-    }
-
-    function fillSettingsForm(settings) {
-      currentSettings = settings
-      serviceMap = new Map(settings.services.map((s) => [s.id, s.name]))
-      document.getElementById('acceptBookings').checked = settings.acceptBookings
-      document.getElementById('slotInterval').value = String(settings.slotIntervalMinutes)
-      renderSchedule(settings)
-    }
-
-    function updateStats(bookings) {
-      const today = new Date().toISOString().slice(0, 10)
-      const active = bookings.filter((b) => b.status !== 'cancelled')
-      document.getElementById('statPending').textContent = active.filter((b) => b.status === 'pending').length
-      document.getElementById('statConfirmed').textContent = active.filter((b) => b.status === 'confirmed').length
-      document.getElementById('statToday').textContent = active.filter((b) => b.date === today).length
-    }
-
-    function statusBadge(status) {
-      if (status === 'pending') return '<span class="badge pending">Na čekanju</span>'
-      if (status === 'confirmed') return '<span class="badge ok">Potvrđeno</span>'
-      return '<span class="badge cancel">Otkazano</span>'
-    }
-
-    async function loadBookings() {
-      bookingsList.innerHTML = '<p class="admin-hint">Učitavanje...</p>'
-      const { bookings } = await barberApi.getBookings()
-      updateStats(bookings)
-
-      const active = bookings.filter((b) => b.status === 'pending' || b.status === 'confirmed')
-      if (!active.length) {
-        bookingsList.innerHTML = '<p class="admin-hint">Nema aktivnih rezervacija.</p>'
-        return
-      }
-
-      bookingsList.innerHTML = active
-        .map((b) => {
-          const service = serviceMap.get(b.serviceId) || b.serviceId
-          const confirmBtn =
-            b.status === 'pending'
-              ? `<button class="btn sm" type="button" data-confirm="${b.id}">Potvrdi</button>`
-              : ''
-          return `
-            <article class="admin-booking-card">
+        <div class="admin-grid admin-grid--2" style="margin-bottom:24px;">
+          <div class="card">
+            <h2>Kalendar</h2>
+            <p class="admin-hint" style="margin-bottom:16px;">Izaberite datum. Precrtani dani su blokirani.</p>
+            <div data-admin-cal></div>
+          </div>
+          <div class="card">
+            <div class="admin-avail-head">
               <div>
-                <div class="admin-booking-card__name">${b.name}</div>
-                <div class="admin-booking-card__meta">
-                  ${formatDateSr(b.date)} · ${b.startTime} · ${service}
-                </div>
-                <div class="admin-booking-card__meta">
-                  ${b.email ? `${b.email} · ` : ''}${b.phone}
-                </div>
-                <div style="margin-top:8px;">${statusBadge(b.status)}</div>
+                <h2>Termini</h2>
+                <p class="admin-hint" data-admin-date-label></p>
               </div>
-              <div class="admin-booking-card__actions">
-                ${confirmBtn}
-                <button class="btn ghost sm is-danger" type="button" data-delete="${b.id}">Obriši</button>
-              </div>
-            </article>`
-        })
-        .join('')
+              <button type="button" class="btn ghost sm is-danger" data-block-day>Blokiraj ceo dan</button>
+            </div>
+            <p class="admin-hint" style="margin-bottom:12px;">Kliknite termin da ga otvorite ili zatvorite.</p>
+            <div class="slots" data-admin-slots></div>
+          </div>
+        </div>
 
-      bookingsList.querySelectorAll('[data-confirm]').forEach((btn) => {
-        btn.addEventListener('click', async () => {
-          await barberApi.confirmBooking(btn.dataset.confirm)
-          await loadBookings()
-          showAdminMsg('Rezervacija je potvrđena.', true)
-        })
-      })
+        <div class="admin-grid">
+          <section class="card">
+            <h2>Radno vreme</h2>
+            <div id="scheduleRows"></div>
+          </section>
+          <section class="card">
+            <h2>Podešavanja</h2>
+            <label style="display:flex;align-items:center;gap:10px;font-size:14px;margin-bottom:14px;">
+              <input type="checkbox" id="acceptBookings" />
+              Prihvataj online rezervacije
+            </label>
+            <div class="field">
+              <label for="slotInterval">Interval termina (min)</label>
+              <select id="slotInterval">
+                <option value="15">15</option>
+                <option value="30">30</option>
+                <option value="45">45</option>
+              </select>
+            </div>
+            <button class="btn" type="button" id="saveSettings" style="margin-top:8px;">Sačuvaj podešavanja</button>
+          </section>
+        </div>
+      </section>
 
-      bookingsList.querySelectorAll('[data-delete]').forEach((btn) => {
-        btn.addEventListener('click', async () => {
-          if (!confirm('Obrisati ovu rezervaciju?')) return
-          await barberApi.deleteBooking(btn.dataset.delete)
-          await loadBookings()
-          if (availManager) availManager.refresh()
-          showAdminMsg('Rezervacija je obrisana.', true)
-        })
-      })
-    }
+      <div class="msg" id="adminMsg" style="margin-top:24px;"></div>
+    </main>
+  </div>
 
-    async function loadAdmin() {
-      const { settings } = await barberApi.getAdminSettings()
-      fillSettingsForm(settings)
-      await loadBookings()
-      if (!availManager) {
-        availManager = mountAdminAvailability(document.getElementById('panelAvailability'))
-      } else {
-        availManager.refresh()
-      }
-      showAdmin()
-      switchTab('bookings')
-    }
-
-    loginForm.addEventListener('submit', async (e) => {
-      e.preventDefault()
-      try {
-        const { token } = await barberApi.login(loginForm.password.value)
-        setAdminToken(token)
-        await loadAdmin()
-      } catch (err) {
-        loginMsg.textContent = err.message
-        loginMsg.className = 'msg err'
-      }
-    })
-
-    logoutBtn.addEventListener('click', async () => {
-      try { await barberApi.logout() } catch { /* ignore */ }
-      setAdminToken('')
-      showLogin()
-    })
-
-    document.getElementById('saveSettings').addEventListener('click', async () => {
-      try {
-        const settings = collectSettingsFromForm()
-        await barberApi.saveAdminSettings(settings)
-        fillSettingsForm(settings)
-        if (availManager) availManager.refresh()
-        showAdminMsg('Podešavanja su sačuvana.', true)
-      } catch (err) {
-        showAdminMsg(err.message, false)
-      }
-    })
-
-    document.getElementById('refreshBookings').addEventListener('click', () => {
-      loadBookings().catch((err) => showAdminMsg(err.message, false))
-    })
-
-    initFocusReveal('#loginView .focus-in')
-
-    if (getAdminToken()) {
-      loadAdmin().catch(() => {
-        setAdminToken('')
-        showLogin()
-      })
-    } else {
-      showLogin()
-    }
-  </script>
+  <script type="module" src="barber-admin.js"></script>
 </body>
 </html>
