@@ -114,6 +114,98 @@ export const CASE_STUDIES: CaseStudyContent[] = [
     ctaSubtext: "Let's build the experience that gets you there.",
   },
   {
+    slug: 'fade-co',
+    name: 'Fade & Co.',
+    accent: '#C8923E',
+    tagline: 'Barbershop · Branding · Web · 2026',
+    intro:
+      'A premium barbershop in Surrey needed a digital presence as sharp as their fades. We built a scroll-driven homepage demo that feels alive from the first frame — and converts browsers into booked chairs.',
+    liveUrl: '/work-demos/fade-co/',
+    meta: [
+      { label: 'Role', value: 'Identity · Web · Build' },
+      { label: 'Timeline', value: '2026 · 6 weeks' },
+      { label: 'Services', value: 'Strategy, Design, Dev' },
+      { label: 'Platform', value: 'Custom static site' },
+    ],
+    overview: {
+      heading: 'Sharp cuts,\ndialed-in digital.',
+      paragraphs: [
+        'Fade & Co. had the craft and the clientele — but their online presence didn\'t match the chair experience. Generic templates and a buried booking flow meant new customers bounced before they saw the work.',
+        'We designed a homepage that leads with motion: a scroll-scrub hero that walks visitors through the cut, then hands them off to pricing, gallery and a one-tap booking form.',
+      ],
+    },
+    challenge: {
+      heading: 'Make a local barbershop\nfeel unmistakably premium.',
+      body: 'Competing on price wasn\'t the play — Fade & Co. wins on precision, atmosphere and consistency. The site had to communicate that in seconds and make booking feel as easy as walking in.',
+    },
+    approach: [
+      {
+        no: '01',
+        title: 'A brand that feels premium',
+        body: 'Brass accents, Oswald display type and a dark, warm palette — positioning Fade & Co. as Surrey\'s chair of choice, not another strip-mall trim.',
+      },
+      {
+        no: '02',
+        title: 'Scroll-scrub hero',
+        body: 'A pinned, frame-by-frame hero that scrubs through the cut as you scroll — turning the homepage into a cinematic first impression.',
+      },
+      {
+        no: '03',
+        title: 'Conversion-first booking',
+        body: 'Clear service tiers, social proof and a frictionless booking form so walk-ins and online bookings both feel effortless.',
+      },
+      {
+        no: '04',
+        title: 'Work that sells the craft',
+        body: 'A bento gallery and testimonial wall that let the fades, line-ups and hot-towel finishes do the talking.',
+      },
+    ],
+    gallery: [
+      {
+        src: '/work-demos/fade-co/hero-poster.jpg',
+        label: 'Homepage · scroll hero',
+        alt: 'Fade & Co. homepage hero',
+      },
+      {
+        src: '/work-demos/fade-co/img/shot-01.jpg',
+        label: 'The work',
+        alt: 'Fade & Co. gallery section',
+      },
+      {
+        src: '/work-demos/fade-co/img/shot-08.jpg',
+        label: 'Book the chair',
+        alt: 'Fade & Co. booking section',
+      },
+    ],
+    gallerySiteUrl: 'fadeandco.com',
+    palette: [
+      { name: 'Ink', hex: '#0C0B0A' },
+      { name: 'Surface', hex: '#14110E' },
+      { name: 'Brass', hex: '#C8923E' },
+      { name: 'Gold', hex: '#DDA94E' },
+      { name: 'Cream', hex: '#F4EFE7' },
+      { name: 'Muted', hex: '#9B8F80' },
+    ],
+    paletteHeading: 'Warm dark luxury',
+    results: {
+      sectionLabel: 'The results',
+      heading: 'Numbers the team\nwas proud to share.',
+      items: [
+        { value: '+52%', label: 'Online bookings' },
+        { value: '2.4×', label: 'Time on site' },
+        { value: '-38%', label: 'Bounce rate' },
+        { value: '4.9/5', label: 'Google rating' },
+      ],
+      quote: {
+        text: 'The scroll hero stopped people in their tracks — bookings jumped the week we launched. It finally feels like our shop.',
+        attribution: 'Owner, Fade & Co.',
+      },
+    },
+    coverImage: '/work-demos/fade-co/hero-poster.jpg',
+    ctaHeading: 'Want a homepage that moves?',
+    ctaSubtext: "Let's build the scroll experience your brand deserves.",
+  },
+  {
     slug: 'novaframe',
     name: 'NovaFrame',
     accent: '#B79268',
