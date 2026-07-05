@@ -523,6 +523,17 @@ h1,h2,h3,.display { font-family: "Oswald", sans-serif; font-weight: 600; line-he
   font-weight: 600;
 }
 
+.book-service-price {
+  margin-top: 14px;
+  font-family: "Oswald", sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--accent);
+  line-height: 1.1;
+}
+.book-service-price[hidden] { display: none !important; }
+
 /* Custom kalendar */
 .book-cal { margin-top: 4px; }
 .book-cal__head {

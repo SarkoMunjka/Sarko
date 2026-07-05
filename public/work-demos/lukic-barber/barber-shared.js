@@ -431,6 +431,10 @@ function isDateBookable(iso) {
   return iso >= today
 }
 
+function formatPriceRsd(amount) {
+  return `${Number(amount).toLocaleString('sr-Latn-RS')} RSD`
+}
+
 function renderServiceGrid(host, services, selectedId, onSelect) {
   host.innerHTML = services
     .map(
@@ -612,6 +616,7 @@ function renderTimeSlots(host, hintEl, date, serviceId, pickedTime, onPick) {
 
 export function wireBookingPicker(root, callbacks = {}) {
   const servicesHost = root.querySelector('[data-services]')
+  const priceHost = root.querySelector('[data-service-price]')
   const calendarHost = root.querySelector('[data-calendar]')
   const timeBlock = root.querySelector('[data-time-block]')
   const slotsHost = root.querySelector('[data-slots]')
@@ -630,14 +635,28 @@ export function wireBookingPicker(root, callbacks = {}) {
     callbacks.onChange?.({ ...state })
   }
 
+  function paintServicePrice() {
+    if (!priceHost) return
+    const service = state.services.find((s) => s.id === state.serviceId)
+    if (service?.priceRsd != null) {
+      priceHost.hidden = false
+      priceHost.textContent = formatPriceRsd(service.priceRsd)
+    } else {
+      priceHost.hidden = true
+      priceHost.textContent = ''
+    }
+  }
+
   function paintServices() {
     renderServiceGrid(servicesHost, state.services, state.serviceId, (id) => {
       state.serviceId = id
       state.time = ''
       paintServices()
+      paintServicePrice()
       paintSlots()
       emitChange()
     })
+    paintServicePrice()
   }
 
   function paintCalendar() {
@@ -731,6 +750,7 @@ function bookingModalHtml() {
         <div class="book-picker" data-booking-picker>
           <p class="book-section-label">Usluga</p>
           <div class="book-services" data-services></div>
+          <p class="book-service-price" data-service-price hidden></p>
 
           <p class="book-section-label book-section-label--spaced">Datum</p>
           <div class="book-cal" data-calendar></div>
