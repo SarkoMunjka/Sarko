@@ -106,6 +106,34 @@
   .hero__cue .bar { width:1px; height:36px; background:linear-gradient(var(--accent),transparent); animation:cue 2s var(--ease) infinite; }
   @keyframes cue { 0%,100%{opacity:.3;transform:scaleY(.6);} 50%{opacity:1;transform:scaleY(1);} }
 
+  .services-marquee { background:var(--charcoal); padding:22px 0; }
+  .services-marquee__rule {
+    height:1px; max-width:480px; margin:0 auto 20px; background:var(--line-dark);
+    -webkit-mask-image:linear-gradient(to right, transparent, black, transparent);
+    mask-image:linear-gradient(to right, transparent, black, transparent);
+  }
+  .services-marquee__rule--bottom { margin:20px auto 0; }
+  .services-marquee__viewport {
+    overflow:hidden;
+    -webkit-mask-image:linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+    mask-image:linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+  }
+  .services-marquee__viewport:hover .services-marquee__track { animation-play-state:paused; }
+  .services-marquee__track {
+    display:flex; align-items:center; gap:64px; width:max-content; will-change:transform;
+    animation:services-slide var(--services-duration, 32s) linear infinite;
+  }
+  @keyframes services-slide { to { transform:translate3d(-50%,0,0); } }
+  .services-marquee__item {
+    display:flex; align-items:center; gap:20px; flex-shrink:0;
+    user-select:none; pointer-events:none; white-space:nowrap;
+  }
+  .services-marquee__sep { color:var(--accent); opacity:.9; font-size:13px; line-height:1; flex:none; width:13px; text-align:center; }
+  .services-marquee__label {
+    font-family:"Oswald"; font-size:17px; font-weight:500; letter-spacing:.1em;
+    text-transform:uppercase; color:var(--muted-on-dark); line-height:1;
+  }
+
   .statement { padding:0; }
   .statement .band { position:relative; min-height:64vh; display:flex; align-items:center; overflow:hidden;
     background: linear-gradient(180deg, rgba(43,43,43,.78), rgba(31,31,31,.92)), url("img/shot-05.jpg"); background-size:cover; background-position:center; border-block:1px solid var(--line-dark); }
@@ -236,6 +264,8 @@
     .hero__cue{ display:none; }
     .reviews-track { flex-wrap: wrap; width: 100%; justify-content: center; }
     .reviews-lane { -webkit-mask-image: none; mask-image: none; overflow: visible; }
+    .services-marquee__track { flex-wrap: wrap; width: 100%; justify-content: center; animation: none !important; gap: 24px 40px; padding: 0 28px; }
+    .services-marquee__viewport { -webkit-mask-image: none; mask-image: none; }
   }
 </style>
 </head>
@@ -286,6 +316,14 @@
     <div class="hero__cue" id="heroCue" aria-hidden="true"><div class="bar"></div>Skroluj</div>
   </div>
 </header>
+
+<div class="services-marquee" aria-hidden="true">
+  <div class="services-marquee__rule"></div>
+  <div class="services-marquee__viewport">
+    <div class="services-marquee__track" id="servicesMarqueeTrack"></div>
+  </div>
+  <div class="services-marquee__rule services-marquee__rule--bottom"></div>
+</div>
 
 <section class="statement">
   <div class="band">
@@ -516,6 +554,29 @@
     if (!reduce) { dirty = true; ensure(); }
   };
   addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+  (function initServicesMarquee() {
+    const track = document.getElementById('servicesMarqueeTrack');
+    if (!track) return;
+
+    const SERVICES = ['Klasično šišanje', 'Buzz cut', 'Fade', 'Brijanje', 'Pranje kose'];
+
+    function serviceItem(label) {
+      const el = document.createElement('span');
+      el.className = 'services-marquee__item';
+      el.innerHTML = `<span class="services-marquee__sep" aria-hidden="true">✦</span><span class="services-marquee__label">${label}</span>`;
+      return el;
+    }
+
+    SERVICES.forEach((label) => track.appendChild(serviceItem(label)));
+    SERVICES.forEach((label) => track.appendChild(serviceItem(label)));
+
+    if (!reduce) {
+      const pxPerSec = 64;
+      const half = track.scrollWidth / 2;
+      track.style.setProperty('--services-duration', `${Math.max(half / pxPerSec, 16)}s`);
+    }
+  })();
 
   (function initFocusReveal() {
     const nodes = document.querySelectorAll('.focus-in');
