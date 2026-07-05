@@ -35,6 +35,11 @@ export const sr: Translations = {
     badge: 'Upoznajte Mark Studio',
     headline: 'Kreativci vođeni strategijom,\nkoji donose rezultate u digitalu i šire.',
     body: 'Kroz istraživanje, kreativno razmišljanje i iteracije pomažemo rastućim brendovima da ostvare pun digitalni potencijal.',
+    bodyLines: [
+      'Kroz istraživanje, kreativno razmišljanje',
+      'i iteracije pomažemo rastućim brendovima',
+      'da ostvare pun digitalni potencijal.',
+    ],
     cta: 'O našem studiju',
     imageWork: 'Mark Studio rad',
     imageProject: 'Mark Studio projekat',
@@ -42,6 +47,7 @@ export const sr: Translations = {
   caseStudies: {
     badge: 'Izdvojeni klijentski radovi',
     headline: 'Naši projekti',
+    viewAll: 'Pogledaj sve projekte',
   },
   services: {
     badge: 'Šta radimo',

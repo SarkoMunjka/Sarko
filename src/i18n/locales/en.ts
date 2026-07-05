@@ -35,6 +35,11 @@ export const en: Translations = {
     badge: 'Introducing Mark Studio',
     headline: 'Strategy-led creatives, delivering\nresults in digital and beyond.',
     body: 'Through research, creative thinking and iteration we help growing brands realize their digital full potential.',
+    bodyLines: [
+      'Through research, creative thinking and iteration',
+      'we help growing brands realize their digital',
+      'full potential.',
+    ],
     cta: 'About our studio',
     imageWork: 'Mark Studio work',
     imageProject: 'Mark Studio project',
@@ -42,6 +47,7 @@ export const en: Translations = {
   caseStudies: {
     badge: 'Featured client work',
     headline: 'Our projects',
+    viewAll: 'View all projects',
   },
   services: {
     badge: 'What we do',

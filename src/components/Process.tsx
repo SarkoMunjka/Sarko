@@ -36,7 +36,7 @@ function ProcessStepCard({ step, stepLabel }: { step: Step; stepLabel: string })
         <span className="text-[12px] font-medium uppercase tracking-[0.12em] text-gray-500 dark:text-gray-400 sm:text-[13px]">
           {stepLabel} {step.number}
         </span>
-        <h3 className="mt-3 text-[clamp(1.35rem,2.5vw,2rem)] font-semibold leading-tight tracking-[-0.02em] text-[#F26522]">
+        <h3 className="mt-3 text-[clamp(1.35rem,2.5vw,2rem)] font-semibold leading-tight tracking-[-0.02em] text-gray-900 dark:text-white">
           {step.title}
         </h3>
         <p className="mt-3 max-w-2xl text-[15px] leading-[1.65] text-gray-600 dark:text-gray-400 sm:text-[16px]">
