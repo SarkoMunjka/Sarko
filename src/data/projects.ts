@@ -31,6 +31,17 @@ export const PROJECTS: Project[] = [
     cover: '/socks-home.png',
   },
   {
+    slug: 'fade-co',
+    name: 'Fade & Co.',
+    category: 'Barbershop · Web',
+    year: '2026',
+    blurb:
+      'A premium Surrey barbershop — scroll-scrub hero, service menu and booking flow built to feel as sharp as the cuts.',
+    accent: '#C8923E',
+    caseStudy: true,
+    cover: '/work-demos/fade-co/hero-poster.jpg',
+  },
+  {
     slug: 'novaframe',
     name: 'NovaFrame',
     category: 'Wedding film · Web',
