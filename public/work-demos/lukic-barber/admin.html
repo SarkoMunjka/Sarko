@@ -45,25 +45,29 @@
 
     <main class="admin-shell">
       <nav class="admin-navtabs" aria-label="Admin navigacija">
-        <button type="button" class="admin-navtab is-active" data-tab="bookings">Termini</button>
+        <button type="button" class="admin-navtab is-active" data-tab="bookings">Sva zakazivanja</button>
         <button type="button" class="admin-navtab" data-tab="schedule">Raspored</button>
       </nav>
 
-      <!-- TERMINI -->
+      <!-- SVA ZAKAZIVANJA -->
       <section class="admin-panel" id="panelBookings">
-        <h1 class="admin-page-title">Termini</h1>
+        <h1 class="admin-page-title">Sva zakazivanja</h1>
         <p class="admin-page-count" id="bookingsCount">0 rezervacija</p>
+
+        <div class="admin-stats" id="bookingsStats" aria-label="Pregled rezervacija"></div>
 
         <div class="admin-filters">
           <div class="field">
-            <label for="filterBarber">Berberin</label>
-            <select id="filterBarber">
-              <option value="">Svi berberi</option>
-              <option value="lukic">Lukić</option>
+            <label for="filterRange">Period</label>
+            <select id="filterRange">
+              <option value="all">Sva zakazivanja</option>
+              <option value="today">Danas</option>
+              <option value="week">Narednih 7 dana</option>
+              <option value="upcoming">Samo buduća</option>
             </select>
           </div>
           <div class="field">
-            <label for="filterDate">Datum</label>
+            <label for="filterDate">Tačan datum</label>
             <input id="filterDate" type="date" />
           </div>
           <div class="field">
@@ -72,11 +76,29 @@
               <option value="">Svi statusi</option>
               <option value="pending">Na čekanju</option>
               <option value="confirmed">Potvrđeno</option>
+              <option value="cancelled">Otkazano</option>
             </select>
           </div>
         </div>
 
-        <div class="admin-booking-list" id="bookingsList"></div>
+        <div class="admin-bookings-table-wrap">
+          <table class="admin-bookings-table" id="bookingsTable">
+            <thead>
+              <tr>
+                <th>Datum</th>
+                <th>Vreme</th>
+                <th>Usluga</th>
+                <th>Klijent</th>
+                <th>Telefon</th>
+                <th>Status</th>
+                <th>Akcije</th>
+              </tr>
+            </thead>
+            <tbody id="bookingsTableBody"></tbody>
+          </table>
+        </div>
+
+        <div class="admin-booking-list admin-booking-list--mobile" id="bookingsList"></div>
       </section>
 
       <!-- RASPORED -->

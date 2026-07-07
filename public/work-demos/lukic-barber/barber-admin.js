@@ -17,9 +17,11 @@ const loginMsg = document.getElementById('loginMsg')
 const adminMsg = document.getElementById('adminMsg')
 const logoutBtn = document.getElementById('logoutBtn')
 const bookingsList = document.getElementById('bookingsList')
+const bookingsTableBody = document.getElementById('bookingsTableBody')
 const bookingsCount = document.getElementById('bookingsCount')
+const bookingsStats = document.getElementById('bookingsStats')
 
-const filterBarber = document.getElementById('filterBarber')
+const filterRange = document.getElementById('filterRange')
 const filterDate = document.getElementById('filterDate')
 const filterStatus = document.getElementById('filterStatus')
 
@@ -105,23 +107,132 @@ function statusBadge(status) {
   return '<span class="badge cancel">Otkazano</span>'
 }
 
+function isUpcomingBooking(booking) {
+  const now = new Date()
+  const today = now.toISOString().slice(0, 10)
+  if (booking.date > today) return true
+  if (booking.date < today) return false
+  const [h, m] = booking.startTime.split(':').map(Number)
+  const mins = h * 60 + m
+  const nowMins = now.getHours() * 60 + now.getMinutes()
+  return mins >= nowMins
+}
+
+function inSelectedRange(booking) {
+  const range = filterRange.value
+  const today = new Date()
+  const todayIso = today.toISOString().slice(0, 10)
+
+  if (range === 'today') return booking.date === todayIso
+  if (range === 'week') {
+    const end = new Date(today)
+    end.setDate(end.getDate() + 7)
+    return booking.date >= todayIso && booking.date <= end.toISOString().slice(0, 10)
+  }
+  if (range === 'upcoming') return isUpcomingBooking(booking)
+  return true
+}
+
 function filteredBookings() {
-  return allBookings.filter((b) => {
-    if (b.status !== 'pending' && b.status !== 'confirmed') return false
-    if (filterStatus.value && b.status !== filterStatus.value) return false
-    if (filterDate.value && b.date !== filterDate.value) return false
-    return true
+  return allBookings
+    .filter((b) => {
+      if (filterStatus.value && b.status !== filterStatus.value) return false
+      if (filterDate.value && b.date !== filterDate.value) return false
+      if (!inSelectedRange(b)) return false
+      return true
+    })
+    .sort((a, b) => `${a.date}${a.startTime}`.localeCompare(`${b.date}${b.startTime}`))
+}
+
+function renderBookingStats() {
+  const active = allBookings.filter((b) => b.status === 'pending' || b.status === 'confirmed')
+  const pending = active.filter((b) => b.status === 'pending').length
+  const confirmed = active.filter((b) => b.status === 'confirmed').length
+  const today = new Date().toISOString().slice(0, 10)
+  const todayCount = active.filter((b) => b.date === today).length
+
+  bookingsStats.innerHTML = `
+    <div class="admin-stat">
+      <span class="admin-stat__value">${active.length}</span>
+      <span class="admin-stat__label">Ukupno aktivnih</span>
+    </div>
+    <div class="admin-stat">
+      <span class="admin-stat__value">${pending}</span>
+      <span class="admin-stat__label">Na čekanju</span>
+    </div>
+    <div class="admin-stat">
+      <span class="admin-stat__value">${confirmed}</span>
+      <span class="admin-stat__label">Potvrđeno</span>
+    </div>
+    <div class="admin-stat">
+      <span class="admin-stat__value">${todayCount}</span>
+      <span class="admin-stat__label">Danas</span>
+    </div>`
+}
+
+function bookingActionsHtml(id, status) {
+  return `
+    <div class="admin-booking-card__actions admin-booking-card__actions--inline">
+      <select data-status="${id}" aria-label="Status rezervacije">
+        <option value="pending" ${status === 'pending' ? 'selected' : ''}>Na čekanju</option>
+        <option value="confirmed" ${status === 'confirmed' ? 'selected' : ''}>Potvrđeno</option>
+        <option value="cancelled" ${status === 'cancelled' ? 'selected' : ''}>Otkazano</option>
+      </select>
+      <button class="btn ghost sm is-danger" type="button" data-delete="${id}">Obriši</button>
+    </div>`
+}
+
+function wireBookingActions(root) {
+  root.querySelectorAll('[data-status]').forEach((sel) => {
+    sel.addEventListener('change', async () => {
+      await barberApi.updateBookingStatus(sel.dataset.status, sel.value)
+      await loadBookings()
+      showAdminMsg('Status je ažuriran.', true)
+    })
+  })
+
+  root.querySelectorAll('[data-delete]').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      if (!confirm('Obrisati ovu rezervaciju?')) return
+      await barberApi.deleteBooking(btn.dataset.delete)
+      await loadBookings()
+      if (availManager) availManager.refresh()
+      showAdminMsg('Rezervacija je obrisana.', true)
+    })
   })
 }
 
 function renderBookings() {
   const list = filteredBookings()
-  bookingsCount.textContent = `${list.length} od ${allBookings.filter((b) => b.status === 'pending' || b.status === 'confirmed').length} rezervacija`
+  const total = allBookings.length
+  bookingsCount.textContent = `${list.length} prikazano · ${total} ukupno u sistemu`
+  renderBookingStats()
 
   if (!list.length) {
+    bookingsTableBody.innerHTML = `
+      <tr><td colspan="7" class="admin-bookings-table__empty">Nema rezervacija za izabrane filtere.</td></tr>`
     bookingsList.innerHTML = '<p class="admin-hint">Nema rezervacija za izabrane filtere.</p>'
     return
   }
+
+  bookingsTableBody.innerHTML = list
+    .map((b) => {
+      const service = serviceMap.get(b.serviceId) || b.serviceId
+      return `
+        <tr>
+          <td>${formatDateSr(b.date)}</td>
+          <td>${b.startTime}</td>
+          <td>${service}</td>
+          <td>
+            <strong>${b.name}</strong>
+            ${b.email ? `<div class="admin-bookings-table__sub">${b.email}</div>` : ''}
+          </td>
+          <td>${b.phone}</td>
+          <td>${statusBadge(b.status)}</td>
+          <td>${bookingActionsHtml(b.id, b.status)}</td>
+        </tr>`
+    })
+    .join('')
 
   bookingsList.innerHTML = list
     .map((b) => {
@@ -132,42 +243,19 @@ function renderBookings() {
             ${statusBadge(b.status)}
             <div class="admin-booking-card__service">${service}</div>
             <div class="admin-booking-card__grid">
-              <span>📅 ${b.date} · ${b.startTime}</span>
-              <span>✂️ Lukić</span>
-              <span>👤 ${b.name}</span>
-              <span>✉️ ${b.email || '—'}</span>
-              <span>📞 ${b.phone}</span>
+              <span><span class="admin-icon" aria-hidden="true">D</span> ${formatDateSr(b.date)} · ${b.startTime}</span>
+              <span><span class="admin-icon" aria-hidden="true">K</span> ${b.name}</span>
+              <span><span class="admin-icon" aria-hidden="true">T</span> ${b.phone}</span>
+              <span><span class="admin-icon" aria-hidden="true">@</span> ${b.email || '—'}</span>
             </div>
           </div>
-          <div class="admin-booking-card__actions">
-            <select data-status="${b.id}" aria-label="Status rezervacije">
-              <option value="pending" ${b.status === 'pending' ? 'selected' : ''}>Na čekanju</option>
-              <option value="confirmed" ${b.status === 'confirmed' ? 'selected' : ''}>Potvrđeno</option>
-              <option value="cancelled">Otkazano</option>
-            </select>
-            <button class="btn ghost sm is-danger" type="button" data-delete="${b.id}">🗑 Obriši</button>
-          </div>
+          ${bookingActionsHtml(b.id, b.status)}
         </article>`
     })
     .join('')
 
-  bookingsList.querySelectorAll('[data-status]').forEach((sel) => {
-    sel.addEventListener('change', async () => {
-      await barberApi.updateBookingStatus(sel.dataset.status, sel.value)
-      await loadBookings()
-      showAdminMsg('Status je ažuriran.', true)
-    })
-  })
-
-  bookingsList.querySelectorAll('[data-delete]').forEach((btn) => {
-    btn.addEventListener('click', async () => {
-      if (!confirm('Obrisati ovu rezervaciju?')) return
-      await barberApi.deleteBooking(btn.dataset.delete)
-      await loadBookings()
-      if (availManager) availManager.refresh()
-      showAdminMsg('Rezervacija je obrisana.', true)
-    })
-  })
+  wireBookingActions(bookingsTableBody)
+  wireBookingActions(bookingsList)
 }
 
 async function loadBookings() {
@@ -225,11 +313,10 @@ document.getElementById('saveSettings').addEventListener('click', async () => {
   }
 })
 
-;[filterBarber, filterDate, filterStatus].forEach((el) => {
+;[filterRange, filterDate, filterStatus].forEach((el) => {
   el.addEventListener('change', renderBookings)
 })
 
-// Uvek prikaži login odmah
 showLogin()
 
 if (getAdminToken()) {
