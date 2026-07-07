@@ -109,11 +109,19 @@ export function ProjectCard({
   )
 
   if (!project.caseStudy) {
-    return (
-      <FadeIn delay={(index % 2) * 0.08}>
-        <div className="group block cursor-default">{content}</div>
-      </FadeIn>
+    const wrapperClass = project.demoUrl
+      ? 'group block transition-opacity hover:opacity-95'
+      : 'group block cursor-default'
+
+    const inner = project.demoUrl ? (
+      <a href={project.demoUrl} className={wrapperClass}>
+        {content}
+      </a>
+    ) : (
+      <div className={wrapperClass}>{content}</div>
     )
+
+    return <FadeIn delay={(index % 2) * 0.08}>{inner}</FadeIn>
   }
 
   return (

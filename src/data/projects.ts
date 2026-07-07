@@ -38,6 +38,19 @@ export const PROJECTS: Project[] = [
     cover: '/socks-home.png',
   },
   {
+    slug: 'luka-borovic',
+    name: 'Luka Borovic',
+    category: 'Sports · Profile',
+    year: '2026',
+    blurb:
+      'Privremeni UAE FA player profile demo — Al Wasl, statistike i lični podaci.',
+    accent: '#5A1224',
+    caseStudy: false,
+    demoUrl: '/work-demos/luka-borovic/',
+    cover: '/work-demos/luka-borovic/img/uaefa-logo.png',
+    showOnHome: false,
+  },
+  {
     slug: 'lukic-barber',
     name: 'Lukić Barber',
     category: 'Barbershop · Web',
