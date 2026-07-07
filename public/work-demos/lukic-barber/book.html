@@ -25,38 +25,61 @@
   </header>
 
   <main class="book-page focus-in is-visible">
-    <h1>Zakaži termin</h1>
-    <p class="lead">Izaberite uslugu, datum i vreme. Potvrda stiže odmah.</p>
+    <h1 id="bookPageTitle">Zakaži termin</h1>
+    <p class="lead" id="bookPageLead">Izaberite uslugu, datum i vreme.</p>
 
     <form id="bookingForm">
-      <div class="book-picker" data-booking-picker>
-        <p class="book-section-label">Usluga</p>
-        <div class="book-services" data-services></div>
-        <p class="book-service-price" data-service-price hidden></p>
+      <div class="book-flow__steps" data-book-steps>
+        <span class="book-flow__step-pill is-active" data-step-pill="1">
+          <span class="book-flow__step-num">1</span> Termin
+        </span>
+        <span class="book-flow__step-divider" aria-hidden="true"></span>
+        <span class="book-flow__step-pill" data-step-pill="2">
+          <span class="book-flow__step-num">2</span> Podaci
+        </span>
+      </div>
 
-        <p class="book-section-label book-section-label--spaced">Datum</p>
-        <div class="book-cal" data-calendar></div>
+      <div class="book-flow__step" data-book-step="1">
+        <div class="book-picker" data-booking-picker>
+          <p class="book-section-label">Usluga</p>
+          <div class="book-services" data-services></div>
+          <p class="book-service-price" data-service-price hidden></p>
 
-        <div class="book-time-block" data-time-block hidden>
-          <p class="book-section-label book-section-label--spaced">Vreme</p>
-          <p class="book-modal__hint" data-slots-hint></p>
-          <div class="slots book-slots" data-slots></div>
+          <p class="book-section-label book-section-label--spaced">Datum</p>
+          <div class="book-cal" data-calendar></div>
+
+          <div class="book-time-block" data-time-block hidden>
+            <p class="book-section-label book-section-label--spaced">Vreme</p>
+            <p class="book-modal__hint" data-slots-hint></p>
+            <div class="slots book-slots" data-slots></div>
+          </div>
         </div>
       </div>
 
-      <div class="book-modal__step2 focus-in" id="step2" hidden>
-        <p class="book-section-label book-section-label--spaced">Vaši podaci</p>
-        <div class="field">
-          <label for="email">Email</label>
-          <input id="email" name="email" type="email" placeholder="vas@email.com" required />
+      <div class="book-flow__step" id="step2" data-book-step="2" hidden>
+        <button type="button" class="book-flow__back" data-book-back>← Izmeni termin</button>
+        <div class="book-flow__summary" data-book-summary>
+          <div class="book-flow__summary-label">Izabrano</div>
+          <div class="book-flow__summary-row">
+            <span data-summary-service>—</span>
+            <span class="book-flow__summary-price" data-summary-price></span>
+          </div>
+          <div class="book-flow__summary-row">
+            <span data-summary-datetime>—</span>
+          </div>
         </div>
+        <p class="book-section-label">Vaši podaci</p>
         <div class="field">
           <label for="name">Ime i prezime</label>
-          <input id="name" name="name" placeholder="Vaše ime" required />
+          <input id="name" name="name" type="text" placeholder="Vaše ime" autocomplete="name" required />
         </div>
         <div class="field">
-          <label for="phone">Telefon</label>
-          <input id="phone" name="phone" type="tel" placeholder="06x xxx xxxx" required />
+          <label for="phone">Broj telefona</label>
+          <input id="phone" name="phone" type="tel" placeholder="06x xxx xxxx" autocomplete="tel" required />
+        </div>
+        <div class="field">
+          <label for="email">Email <span class="optional">(opciono)</span></label>
+          <input id="email" name="email" type="email" placeholder="vas@email.com" autocomplete="email" />
         </div>
         <button class="btn book-modal__submit" type="submit" id="submitBtn">Potvrdi rezervaciju</button>
       </div>
@@ -69,33 +92,45 @@
     import {
       barberApi,
       initFocusReveal,
-      revealElement,
       wireBookingPicker,
+      wireBookingStepFlow,
     } from './barber-shared.js'
 
     initFocusReveal()
 
     const form = document.getElementById('bookingForm')
+    const step1 = document.querySelector('[data-book-step="1"]')
     const step2 = document.getElementById('step2')
     const submitBtn = document.getElementById('submitBtn')
     const formMsg = document.getElementById('formMsg')
     const pickerRoot = document.querySelector('[data-booking-picker]')
-
-    let picker = null
 
     function showMsg(text, ok) {
       formMsg.textContent = text
       formMsg.className = `msg ${ok ? 'ok' : 'err'}`
     }
 
-    picker = wireBookingPicker(pickerRoot, {
-      onChange: ({ serviceId, date }) => {
-        if (serviceId && date) revealElement(step2)
-        else {
-          step2.hidden = true
-          step2.classList.remove('is-visible')
-        }
-      },
+    let flow
+
+    const picker = wireBookingPicker(pickerRoot, {
+      onChange: (state) => flow.handlePickerChange(state),
+    })
+
+    flow = wireBookingStepFlow({
+      picker,
+      step1,
+      step2,
+      scrollRoot: null,
+      summaryEl: step2.querySelector('[data-book-summary]'),
+      titleEl: document.getElementById('bookPageTitle'),
+      leadEl: document.getElementById('bookPageLead'),
+      nameInput: document.getElementById('name'),
+      pillsRoot: document.querySelector('[data-book-steps]'),
+    })
+
+    step2.querySelector('[data-book-back]')?.addEventListener('click', () => {
+      showMsg('', false)
+      flow.goToStep(1)
     })
 
     const preselect = new URLSearchParams(location.search).get('service')
@@ -106,10 +141,19 @@
       const { serviceId, date, time } = picker.getState()
       if (!serviceId || !date) {
         showMsg('Izaberite uslugu i datum.', false)
+        flow.goToStep(1)
         return
       }
       if (!time) {
         showMsg('Izaberite termin pre potvrde.', false)
+        flow.goToStep(1)
+        return
+      }
+      const name = form.name.value.trim()
+      const phone = form.phone.value.trim()
+      if (!name || !phone) {
+        showMsg('Unesite ime i broj telefona.', false)
+        flow.goToStep(2)
         return
       }
       submitBtn.disabled = true
@@ -118,12 +162,13 @@
           serviceId,
           date,
           time,
-          name: form.name.value.trim(),
+          name,
           email: form.email.value.trim(),
-          phone: form.phone.value.trim(),
+          phone,
         })
         showMsg('✓ Zahtev je poslat. Javićemo vam se kada potvrdimo termin.', true)
         step2.hidden = true
+        step1.hidden = true
       } catch (err) {
         showMsg(err.message, false)
         picker.refreshSlots()

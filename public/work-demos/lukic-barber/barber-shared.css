@@ -636,7 +636,103 @@ h1,h2,h3,.display { font-family: var(--font-sans); font-weight: 500; line-height
   margin-top: 4px;
   padding-top: 8px;
 }
-.book-modal__step2[hidden] { display: none !important; }
+.book-modal__step2[hidden],
+.book-flow__step[hidden] { display: none !important; }
+
+.book-flow__steps {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+.book-flow__step-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.book-flow__step-pill.is-active { color: var(--accent); }
+.book-flow__step-pill.is-done { color: var(--ink); }
+.book-flow__step-num {
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  border: 1px solid currentColor;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  line-height: 1;
+}
+.book-flow__step-pill.is-active .book-flow__step-num,
+.book-flow__step-pill.is-done .book-flow__step-num {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+.book-flow__step-divider {
+  flex: 1;
+  height: 1px;
+  background: var(--line-light);
+  max-width: 48px;
+}
+
+.book-flow__summary {
+  margin-bottom: 22px;
+  padding: 16px 18px;
+  border: 1px solid var(--line-light);
+  border-radius: 4px;
+  background: var(--sand);
+}
+.book-flow__summary-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--ink);
+}
+.book-flow__summary-row + .book-flow__summary-row { margin-top: 8px; }
+.book-flow__summary-label {
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.book-flow__summary-price {
+  color: var(--accent);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.book-flow__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 18px;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--muted);
+  font: 500 13px var(--font-sans), sans-serif;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.book-flow__back:hover { color: var(--accent); }
+
+.field label .optional {
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+  opacity: 0.75;
+}
+
 .book-modal__submit { width: 100%; margin-top: 8px; }
 .book-modal__panel .field { margin-bottom: 14px; }
 .book-modal__panel .field label {
