@@ -1,0 +1,407 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Luka Borovic — Al Wasl</title>
+  <meta name="description" content="Luka Borovic player profile — Al Wasl FC" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-top: #120608;
+      --bg-mid: #5a1224;
+      --bg-bottom: #0a0406;
+      --text: #ffffff;
+      --muted: rgba(255, 255, 255, 0.72);
+      --card: rgba(35, 8, 14, 0.62);
+      --card-border: rgba(255, 255, 255, 0.06);
+      --safe-top: env(safe-area-inset-top, 0px);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      min-height: 100%;
+      background: #000;
+      color: var(--text);
+      font-family: Roboto, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      background:
+        radial-gradient(ellipse 120% 55% at 50% 18%, rgba(122, 24, 42, 0.95) 0%, rgba(58, 10, 20, 0.55) 42%, transparent 72%),
+        radial-gradient(ellipse 90% 40% at 50% 88%, rgba(90, 18, 36, 0.75) 0%, transparent 65%),
+        linear-gradient(180deg, var(--bg-top) 0%, var(--bg-mid) 38%, #3f0d1a 58%, var(--bg-bottom) 100%);
+    }
+
+    .phone {
+      width: 100%;
+      max-width: 430px;
+      min-height: 100dvh;
+      position: relative;
+      overflow: hidden;
+      padding-top: calc(10px + var(--safe-top));
+      padding-bottom: calc(12px + var(--safe-bottom));
+    }
+
+    /* status bar mimic */
+    .status {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 4px 18px 0;
+      font-size: 14px;
+      font-weight: 600;
+      opacity: 0.95;
+      letter-spacing: 0.01em;
+    }
+
+    .status-right {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .status-right svg { display: block; }
+
+    /* header */
+    .header {
+      display: grid;
+      grid-template-columns: 44px 1fr 44px;
+      align-items: center;
+      padding: 10px 14px 6px;
+    }
+
+    .back {
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .uaefa-logo {
+      justify-self: center;
+      width: 54px;
+      height: auto;
+      filter: drop-shadow(0 2px 8px rgba(0,0,0,.35));
+    }
+
+    /* hero */
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr 46%;
+      align-items: end;
+      gap: 0;
+      min-height: 290px;
+      padding: 8px 0 0 18px;
+      position: relative;
+    }
+
+    .hero-info {
+      padding-bottom: 18px;
+      z-index: 2;
+    }
+
+    .player-name {
+      font-size: clamp(28px, 7.2vw, 34px);
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin-bottom: 14px;
+      text-shadow: 0 2px 18px rgba(0,0,0,.35);
+    }
+
+    .club-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .club-logo {
+      width: 34px;
+      height: 34px;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 6px rgba(0,0,0,.25));
+    }
+
+    .club-name {
+      font-size: 18px;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+    }
+
+    .jersey-icon {
+      width: 34px;
+      height: 34px;
+      opacity: 0.95;
+    }
+
+    .player-photo-wrap {
+      position: relative;
+      align-self: stretch;
+      min-height: 300px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: flex-end;
+      background: linear-gradient(180deg, #ececec 0%, #d7d7d7 100%);
+    }
+
+    .player-photo {
+      width: 100%;
+      max-width: 220px;
+      height: auto;
+      min-height: 280px;
+      object-fit: cover;
+      object-position: top center;
+      display: block;
+      margin-right: -2px;
+      filter: drop-shadow(-8px 8px 24px rgba(0,0,0,.28));
+    }
+
+    /* stats */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 4px;
+      padding: 10px 16px 18px;
+      border-top: 1px solid rgba(255,255,255,.06);
+      border-bottom: 1px solid rgba(255,255,255,.06);
+      background: linear-gradient(180deg, rgba(0,0,0,.12), rgba(0,0,0,.02));
+    }
+
+    .stat {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      text-align: center;
+    }
+
+    .stat-icon {
+      width: 28px;
+      height: 28px;
+      display: grid;
+      place-items: center;
+    }
+
+    .stat-icon svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .stat-value {
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: 0.01em;
+      white-space: nowrap;
+    }
+
+    /* personal info */
+    .section-title {
+      padding: 18px 18px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      padding: 0 14px 24px;
+    }
+
+    .info-card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 4px;
+      min-height: 74px;
+      padding: 14px 10px 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      backdrop-filter: blur(6px);
+    }
+
+    .info-value {
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 6px;
+    }
+
+    .info-label {
+      font-size: 11px;
+      font-weight: 400;
+      color: var(--muted);
+      line-height: 1.2;
+    }
+
+    .home-indicator {
+      width: 128px;
+      height: 4px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.88);
+      margin: 4px auto 0;
+      opacity: .9;
+    }
+
+    @media (min-width: 431px) {
+      .phone {
+        box-shadow: 0 24px 80px rgba(0,0,0,.55);
+        border-left: 1px solid rgba(255,255,255,.04);
+        border-right: 1px solid rgba(255,255,255,.04);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="phone">
+    <div class="status" aria-hidden="true">
+      <span>20:44</span>
+      <div class="status-right">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M12 3 1.5 20h21L12 3Z" stroke="#fff" stroke-width="2" fill="none"/>
+          <text x="12" y="16" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">!</text>
+        </svg>
+        <svg width="15" height="12" viewBox="0 0 24 18" fill="none" aria-hidden="true">
+          <path d="M1 8.5c4.5-5 17.5-5 22 0" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+          <path d="M5 11.5c3-3.5 11-3.5 14 0" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+          <path d="M9.5 14.5c1.4-1.6 3.6-1.6 5 0" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="12" cy="17" r="1.6" fill="#fff"/>
+        </svg>
+        <span>11%</span>
+        <svg width="24" height="12" viewBox="0 0 28 14" fill="none" aria-hidden="true">
+          <rect x="1" y="2" width="20" height="10" rx="2" stroke="#fff" stroke-width="1.5"/>
+          <rect x="3.5" y="4.5" width="10" height="5" rx="1" fill="#fff"/>
+          <rect x="22.5" y="5" width="3" height="4" rx="1" fill="#fff"/>
+        </svg>
+      </div>
+    </div>
+
+    <header class="header">
+      <a class="back" href="#" aria-label="Back" onclick="history.back(); return false;">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M14.5 5 8 11.5 14.5 18" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+      <img class="uaefa-logo" src="img/uaefa-logo.png" alt="UAE FA" width="54" height="60" />
+      <span aria-hidden="true"></span>
+    </header>
+
+    <section class="hero">
+      <div class="hero-info">
+        <h1 class="player-name">Luka Borovic</h1>
+        <div class="club-row">
+          <img class="club-logo" src="img/al-wasl.png" alt="Al Wasl" width="34" height="34" />
+          <span class="club-name">Al Wasl</span>
+        </div>
+        <svg class="jersey-icon" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+          <path d="M18 12h8l4 6 4-6h8l6 8v34H12V20l6-8Z" stroke="#fff" stroke-width="2.4" stroke-linejoin="round"/>
+          <path d="M24 18h16" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="player-photo-wrap">
+        <img
+          class="player-photo"
+          src="img/player.jpg"
+          alt="Luka Borovic"
+          width="220"
+          height="320"
+        />
+      </div>
+    </section>
+
+    <section class="stats" aria-label="Season statistics">
+      <div class="stat">
+        <div class="stat-icon" aria-hidden="true">
+          <svg viewBox="0 0 32 32" fill="none">
+            <rect x="2" y="6" width="28" height="20" rx="2" fill="#1f7a3b"/>
+            <line x1="16" y1="6" x2="16" y2="26" stroke="#fff" stroke-width="1.2" opacity=".85"/>
+            <circle cx="16" cy="16" r="4.5" stroke="#fff" stroke-width="1.2" fill="none" opacity=".85"/>
+          </svg>
+        </div>
+        <span class="stat-value">2280min</span>
+      </div>
+      <div class="stat">
+        <div class="stat-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 32" fill="none">
+            <rect x="3" y="4" width="18" height="24" rx="2" fill="#f4d03f" stroke="#d4b02d" stroke-width="1"/>
+          </svg>
+        </div>
+        <span class="stat-value">5</span>
+      </div>
+      <div class="stat">
+        <div class="stat-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 32" fill="none">
+            <rect x="3" y="4" width="18" height="24" rx="2" fill="#d72638" stroke="#a81c2a" stroke-width="1"/>
+          </svg>
+        </div>
+        <span class="stat-value">0</span>
+      </div>
+      <div class="stat">
+        <div class="stat-icon" aria-hidden="true">
+          <img src="img/icon-ball.svg" alt="" width="28" height="28" />
+        </div>
+        <span class="stat-value">6</span>
+      </div>
+      <div class="stat">
+        <div class="stat-icon" aria-hidden="true">
+          <svg viewBox="0 0 32 32" fill="none">
+            <circle cx="16" cy="16" r="12" fill="#2f80ed"/>
+            <circle cx="16" cy="16" r="9" fill="none" stroke="#fff" stroke-width="1.6"/>
+            <path d="M16 10v6l4 2.5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <span class="stat-value">8</span>
+      </div>
+    </section>
+
+    <h2 class="section-title">Personal Info</h2>
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="info-value">Serbia</div>
+        <div class="info-label">Nationality</div>
+      </div>
+      <div class="info-card">
+        <div class="info-value">20</div>
+        <div class="info-label">Age</div>
+      </div>
+      <div class="info-card">
+        <div class="info-value">16 Jul, 2005</div>
+        <div class="info-label">Date of birth</div>
+      </div>
+      <div class="info-card">
+        <div class="info-value">20</div>
+        <div class="info-label">Jersey number</div>
+      </div>
+      <div class="info-card">
+        <div class="info-value">183cm</div>
+        <div class="info-label">Height (cm)</div>
+      </div>
+      <div class="info-card">
+        <div class="info-value">74kg</div>
+        <div class="info-label">Weight (kg)</div>
+      </div>
+    </div>
+
+    <div class="home-indicator" aria-hidden="true"></div>
+  </div>
+</body>
+</html>

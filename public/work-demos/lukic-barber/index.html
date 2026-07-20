@@ -294,7 +294,28 @@
     .marquee__track { flex-wrap:wrap; justify-content:center; width:100%; transform:none !important; }
     .marquee__strip { flex-wrap:wrap; justify-content:center; padding-right:0; }
   }
+
+  /* Card embed on Mark Studio homepage — hero + nav only, no scroll */
+  html.embed-preview,
+  html.embed-preview body {
+    overflow: hidden !important;
+    height: 100%;
+    max-height: 100vh;
+  }
+  html.embed-preview .grain,
+  html.embed-preview .progress,
+  html.embed-preview .hero__cue { display: none !important; }
+  html.embed-preview .hero { height: 100svh !important; }
+  html.embed-preview .hero ~ * { display: none !important; }
+  html.embed-preview .cap .cap__in { opacity: 0 !important; transform: translateY(26px) !important; }
+  html.embed-preview .cap:first-child .cap__in { opacity: 1 !important; transform: none !important; }
+  html.embed-preview nav { pointer-events: none; }
 </style>
+<script>
+  if (new URLSearchParams(location.search).has('embed')) {
+    document.documentElement.classList.add('embed-preview');
+  }
+</script>
 </head>
 <body>
 <div class="grain"></div>
@@ -440,12 +461,19 @@
     { s: 'shot-05', c: 'wide' }, { s: 'shot-06' }, { s: 'shot-11' }, { s: 'shot-10' },
   ];
   const bento = document.getElementById('bento');
-  TILES.forEach(t => {
-    const d = document.createElement('div');
-    d.className = 'tile focus-in focus-in--image' + (t.c ? ' ' + t.c : '');
-    d.innerHTML = `<img loading="lazy" src="img/${t.s}.jpg" alt="Rad berbernice" />`;
-    bento.appendChild(d);
-  });
+  if (bento) {
+    TILES.forEach((t, i) => {
+      const d = document.createElement('div');
+      d.className = 'tile' + (t.c ? ' ' + t.c : '');
+      const img = document.createElement('img');
+      img.src = `img/${t.s}.jpg`;
+      img.alt = 'Rad berbernice';
+      img.decoding = 'async';
+      img.loading = i < 3 ? 'eager' : 'lazy';
+      d.appendChild(img);
+      bento.appendChild(d);
+    });
+  }
 
   const REVIEWS = [
     { text: 'Najbolji fade u gradu, bez preuveličavanja. Rezervirao sam online za minut i ušao tačno na vreme.', name: 'Marko J.', role: 'Vračar', img: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face' },
@@ -480,8 +508,13 @@
   fillReviewTrack(document.getElementById('reviewsTrackB'), REVIEWS.slice(4));
 
   const FRAMES = 120;
+  /** Stop scrub before the awkward tail frames (f113–f120). */
+  const SCRUB_LAST_INDEX = FRAMES - 10;
   const heroEl = document.getElementById('hero');
   const cv = document.getElementById('heroCanvas');
+  if (!heroEl || !cv) {
+    console.warn('Hero scrub skipped — canvas not found.');
+  } else {
   const ctx = cv.getContext('2d');
   const heroPosterEl = document.getElementById('heroPoster');
   const heroCue = document.getElementById('heroCue');
@@ -533,7 +566,7 @@
       if (o !== c._o) { c._o = o; c.inner.style.opacity = o; c.inner.style.transform = `translateY(${(1 - o) * 26}px)`; }
     }
     if (heroCue) { const co = p > 0.02 ? 0 : 1; if (co !== heroCue._co) { heroCue._co = co; heroCue.style.opacity = co; } }
-    const target = p * (FRAMES - 1);
+    const target = p * SCRUB_LAST_INDEX;
     dispIdx += (target - dispIdx) * 0.5;
     if (Math.abs(target - dispIdx) < 0.4) dispIdx = target;
     const idx = clamp(Math.round(dispIdx), 0, FRAMES - 1);
@@ -560,6 +593,7 @@
     if (!reduce) { dirty = true; ensure(); }
   };
   addEventListener('scroll', onScroll, { passive: true }); onScroll();
+  }
 
   (function initMarquee() {
     const track = document.getElementById('marqueeTrack');
@@ -649,6 +683,18 @@
       io.observe(el);
     });
   })();
+</script>
+<script>
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-open-book]');
+    if (!btn) return;
+    e.preventDefault();
+    if (typeof window.__barberOpenBooking === 'function') {
+      window.__barberOpenBooking(btn.dataset.service || '');
+    } else {
+      window.__barberPendingBook = btn.dataset.service || '';
+    }
+  }, true);
 </script>
 <script type="module">
   import { initBookingModal } from './barber-shared.js';

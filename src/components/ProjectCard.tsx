@@ -1,6 +1,7 @@
 import { ArrowRight, ArrowUpRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { FadeIn } from './FadeIn'
+import { DemoSitePreview } from './DemoSitePreview'
 import { ScrollPreview } from './ScrollPreview'
 import { VimeoHoverPreview } from './VimeoPreview'
 import type { Project } from '../data/projects'
@@ -32,6 +33,8 @@ export function ProjectCard({
     >
       {project.vimeoId ? (
         <VimeoHoverPreview videoId={project.vimeoId} posterSrc={project.poster} />
+      ) : project.demoUrl ? (
+        <DemoSitePreview src={project.demoUrl} alt={project.name} />
       ) : project.cover ? (
         <ScrollPreview src={project.cover} alt={project.name} />
       ) : (
@@ -106,11 +109,19 @@ export function ProjectCard({
   )
 
   if (!project.caseStudy) {
-    return (
-      <FadeIn delay={(index % 2) * 0.08}>
-        <div className="group block cursor-default">{content}</div>
-      </FadeIn>
+    const wrapperClass = project.demoUrl
+      ? 'group block transition-opacity hover:opacity-95'
+      : 'group block cursor-default'
+
+    const inner = project.demoUrl ? (
+      <a href={project.demoUrl} className={wrapperClass}>
+        {content}
+      </a>
+    ) : (
+      <div className={wrapperClass}>{content}</div>
     )
+
+    return <FadeIn delay={(index % 2) * 0.08}>{inner}</FadeIn>
   }
 
   return (

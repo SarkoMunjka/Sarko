@@ -19,6 +19,8 @@ export interface Project {
   poster?: string
   /** Vimeo video ID for hover preview / case-study hero. */
   vimeoId?: string
+  /** Live demo URL embedded in project cards (shows real site chrome + hero). */
+  demoUrl?: string
   /** Show on the home page featured grid (default true). */
   showOnHome?: boolean
 }
@@ -36,6 +38,19 @@ export const PROJECTS: Project[] = [
     cover: '/socks-home.png',
   },
   {
+    slug: 'luka-borovic',
+    name: 'Luka Borovic',
+    category: 'Sports · Profile',
+    year: '2026',
+    blurb:
+      'Privremeni UAE FA player profile demo — Al Wasl, statistike i lični podaci.',
+    accent: '#5A1224',
+    caseStudy: false,
+    demoUrl: '/work-demos/luka-borovic/',
+    cover: '/work-demos/luka-borovic/img/uaefa-logo.png',
+    showOnHome: false,
+  },
+  {
     slug: 'lukic-barber',
     name: 'Lukić Barber',
     category: 'Barbershop · Web',
@@ -44,6 +59,7 @@ export const PROJECTS: Project[] = [
       'Premium berbernica u Beogradu — scroll-scrub hero, cenovnik i rezervacija oštri od rezova.',
     accent: '#C8923E',
     caseStudy: true,
+    demoUrl: '/work-demos/lukic-barber/?embed=1',
     cover: '/work-demos/lukic-barber/hero-poster.jpg',
   },
   {
