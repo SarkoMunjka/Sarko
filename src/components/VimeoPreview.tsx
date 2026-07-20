@@ -28,15 +28,37 @@ export function VimeoEmbed({
   videoId,
   className = '',
   autoplay = true,
-}: VimeoEmbedProps) {
+  fit = 'fill',
+}: VimeoEmbedProps & { fit?: 'fill' | 'cover' | 'contain' }) {
+  const coverClass =
+    'left-1/2 top-1/2 h-[56.25vw] min-h-full min-w-full w-[177.78vh] -translate-x-1/2 -translate-y-1/2'
+  const fillClass = 'inset-0 h-full w-full scale-[1.02]'
+  const containClass = 'relative w-full aspect-[3420/1870]'
+
+  const fitClass =
+    fit === 'cover' ? coverClass : fit === 'contain' ? containClass : fillClass
+
   return (
     <iframe
       src={vimeoEmbedUrl(videoId, autoplay)}
       title="Project preview"
-      className={`pointer-events-none absolute inset-0 h-full w-full scale-[1.02] border-0 ${className}`}
+      className={`pointer-events-none border-0 ${
+        fit === 'contain' ? '' : 'absolute'
+      } ${fitClass} ${className}`}
       allow="autoplay; fullscreen; picture-in-picture"
       referrerPolicy="strict-origin-when-cross-origin"
     />
+  )
+}
+
+/** Fill card height; crop sides to match Socks card proportions. */
+function HeightFillFrame({ children }: { children: ReactNode }) {
+  return (
+    <div className="absolute inset-0 overflow-hidden">
+      <div className="absolute top-0 left-1/2 h-full -translate-x-1/2 aspect-[3420/1870]">
+        {children}
+      </div>
+    </div>
   )
 }
 
@@ -62,19 +84,21 @@ export function VimeoHoverPreview({
   const [hovering, setHovering] = useState(false)
 
   const posterNode = posterSrc ? (
-    <img
-      src={posterSrc}
-      alt=""
-      className="h-full w-full object-cover object-top"
-      loading="lazy"
-    />
+    <HeightFillFrame>
+      <img
+        src={posterSrc}
+        alt=""
+        className="h-full w-full object-cover object-top"
+        loading="lazy"
+      />
+    </HeightFillFrame>
   ) : (
     poster
   )
 
   return (
     <div
-      className={`relative h-full w-full overflow-hidden ${className}`}
+      className={`absolute inset-0 overflow-hidden bg-[#15110D] ${className}`}
       onMouseEnter={() => setHovering(true)}
       onMouseLeave={() => setHovering(false)}
     >
@@ -85,7 +109,11 @@ export function VimeoHoverPreview({
       >
         {posterNode}
       </div>
-      {hovering && <VimeoEmbed videoId={videoId} autoplay />}
+      {hovering && (
+        <HeightFillFrame>
+          <VimeoEmbed videoId={videoId} autoplay fit="fill" />
+        </HeightFillFrame>
+      )}
     </div>
   )
 }

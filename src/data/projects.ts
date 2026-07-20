@@ -1,3 +1,6 @@
+import type { Locale } from '../i18n'
+import { getTranslations } from '../i18n'
+
 export interface Project {
   slug: string
   name: string
@@ -18,6 +21,8 @@ export interface Project {
   vimeoId?: string
   /** Live demo URL embedded in project cards (shows real site chrome + hero). */
   demoUrl?: string
+  /** Show on the home page featured grid (default true). */
+  showOnHome?: boolean
 }
 
 export const PROJECTS: Project[] = [
@@ -33,15 +38,15 @@ export const PROJECTS: Project[] = [
     cover: '/socks-home.png',
   },
   {
-    slug: 'fade-co',
-    name: 'Fade & Co.',
+    slug: 'lukic-barber',
+    name: 'Lukić Barber',
     category: 'Barbershop · Web',
     year: '2026',
     blurb:
-      'A premium Surrey barbershop — scroll-scrub hero, service menu and booking flow built to feel as sharp as the cuts.',
+      'Premium berbernica u Beogradu — scroll-scrub hero, cenovnik i rezervacija oštri od rezova.',
     accent: '#C8923E',
     caseStudy: true,
-    cover: '/work-demos/fade-co/hero-poster.jpg',
+    cover: '/work-demos/lukic-barber/hero-poster.jpg',
   },
   {
     slug: 'moonstay',
@@ -64,34 +69,54 @@ export const PROJECTS: Project[] = [
       'A cinematic portfolio and booking site for a Belgrade wedding film studio shooting love stories across Europe and the world.',
     accent: '#B79268',
     caseStudy: true,
-    poster: '/nova-home.jpg',
+    poster: '/nova-hero.png',
     vimeoId: '1204433136',
+    showOnHome: false,
   },
   {
-    slug: 'narrativ',
-    name: 'Narrativ',
-    category: 'Interactive · 3D',
+    slug: 'kosmaj-zomes',
+    name: 'Kosmaj Zomes',
+    category: 'Hospitality · Web',
     year: '2025',
     blurb:
-      'Winner of Site of the Month 2025 — an interactive 3D showcase driving record engagement.',
-    accent: '#1a1d2e',
-    caseStudy: false,
-    video:
-      'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260516_122702_390f5305-8719-41d5-ae80-d23ab3796c28.mp4',
+      'A serene booking site for luxury geodesic domes on Kosmaj mountain — nature-first storytelling and a frictionless reservation flow.',
+    accent: '#2F4F3E',
+    caseStudy: true,
+    cover: '/kosmaj-zomes-home.png',
   },
   {
-    slug: 'luminar',
-    name: 'Luminar',
-    category: 'Web · Rebrand',
+    slug: 'deluks-padel',
+    name: 'Deluks Padel',
+    category: 'Sports · Web',
     year: '2025',
     blurb:
-      'Transforming a dated platform into a conversion-focused brand experience.',
-    accent: '#6b6b6b',
-    caseStudy: false,
-    video:
-      'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260516_123323_f909c2b8-ff6c-4edf-882b-8ebcdbe389b5.mp4',
+      'A bold, high-energy site for Obrenovac\'s premier padel center — driving court bookings and building a local sports community.',
+    accent: '#1A1A1A',
+    caseStudy: true,
+    cover: '/deluks-padel-home.png',
+  },
+  {
+    slug: 'mm-studio',
+    name: 'MM Studio',
+    category: 'Architecture · Web',
+    year: '2025',
+    blurb:
+      'A refined portfolio for an architecture and interiors studio — letting residential and commercial work speak through immersive project storytelling.',
+    accent: '#2A2A2A',
+    caseStudy: true,
+    cover: '/mm-studio-home.png',
   },
 ]
 
-export const getProject = (slug: string): Project | undefined =>
-  PROJECTS.find((p) => p.slug === slug)
+export const getProjects = (locale: Locale = 'en'): Project[] => {
+  if (locale === 'en') return PROJECTS
+  const copy = getTranslations(locale).projects
+  return PROJECTS.map((project) => ({
+    ...project,
+    category: copy[project.slug]?.category ?? project.category,
+    blurb: copy[project.slug]?.blurb ?? project.blurb,
+  }))
+}
+
+export const getProject = (slug: string, locale: Locale = 'en'): Project | undefined =>
+  getProjects(locale).find((p) => p.slug === slug)

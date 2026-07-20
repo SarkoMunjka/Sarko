@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="sr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin — Lukić Barber</title>
+  <link rel="stylesheet" href="barber-shared.css" />
+</head>
+<body class="admin-page">
+
+  <!-- LOGIN -->
+  <div class="admin-login" id="loginView">
+    <div class="admin-login__brand">
+      <div class="admin-login__logo">Lukić <span class="accent">Barber</span></div>
+      <p class="admin-login__tag">Admin pristup</p>
+    </div>
+
+    <div class="admin-login__card">
+      <h2>Prijava</h2>
+      <p class="sub">Prijava vlasnika za upravljanje terminima.</p>
+      <form id="loginForm">
+        <div class="field">
+          <label for="email">Email</label>
+          <input id="email" type="email" placeholder="vlasnik@lukicbarber.rs" autocomplete="username" />
+        </div>
+        <div class="field">
+          <label for="password">Lozinka</label>
+          <input id="password" type="password" required placeholder="••••••••" autocomplete="current-password" />
+        </div>
+        <button class="btn admin-login__submit" type="submit">Prijavi se</button>
+        <div class="msg" id="loginMsg"></div>
+      </form>
+      <p class="admin-login__hint">Demo: bilo koji email + lozinka <code>lukic2026</code></p>
+    </div>
+
+    <a href="index.html" class="admin-login__back">← Nazad na sajt</a>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div class="admin-app" id="adminView" hidden>
+    <header class="admin-topbar">
+      <div class="admin-topbar__brand">Lukić <span class="accent">Barber</span> · Admin</div>
+      <button class="btn ghost sm" type="button" id="logoutBtn">Odjavi se</button>
+    </header>
+
+    <main class="admin-shell">
+      <nav class="admin-navtabs" aria-label="Admin navigacija">
+        <button type="button" class="admin-navtab is-active" data-tab="bookings">Termini</button>
+        <button type="button" class="admin-navtab" data-tab="schedule">Raspored</button>
+      </nav>
+
+      <!-- TERMINI -->
+      <section class="admin-panel" id="panelBookings">
+        <h1 class="admin-page-title">Termini</h1>
+        <p class="admin-page-count" id="bookingsCount">0 rezervacija</p>
+
+        <div class="admin-filters">
+          <div class="field">
+            <label for="filterBarber">Berberin</label>
+            <select id="filterBarber">
+              <option value="">Svi berberi</option>
+              <option value="lukic">Lukić</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="filterDate">Datum</label>
+            <input id="filterDate" type="date" />
+          </div>
+          <div class="field">
+            <label for="filterStatus">Status</label>
+            <select id="filterStatus">
+              <option value="">Svi statusi</option>
+              <option value="pending">Na čekanju</option>
+              <option value="confirmed">Potvrđeno</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="admin-booking-list" id="bookingsList"></div>
+      </section>
+
+      <!-- RASPORED -->
+      <section class="admin-panel" id="panelSchedule" hidden>
+        <h1 class="admin-page-title">Raspored</h1>
+        <p class="admin-page-count">Podesite slobodne dane i termine.</p>
+
+        <div class="admin-grid admin-grid--2" style="margin-bottom:24px;">
+          <div class="card">
+            <h2>Kalendar</h2>
+            <p class="admin-hint" style="margin-bottom:16px;">Izaberite datum. Precrtani dani su blokirani.</p>
+            <div data-admin-cal></div>
+          </div>
+          <div class="card">
+            <div class="admin-avail-head">
+              <div>
+                <h2>Termini</h2>
+                <p class="admin-hint" data-admin-date-label></p>
+              </div>
+              <button type="button" class="btn ghost sm is-danger" data-block-day>Blokiraj ceo dan</button>
+            </div>
+            <p class="admin-hint" style="margin-bottom:12px;">Kliknite termin da ga otvorite ili zatvorite.</p>
+            <div class="slots" data-admin-slots></div>
+          </div>
+        </div>
+
+        <div class="admin-grid">
+          <section class="card">
+            <h2>Radno vreme</h2>
+            <div id="scheduleRows"></div>
+          </section>
+          <section class="card">
+            <h2>Podešavanja</h2>
+            <label style="display:flex;align-items:center;gap:10px;font-size:14px;margin-bottom:14px;">
+              <input type="checkbox" id="acceptBookings" />
+              Prihvataj online rezervacije
+            </label>
+            <div class="field">
+              <label for="slotInterval">Interval termina (min)</label>
+              <select id="slotInterval">
+                <option value="15">15</option>
+                <option value="30">30</option>
+                <option value="45">45</option>
+              </select>
+            </div>
+            <button class="btn" type="button" id="saveSettings" style="margin-top:8px;">Sačuvaj podešavanja</button>
+          </section>
+        </div>
+      </section>
+
+      <div class="msg" id="adminMsg" style="margin-top:24px;"></div>
+    </main>
+  </div>
+
+  <script type="module" src="barber-admin.js"></script>
+</body>
+</html>
