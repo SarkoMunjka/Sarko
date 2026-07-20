@@ -10,6 +10,8 @@ const CARD_W = 360
 const IMAGE_H = 360
 const CAPTION_H = 108
 const CARD_H = CARD_W + 24 + CAPTION_H
+/** Extra shift so left card clears the center polaroid */
+const LEFT_CARD_SHIFT = 130
 
 type PolaroidVariant = 'brand' | 'review'
 
@@ -120,7 +122,8 @@ export function MagnetPolaroidSection() {
       const theRect = theRef.current.getBoundingClientRect()
       const stageRect = stageRef.current.getBoundingClientRect()
       const theCenter = theRect.left + Math.min(theRect.width * 0.22, 52)
-      setLeftAnchor(theCenter - stageRect.left)
+      const anchor = theCenter - stageRect.left - LEFT_CARD_SHIFT
+      setLeftAnchor(Math.max(anchor, 12))
     }
 
     measure()
