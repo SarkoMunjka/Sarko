@@ -4,6 +4,7 @@ import { Menu, X } from 'lucide-react'
 import { TornPaperDivider } from './TornPaperDivider'
 import { TORN_CARD_CLIP } from './tornPaper'
 import { MagnetPolaroidSection } from './MagnetPolaroidSection'
+import { HousesSection } from './HousesSection'
 import './forest-whisper.css'
 
 const HERO_IMG = '/work-demos/forest-whisper/img/hero-bg.png'
@@ -232,6 +233,7 @@ export function ForestWhisperDemo() {
       </header>
 
       {!embed && <MagnetPolaroidSection />}
+      {!embed && <HousesSection />}
 
       {menuOpen && (
         <div className="fixed inset-0 z-50 flex flex-col items-center justify-center gap-7 bg-[#0d1b12]/97 backdrop-blur-md lg:hidden">
