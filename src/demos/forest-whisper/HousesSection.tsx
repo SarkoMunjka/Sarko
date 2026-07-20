@@ -70,7 +70,7 @@ const HOUSES: House[] = [
 
 function HouseIcon() {
   return (
-    <svg width="52" height="40" viewBox="0 0 52 40" fill="none" stroke="currentColor" strokeWidth="1.2" aria-hidden>
+    <svg width="36" height="28" viewBox="0 0 52 40" fill="none" stroke="currentColor" strokeWidth="1.2" aria-hidden>
       <path d="M4 18 26 4l22 14v16H4V18z" strokeLinejoin="round" />
       <path d="M18 38V24h16v14" strokeLinejoin="round" />
       <path d="M26 4v6" strokeLinecap="round" />
@@ -84,8 +84,8 @@ function HouseCarousel({ slides, alt }: { slides: House['slides']; alt: string }
   const slide = slides[index]
 
   return (
-    <div className="w-full overflow-hidden rounded-[20px] bg-cream p-4 shadow-[0_16px_48px_rgba(0,0,0,0.14)] md:p-5">
-      <div className="aspect-[4/3] w-full overflow-hidden rounded-[14px] bg-[#2a3426] md:min-h-[280px] lg:min-h-[320px]">
+    <div className="h-full w-full overflow-hidden rounded-[20px] bg-cream p-4 shadow-[0_16px_48px_rgba(0,0,0,0.14)] md:p-5">
+      <div className="aspect-[4/3] w-full overflow-hidden rounded-[14px] bg-[#2a3426] lg:min-h-[300px]">
         <img
           src={slide.src}
           alt={alt}
@@ -94,7 +94,7 @@ function HouseCarousel({ slides, alt }: { slides: House['slides']; alt: string }
           loading="lazy"
         />
       </div>
-      <div className="mt-5 flex items-center justify-center gap-6 px-2">
+      <div className="mt-4 flex items-center justify-center gap-6 px-2">
         <button
           type="button"
           onClick={() => setIndex((i) => (i - 1 + count) % count)}
@@ -127,10 +127,10 @@ function HouseCarousel({ slides, alt }: { slides: House['slides']; alt: string }
   )
 }
 
-function HouseDetails({ house, index }: { house: House; index: number }) {
+function HouseDetails({ house }: { house: House }) {
   return (
-    <div className={`py-7 lg:py-8 ${index > 0 ? 'border-t border-dashed border-ink/15' : ''}`}>
-      <h3 className="font-sans text-[clamp(1.15rem,1.8vw,1.45rem)] font-semibold uppercase tracking-[0.14em] text-ink">
+    <div className="w-full py-2 lg:py-4">
+      <h3 className="font-sans text-[clamp(1.15rem,1.6vw,1.4rem)] font-semibold uppercase tracking-[0.14em] text-ink">
         {house.name}
       </h3>
       <p className="mt-2.5 text-[13.5px] leading-[1.6] text-ink/65">{house.subtitle}</p>
@@ -169,74 +169,67 @@ function HouseDetails({ house, index }: { house: House; index: number }) {
 export function HousesSection() {
   const reduce = useReducedMotion()
 
-  const lineLg = 'font-serif font-light uppercase tracking-[0.04em] text-ink/26'
-  const lineMd = 'font-serif font-light uppercase tracking-[0.04em] text-ink/26'
+  const lineLg = 'font-serif font-light uppercase tracking-[0.04em] text-ink/30'
+  const lineMd = 'font-serif font-light uppercase tracking-[0.04em] text-ink/30'
 
   return (
-    <section id="houses" className="relative py-[clamp(72px,10vw,110px)]" style={{ backgroundColor: SECTION_BG }}>
+    <section id="houses" className="relative overflow-x-clip py-[clamp(72px,10vw,110px)]" style={{ backgroundColor: SECTION_BG }}>
       <div className="mx-auto w-full max-w-[1440px] px-6 md:px-10">
-        {/* Editorial headline — starts at center, like about section */}
+        {/* Headline — right half of viewport, fully visible */}
         <motion.div
-          className="mb-14 pl-0 md:mb-20 md:pl-[50%]"
+          className="mb-12 md:mb-16 lg:mb-20"
           initial={reduce ? false : { opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.4 }}
           transition={{ duration: 1.1, ease: EASE }}
         >
-          <h2 className="fw-houses-headline inline-grid gap-x-[clamp(12px,2vw,28px)]">
-            <span className={`${lineLg} col-span-2 text-left text-[clamp(2.2rem,5.5vw,4.8rem)] leading-[0.9]`}>
-              Are you going
-            </span>
-            <span className={`${lineMd} whitespace-nowrap text-left text-[clamp(1.7rem,3.8vw,3.6rem)] leading-[0.92]`}>
-              together or with
-            </span>
-            <span className={`${lineMd} text-left text-[clamp(1.7rem,3.8vw,3.6rem)] leading-[0.92]`}>
-              the whole
-            </span>
-            <div className="col-start-1 row-start-3 mt-2">
-              <div className="rounded-[20px] bg-cream px-6 py-4 text-[#576a4f] shadow-[0_10px_32px_rgba(0,0,0,0.1)]">
-                <HouseIcon />
-                <p className="mt-2.5 font-script text-[clamp(1.35rem,2.4vw,1.85rem)] leading-none">
-                  Choose your own house!
-                </p>
+          <div className="grid md:grid-cols-2">
+            <div className="hidden md:block" aria-hidden />
+            <h2 className="fw-houses-headline inline-grid max-w-full gap-x-[clamp(10px,1.8vw,24px)]">
+              <span className={`${lineLg} col-span-2 text-left text-[clamp(1.9rem,4.2vw,4rem)] leading-[0.9]`}>
+                Are you going
+              </span>
+              <span className={`${lineMd} text-left text-[clamp(1.45rem,2.8vw,2.75rem)] leading-[0.92] md:whitespace-nowrap`}>
+                together or with
+              </span>
+              <span className={`${lineMd} text-left text-[clamp(1.45rem,2.8vw,2.75rem)] leading-[0.92]`}>
+                the whole
+              </span>
+              <div className="col-start-1 row-start-3 mt-1 w-fit">
+                <div className="w-fit rounded-[16px] bg-cream px-5 py-3 text-[#576a4f] shadow-[0_8px_24px_rgba(0,0,0,0.1)]">
+                  <HouseIcon />
+                  <p className="mt-2 font-script text-[1.25rem] leading-none md:text-[1.4rem]">
+                    Choose your own house!
+                  </p>
+                </div>
               </div>
-            </div>
-            <span className={`${lineLg} col-start-2 row-start-3 self-end text-left text-[clamp(2.2rem,5.5vw,4.8rem)] leading-[0.9]`}>
-              company?
-            </span>
-          </h2>
+              <span className={`${lineLg} col-start-2 row-start-3 self-end text-left text-[clamp(1.9rem,4.2vw,4rem)] leading-[0.9]`}>
+                company?
+              </span>
+            </h2>
+          </div>
         </motion.div>
 
-        {/* 60% carousel / 40% details */}
-        <div className="grid grid-cols-1 gap-10 lg:grid-cols-[60%_40%] lg:gap-8 xl:gap-10">
-          {/* Left — large cabin carousels */}
-          <div className="flex flex-col gap-12 lg:gap-14">
-            {HOUSES.map((house, i) => (
-              <motion.div
-                key={house.id}
-                initial={reduce ? false : { opacity: 0, x: -24 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{ duration: 0.9, delay: i * 0.08, ease: EASE }}
+        {/* Each row: 60% carousel aligned with 40% details */}
+        <div className="flex flex-col gap-12 lg:gap-16">
+          {HOUSES.map((house, i) => (
+            <motion.div
+              key={house.id}
+              className="grid grid-cols-1 items-center gap-8 lg:grid-cols-[60%_40%] lg:gap-6 xl:gap-10"
+              initial={reduce ? false : { opacity: 0, y: 28 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.9, delay: i * 0.06, ease: EASE }}
+            >
+              <HouseCarousel slides={house.slides} alt={house.name} />
+              <div
+                className="flex items-center rounded-[20px] px-5 py-4 md:px-7 lg:min-h-[300px]"
+                style={{ backgroundColor: SECTION_BG }}
               >
-                <HouseCarousel slides={house.slides} alt={house.name} />
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Right — house details panel */}
-          <motion.div
-            className="rounded-[20px] px-6 py-4 shadow-[0_8px_28px_rgba(0,0,0,0.08)] md:px-8 lg:sticky lg:top-8 lg:self-start"
-            style={{ backgroundColor: SECTION_BG }}
-            initial={reduce ? false : { opacity: 0, x: 24 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, amount: 0.15 }}
-            transition={{ duration: 1, ease: EASE }}
-          >
-            {HOUSES.map((house, i) => (
-              <HouseDetails key={house.id} house={house} index={i} />
-            ))}
-          </motion.div>
+                <HouseDetails house={house} />
+              </div>
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>
