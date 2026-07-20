@@ -221,10 +221,10 @@ export const sr: Translations = {
       blurb:
         'Premium berbernica u Beogradu — scroll-scrub hero, cenovnik i tok rezervacije oštar kao rezovi.',
     },
-    moonstay: {
+    'forest-whisper': {
       category: 'Ugostiteljstvo · Web',
       blurb:
-        'Kurirani boravci za odmor — vile, kuće i vikendice sa scroll-scrub heroom i premium rental UX-om.',
+        'Kućice na drvetu i šumska povlačenja — kinematski hero, torn-paper UI i hospitality priča vođena prirodom.',
     },
     novaframe: {
       category: 'Svadbeni film · Web',

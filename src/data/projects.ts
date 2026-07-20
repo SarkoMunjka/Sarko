@@ -49,16 +49,16 @@ export const PROJECTS: Project[] = [
     cover: '/work-demos/lukic-barber/hero-poster.jpg',
   },
   {
-    slug: 'moonstay',
-    name: 'Moonstay',
+    slug: 'forest-whisper',
+    name: 'Forest Whisper',
     category: 'Hospitality · Web',
     year: '2026',
     blurb:
-      'Kurirani boravci za odmor — vile, kuće i vikendice sa scroll-scrub heroom i premium iskustvom rezervacije.',
-    accent: '#4A5D52',
+      'Tree houses and forest retreats — premium hospitality demo with cinematic hero, torn-paper UI and nature-first storytelling.',
+    accent: '#3A4234',
     caseStudy: true,
-    demoUrl: '/work-demos/moonstay/?embed=1',
-    cover: '/work-demos/moonstay/hero-poster.jpg',
+    demoUrl: '/work-demos/forest-whisper/?embed=1',
+    cover: '/work-demos/forest-whisper/img/hero-bg.png',
   },
   {
     slug: 'novaframe',

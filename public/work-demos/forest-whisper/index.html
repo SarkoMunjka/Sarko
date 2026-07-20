@@ -41,7 +41,7 @@
   .hero__bg {
     position: absolute;
     inset: 0;
-    background: #1a2218 url("img/hero-bg.jpg") center 42% / cover no-repeat;
+    background: #1a2218 url("img/hero-bg.png") center 42% / cover no-repeat;
     transform: scale(1.04);
     animation: hero-zoom 18s var(--ease) forwards;
   }
@@ -367,7 +367,22 @@
     font-size: 20px;
     cursor: pointer;
   }
+
+  /* Card embed on Mark Studio homepage */
+  html.embed-preview,
+  html.embed-preview body {
+    overflow: hidden !important;
+    height: 100%;
+    max-height: 100vh;
+  }
+  html.embed-preview .section-stub { display: none !important; }
+  html.embed-preview .hero { min-height: 100svh !important; }
 </style>
+<script>
+  if (new URLSearchParams(location.search).has('embed')) {
+    document.documentElement.classList.add('embed-preview');
+  }
+</script>
 </head>
 <body>
 

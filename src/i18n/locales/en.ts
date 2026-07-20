@@ -221,10 +221,10 @@ export const en: Translations = {
       blurb:
         'A premium Belgrade barbershop — scroll-scrub hero, service menu and booking flow built to feel as sharp as the cuts.',
     },
-    moonstay: {
+    'forest-whisper': {
       category: 'Hospitality · Web',
       blurb:
-        'Curated holiday stays — villas, houses and cottages with a scroll-scrub hero and premium rental UX.',
+        'Tree houses and forest retreats — cinematic hero, torn-paper UI and nature-first hospitality storytelling.',
     },
     novaframe: {
       category: 'Wedding film · Web',
