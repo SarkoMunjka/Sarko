@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import { motion, useReducedMotion } from 'motion/react'
 import { ChevronLeft, ChevronRight, Tag, Users, Maximize2 } from 'lucide-react'
-import { TORN_CARD_CLIP, TORN_LEFT_PANEL_CLIP } from './tornPaper'
 
 const IMG = '/work-demos/forest-whisper/img'
 const EASE = [0.22, 0.61, 0.36, 1] as const
+const SECTION_BG = '#d4cfb3'
 
 type House = {
   id: string
@@ -141,12 +141,12 @@ export function HousesSection() {
   const reduce = useReducedMotion()
 
   return (
-    <section id="houses" className="relative bg-[#576a4f] py-[clamp(72px,10vw,110px)]">
+    <section id="houses" className="relative py-[clamp(72px,10vw,110px)]" style={{ backgroundColor: SECTION_BG }}>
       <div className="mx-auto max-w-[1180px] px-6 md:px-10">
         {/* Header */}
         <div className="mb-14 flex flex-col items-end gap-8 md:mb-16">
           <motion.h2
-            className="max-w-[min(100%,640px)] text-right font-serif text-[clamp(2rem,4.8vw,3.75rem)] font-light uppercase leading-[0.95] tracking-[0.04em] text-cream"
+            className="max-w-[min(100%,640px)] text-right font-serif text-[clamp(2rem,4.8vw,3.75rem)] font-light uppercase leading-[0.95] tracking-[0.04em] text-ink"
             initial={reduce ? false : { opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.4 }}
@@ -162,8 +162,7 @@ export function HousesSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.9, delay: 0.15, ease: EASE }}
-            className="bg-cream px-7 py-5 text-[#576a4f] shadow-[0_10px_32px_rgba(0,0,0,0.15)]"
-            style={{ clipPath: TORN_CARD_CLIP }}
+            className="rounded-[20px] bg-cream px-7 py-5 text-[#576a4f] shadow-[0_10px_32px_rgba(0,0,0,0.1)]"
           >
             <HouseIcon />
             <p className="mt-3 font-script text-[clamp(1.5rem,2.8vw,2rem)] leading-none">
@@ -183,7 +182,7 @@ export function HousesSection() {
               transition={{ duration: 0.9, delay: i * 0.08, ease: EASE }}
             >
               <HouseCarousel images={house.images} alt={house.name} />
-              <div className="mt-6 bg-cream px-6 py-2" style={{ clipPath: TORN_LEFT_PANEL_CLIP }}>
+              <div className="mt-6 rounded-[20px] px-6 py-2 shadow-[0_8px_28px_rgba(0,0,0,0.08)]" style={{ backgroundColor: SECTION_BG }}>
                 <HouseDetails house={house} index={0} />
               </div>
             </motion.div>
@@ -206,8 +205,8 @@ export function HousesSection() {
           ))}
 
           <motion.div
-            className="bg-cream px-8 py-4 md:px-12 md:py-6 lg:col-start-2 lg:row-span-3 lg:row-start-1"
-            style={{ clipPath: TORN_LEFT_PANEL_CLIP }}
+            className="rounded-[20px] px-8 py-4 shadow-[0_8px_28px_rgba(0,0,0,0.08)] md:px-12 md:py-6 lg:col-start-2 lg:row-span-3 lg:row-start-1"
+            style={{ backgroundColor: SECTION_BG }}
             initial={reduce ? false : { opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, amount: 0.15 }}
