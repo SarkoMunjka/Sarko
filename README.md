@@ -1,6 +1,6 @@
-# Axion Studio
+# Mark Studio
 
-A single-page landing site for the fictional design agency **Axion Studio**, built with React, Vite, TypeScript and Tailwind CSS. The hero uses an animated WebGL shader stack from the [`shaders`](https://www.npmjs.com/package/shaders) package and icons from [`lucide-react`](https://www.npmjs.com/package/lucide-react).
+A single-page landing site for **Mark Studio**, built with React, Vite, TypeScript and Tailwind CSS. The hero uses an animated WebGL shader stack from the [`shaders`](https://www.npmjs.com/package/shaders) package and icons from [`lucide-react`](https://www.npmjs.com/package/lucide-react).
 
 ## Sections
 
