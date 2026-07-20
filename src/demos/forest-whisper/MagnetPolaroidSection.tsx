@@ -1,12 +1,15 @@
-import { type CSSProperties } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { motion, useReducedMotion } from 'motion/react'
 
 const IMG = '/work-demos/forest-whisper/img'
 
 const EASE = [0.22, 0.61, 0.36, 1] as const
-
-/** Shared inset — aligns headline + left polaroid under "THE" */
 const HEADLINE_INSET = 'clamp(10%, 16vw, 20%)'
+
+const CARD_W = 360
+const IMAGE_H = 360
+const CAPTION_H = 108
+const CARD_H = CARD_W + 24 + CAPTION_H
 
 type PolaroidVariant = 'brand' | 'review'
 
@@ -14,8 +17,6 @@ interface PolaroidProps {
   image: string
   alt: string
   rotate: number
-  className?: string
-  style?: CSSProperties
   delay?: number
   variant: PolaroidVariant
   quote?: string
@@ -50,8 +51,6 @@ function PolaroidCard({
   image,
   alt,
   rotate,
-  className = '',
-  style,
   delay = 0,
   variant,
   quote,
@@ -62,34 +61,35 @@ function PolaroidCard({
 
   return (
     <motion.article
-      className={`fw-polaroid w-[min(400px,92vw)] ${className}`}
-      style={{ rotate: `${rotate}deg`, ...style }}
+      className="fw-polaroid shrink-0"
+      style={{ width: CARD_W, height: CARD_H, rotate: `${rotate}deg` }}
       initial={reduce ? false : { opacity: 0, y: 36, rotate: rotate - 6 }}
       whileInView={{ opacity: 1, y: 0, rotate }}
       viewport={{ once: true, amount: 0.35 }}
       transition={{ duration: 1, delay, ease: EASE }}
     >
       <FridgeMagnet />
-      <div className="relative bg-white px-4 pb-6 pt-4 shadow-[0_20px_52px_rgba(16,16,16,0.18),0_6px_18px_rgba(16,16,16,0.08)]">
-        <div className="aspect-[4/5] overflow-hidden bg-[#e8e2d8]">
+      <div className="flex h-full flex-col bg-white px-4 pb-4 pt-4 shadow-[0_20px_52px_rgba(16,16,16,0.18),0_6px_18px_rgba(16,16,16,0.08)]">
+        <div
+          className="mx-auto shrink-0 overflow-hidden bg-[#e8e2d8]"
+          style={{ width: CARD_W - 32, height: IMAGE_H }}
+        >
           <img src={image} alt={alt} className="h-full w-full object-cover" loading="lazy" />
         </div>
 
-        <div className="mt-5 min-h-[96px] px-1">
+        <div className="flex flex-col justify-center px-1 pt-4" style={{ height: CAPTION_H }}>
           {variant === 'brand' ? (
             <div className="flex flex-col items-center gap-2 text-[#576a4f]">
               <HeartIcon />
-              <p className="font-script text-[clamp(1.35rem,2.4vw,1.75rem)] leading-none tracking-wide">
-                Forest Whisper
-              </p>
+              <p className="font-script text-[1.5rem] leading-none tracking-wide">Forest Whisper</p>
             </div>
           ) : (
             <>
-              <p className="font-serif text-[2rem] leading-none text-[#a97842]/80" aria-hidden>
+              <p className="font-serif text-[1.75rem] leading-none text-[#a97842]/80" aria-hidden>
                 „
               </p>
-              <p className="mt-1 text-[13px] leading-[1.55] text-[#3a3a3a]">{quote}</p>
-              <div className="mt-3 flex items-center gap-2.5">
+              <p className="mt-1 line-clamp-3 text-[12.5px] leading-[1.5] text-[#3a3a3a]">{quote}</p>
+              <div className="mt-2 flex items-center gap-2.5">
                 <img
                   src={avatar}
                   alt=""
@@ -107,17 +107,33 @@ function PolaroidCard({
 
 export function MagnetPolaroidSection() {
   const reduce = useReducedMotion()
+  const stageRef = useRef<HTMLDivElement>(null)
+  const theRef = useRef<HTMLSpanElement>(null)
+  const [leftAnchor, setLeftAnchor] = useState(80)
 
   const lineClass =
     'font-serif font-light uppercase tracking-[0.04em] text-[#101010]/24'
+
+  useEffect(() => {
+    const measure = () => {
+      if (!theRef.current || !stageRef.current) return
+      const theRect = theRef.current.getBoundingClientRect()
+      const stageRect = stageRef.current.getBoundingClientRect()
+      const theCenter = theRect.left + Math.min(theRect.width * 0.22, 52)
+      setLeftAnchor(theCenter - stageRect.left)
+    }
+
+    measure()
+    window.addEventListener('resize', measure)
+    return () => window.removeEventListener('resize', measure)
+  }, [])
 
   return (
     <section
       id="about"
       className="relative overflow-hidden bg-cream pb-[clamp(110px,15vw,180px)] pt-[clamp(64px,8vw,96px)]"
     >
-      <div className="fw-about-stage relative mx-auto w-full max-w-[1320px] px-6 md:px-10">
-        {/* Headline */}
+      <div ref={stageRef} className="fw-about-stage relative mx-auto w-full max-w-[1360px] px-6 md:px-10">
         <motion.div
           className="relative z-20"
           style={{ paddingLeft: HEADLINE_INSET }}
@@ -131,7 +147,7 @@ export function MagnetPolaroidSection() {
               A vacation
             </span>
             <span
-              id="fw-line-the"
+              ref={theRef}
               className={`${lineClass} whitespace-pre text-left text-[clamp(1.9rem,4.4vw,4rem)] leading-[0.95]`}
             >
               that will{' '}
@@ -146,44 +162,48 @@ export function MagnetPolaroidSection() {
           </h2>
         </motion.div>
 
-        {/* Polaroids — aligned to headline grid */}
-        <div className="fw-polaroid-board relative z-30 -mt-2 flex flex-col items-center gap-14 md:-mt-4 md:block md:h-[min(860px,112vw)] md:gap-0">
-          {/* Left — directly under "THE" */}
-          <PolaroidCard
-            variant="brand"
-            image={`${IMG}/polaroid-01.jpg`}
-            alt="Child on a wooden deck looking toward a lit A-frame cabin at night"
-            rotate={9}
-            delay={0.12}
-            className="relative md:absolute md:top-[2%]"
-            style={{ left: HEADLINE_INSET }}
-          />
+        <div className="fw-polaroid-board relative mt-8 flex flex-col items-center gap-12 md:mt-6 md:h-[560px] md:gap-0">
+          {/* Left — center of image under THE */}
+          <div
+            className="relative z-10 md:absolute md:top-0"
+            style={{ left: leftAnchor, transform: 'translateX(-50%)' }}
+          >
+            <PolaroidCard
+              variant="brand"
+              image={`${IMG}/polaroid-01.jpg`}
+              alt="Child on a wooden deck looking toward a lit A-frame cabin at night"
+              rotate={9}
+              delay={0.12}
+            />
+          </div>
 
-          {/* Center */}
-          <PolaroidCard
-            variant="review"
-            image={`${IMG}/polaroid-02.jpg`}
-            alt="Guest facing an A-frame cabin in the forest with arms raised"
-            rotate={-6}
-            delay={0.28}
-            quote="I posted 2 photos from here, and already 150+ likes and a bunch of questions about where this paradise is"
-            name="Den"
-            avatar={`${IMG}/avatar-den.jpg`}
-            className="relative z-20 md:absolute md:left-1/2 md:top-[44%] md:-translate-x-1/2"
-          />
+          {/* Center — highest z, lower row, nothing on top */}
+          <div className="relative z-30 md:absolute md:left-1/2 md:top-[22%] md:-translate-x-1/2">
+            <PolaroidCard
+              variant="review"
+              image={`${IMG}/polaroid-02.jpg`}
+              alt="Guest facing an A-frame cabin in the forest with arms raised"
+              rotate={-6}
+              delay={0.28}
+              quote="I posted 2 photos from here, and already 150+ likes and a bunch of questions about where this paradise is"
+              name="Den"
+              avatar={`${IMG}/avatar-den.jpg`}
+            />
+          </div>
 
-          {/* Right — hugs right edge, slightly overlaps headline */}
-          <PolaroidCard
-            variant="review"
-            image={`${IMG}/polaroid-03.jpg`}
-            alt="Forest view from a wooden balcony with two chairs"
-            rotate={8}
-            delay={0.42}
-            quote="I felt something similar in Bali... A complete union with nature..."
-            name="Maria"
-            avatar={`${IMG}/avatar-maria.jpg`}
-            className="relative z-40 md:absolute md:-top-[6%] md:right-0 lg:-right-2"
-          />
+          {/* Right — flush right, lower z, no overlap on center */}
+          <div className="relative z-10 md:absolute md:right-0 md:top-0">
+            <PolaroidCard
+              variant="review"
+              image={`${IMG}/polaroid-03.jpg`}
+              alt="Forest view from a wooden balcony with two chairs"
+              rotate={8}
+              delay={0.42}
+              quote="I felt something similar in Bali... A complete union with nature..."
+              name="Maria"
+              avatar={`${IMG}/avatar-maria.jpg`}
+            />
+          </div>
         </div>
       </div>
     </section>
