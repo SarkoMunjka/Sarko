@@ -1,8 +1,12 @@
+import { type CSSProperties } from 'react'
 import { motion, useReducedMotion } from 'motion/react'
 
 const IMG = '/work-demos/forest-whisper/img'
 
 const EASE = [0.22, 0.61, 0.36, 1] as const
+
+/** Shared inset — aligns headline + left polaroid under "THE" */
+const HEADLINE_INSET = 'clamp(10%, 16vw, 20%)'
 
 type PolaroidVariant = 'brand' | 'review'
 
@@ -11,6 +15,7 @@ interface PolaroidProps {
   alt: string
   rotate: number
   className?: string
+  style?: CSSProperties
   delay?: number
   variant: PolaroidVariant
   quote?: string
@@ -46,6 +51,7 @@ function PolaroidCard({
   alt,
   rotate,
   className = '',
+  style,
   delay = 0,
   variant,
   quote,
@@ -56,8 +62,8 @@ function PolaroidCard({
 
   return (
     <motion.article
-      className={`fw-polaroid w-[min(340px,88vw)] ${className}`}
-      style={{ rotate: `${rotate}deg` }}
+      className={`fw-polaroid w-[min(400px,92vw)] ${className}`}
+      style={{ rotate: `${rotate}deg`, ...style }}
       initial={reduce ? false : { opacity: 0, y: 36, rotate: rotate - 6 }}
       whileInView={{ opacity: 1, y: 0, rotate }}
       viewport={{ once: true, amount: 0.35 }}
@@ -82,7 +88,7 @@ function PolaroidCard({
               <p className="font-serif text-[2rem] leading-none text-[#a97842]/80" aria-hidden>
                 „
               </p>
-              <p className="mt-1 text-[12.5px] leading-[1.55] text-[#3a3a3a]">{quote}</p>
+              <p className="mt-1 text-[13px] leading-[1.55] text-[#3a3a3a]">{quote}</p>
               <div className="mt-3 flex items-center gap-2.5">
                 <img
                   src={avatar}
@@ -108,65 +114,77 @@ export function MagnetPolaroidSection() {
   return (
     <section
       id="about"
-      className="relative overflow-hidden bg-cream pb-[clamp(100px,14vw,160px)] pt-[clamp(64px,8vw,96px)]"
+      className="relative overflow-hidden bg-cream pb-[clamp(110px,15vw,180px)] pt-[clamp(64px,8vw,96px)]"
     >
-      {/* Headline — own row, always readable, polaroids sit below */}
-      <motion.div
-        className="relative z-20 mx-auto w-full max-w-[1040px] px-6 md:px-10"
-        initial={reduce ? false : { opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.4 }}
-        transition={{ duration: 1.1, ease: EASE }}
-      >
-        <h2 className="fw-about-headline inline-grid gap-x-0" style={{ marginLeft: 'clamp(10%, 16vw, 20%)' }}>
-          <span className={`${lineClass} col-span-2 text-left text-[clamp(2.5rem,6vw,5.2rem)] leading-[0.9]`}>
-            A vacation
-          </span>
-          <span className={`${lineClass} whitespace-pre text-left text-[clamp(1.9rem,4.4vw,4rem)] leading-[0.95]`}>
-            that will{' '}
-          </span>
-          <span className={`${lineClass} text-left text-[clamp(1.9rem,4.4vw,4rem)] leading-[0.95] md:whitespace-nowrap`}>
-            be remembered
-          </span>
-          <span aria-hidden className="col-start-1" />
-          <span className={`${lineClass} col-start-2 text-left text-[clamp(2.5rem,6vw,5.2rem)] leading-[0.9]`}>
-            forever!
-          </span>
-        </h2>
-      </motion.div>
+      <div className="fw-about-stage relative mx-auto w-full max-w-[1320px] px-6 md:px-10">
+        {/* Headline */}
+        <motion.div
+          className="relative z-20"
+          style={{ paddingLeft: HEADLINE_INSET }}
+          initial={reduce ? false : { opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.4 }}
+          transition={{ duration: 1.1, ease: EASE }}
+        >
+          <h2 className="fw-about-headline inline-grid gap-x-0">
+            <span className={`${lineClass} col-span-2 text-left text-[clamp(2.5rem,6vw,5.2rem)] leading-[0.9]`}>
+              A vacation
+            </span>
+            <span
+              id="fw-line-the"
+              className={`${lineClass} whitespace-pre text-left text-[clamp(1.9rem,4.4vw,4rem)] leading-[0.95]`}
+            >
+              that will{' '}
+            </span>
+            <span className={`${lineClass} text-left text-[clamp(1.9rem,4.4vw,4rem)] leading-[0.95] md:whitespace-nowrap`}>
+              be remembered
+            </span>
+            <span aria-hidden className="col-start-1" />
+            <span className={`${lineClass} col-start-2 text-left text-[clamp(2.5rem,6vw,5.2rem)] leading-[0.9]`}>
+              forever!
+            </span>
+          </h2>
+        </motion.div>
 
-      {/* Polaroids — Instagram post size, spread V layout */}
-      <div className="fw-polaroid-board relative z-10 mx-auto -mt-4 flex w-full max-w-[1240px] flex-col items-center gap-14 px-4 md:-mt-6 md:block md:h-[min(780px,105vw)] md:gap-0 md:px-6">
-        <PolaroidCard
-          variant="brand"
-          image={`${IMG}/polaroid-01.jpg`}
-          alt="Child on a wooden deck looking toward a lit A-frame cabin at night"
-          rotate={9}
-          delay={0.12}
-          className="relative md:absolute md:left-[1%] md:top-[6%] lg:left-[3%]"
-        />
-        <PolaroidCard
-          variant="review"
-          image={`${IMG}/polaroid-02.jpg`}
-          alt="Guest facing an A-frame cabin in the forest with arms raised"
-          rotate={-6}
-          delay={0.28}
-          quote="I posted 2 photos from here, and already 150+ likes and a bunch of questions about where this paradise is"
-          name="Den"
-          avatar={`${IMG}/avatar-den.jpg`}
-          className="relative z-20 md:absolute md:left-1/2 md:top-[46%] md:-translate-x-1/2"
-        />
-        <PolaroidCard
-          variant="review"
-          image={`${IMG}/polaroid-03.jpg`}
-          alt="Forest view from a wooden balcony with two chairs"
-          rotate={8}
-          delay={0.42}
-          quote="I felt something similar in Bali... A complete union with nature..."
-          name="Maria"
-          avatar={`${IMG}/avatar-maria.jpg`}
-          className="relative md:absolute md:right-[1%] md:top-[2%] lg:right-[3%]"
-        />
+        {/* Polaroids — aligned to headline grid */}
+        <div className="fw-polaroid-board relative z-30 -mt-2 flex flex-col items-center gap-14 md:-mt-4 md:block md:h-[min(860px,112vw)] md:gap-0">
+          {/* Left — directly under "THE" */}
+          <PolaroidCard
+            variant="brand"
+            image={`${IMG}/polaroid-01.jpg`}
+            alt="Child on a wooden deck looking toward a lit A-frame cabin at night"
+            rotate={9}
+            delay={0.12}
+            className="relative md:absolute md:top-[2%]"
+            style={{ left: HEADLINE_INSET }}
+          />
+
+          {/* Center */}
+          <PolaroidCard
+            variant="review"
+            image={`${IMG}/polaroid-02.jpg`}
+            alt="Guest facing an A-frame cabin in the forest with arms raised"
+            rotate={-6}
+            delay={0.28}
+            quote="I posted 2 photos from here, and already 150+ likes and a bunch of questions about where this paradise is"
+            name="Den"
+            avatar={`${IMG}/avatar-den.jpg`}
+            className="relative z-20 md:absolute md:left-1/2 md:top-[44%] md:-translate-x-1/2"
+          />
+
+          {/* Right — hugs right edge, slightly overlaps headline */}
+          <PolaroidCard
+            variant="review"
+            image={`${IMG}/polaroid-03.jpg`}
+            alt="Forest view from a wooden balcony with two chairs"
+            rotate={8}
+            delay={0.42}
+            quote="I felt something similar in Bali... A complete union with nature..."
+            name="Maria"
+            avatar={`${IMG}/avatar-maria.jpg`}
+            className="relative z-40 md:absolute md:-top-[6%] md:right-0 lg:-right-2"
+          />
+        </div>
       </div>
     </section>
   )
