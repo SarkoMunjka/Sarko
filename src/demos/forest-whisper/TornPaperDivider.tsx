@@ -1,14 +1,16 @@
+import { useId } from 'react'
+
 /**
  * Torn-paper divider along a symmetric upward arc.
  * Jagged teeth stay consistent from left edge to right — no flat plateau.
  */
-function buildTornArcPath(
+export function buildTornArcPath(
   width = 1440,
-  height = 120,
+  height = 200,
   step = 6,
-  edgeY = 54,
-  peakY = 14,
-  tooth = 5,
+  edgeY = 120,
+  peakY = 72,
+  tooth = 6,
 ): string {
   const center = width / 2
   const curveA = (edgeY - peakY) / (center * center)
@@ -31,21 +33,29 @@ function buildTornArcPath(
 
 const TORN_ARC_PATH = buildTornArcPath()
 
-/** Organic ripped-paper edge — symmetric arc, warm off-white fill */
+/** Organic ripped-paper edge — symmetric arc + noise displacement texture */
 export function TornPaperDivider() {
+  const filterId = useId().replace(/:/g, '')
+
   return (
     <div
-      className="pointer-events-none absolute bottom-0 left-0 z-20 w-full leading-none"
+      className="torn-divider pointer-events-none absolute bottom-[-1px] left-0 z-20 w-full overflow-hidden"
       style={{ height: 'clamp(90px, 11vw, 120px)' }}
       aria-hidden
     >
       <svg
-        viewBox="0 0 1440 120"
+        viewBox="0 0 1440 200"
         preserveAspectRatio="none"
-        className="h-full w-full"
+        className="block h-full w-full"
         xmlns="http://www.w3.org/2000/svg"
       >
-        <path fill="#f6f1e8" d={TORN_ARC_PATH} />
+        <defs>
+          <filter id={filterId}>
+            <feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves={3} result="noise" />
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale={45} />
+          </filter>
+        </defs>
+        <path fill="#f6f1e8" d={TORN_ARC_PATH} filter={`url(#${filterId})`} />
       </svg>
     </div>
   )

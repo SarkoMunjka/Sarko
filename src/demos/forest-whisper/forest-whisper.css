@@ -26,6 +26,10 @@ html.forest-whisper-embed #about {
     max-width: 320px;
   }
 
+  .fw-hero-grid .fw-card[style*='grid-row'] {
+    grid-row: auto !important;
+  }
+
   .fw-hero-grid .fw-card-edge {
     display: none;
   }
