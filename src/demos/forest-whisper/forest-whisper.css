@@ -16,11 +16,11 @@ html.forest-whisper-embed #about {
 }
 
 .fw-hero-content {
-  padding-top: calc(2rem + 3.25rem + 65px);
+  padding-top: calc(2rem + 3.25rem + 115px);
 }
 
 .fw-headline {
-  font-size: clamp(calc(2.45rem - 5px), calc(5.7vw - 5px), calc(5.75rem - 5px));
+  font-size: clamp(calc(2.45rem + 4px), calc(5.7vw + 4px), calc(5.75rem + 6px));
 }
 
 .fw-hero-grid {
