@@ -206,6 +206,74 @@ export const CASE_STUDIES: CaseStudyContent[] = [
     ctaSubtext: "Let's build the scroll experience your brand deserves.",
   },
   {
+    slug: 'forest-whisper',
+    name: 'Forest Whisper',
+    accent: '#3A4234',
+    tagline: 'Hospitality · Web · 2026',
+    intro:
+      'Tree houses and forest retreats where comfort meets the magic of nature. We built a premium hospitality demo with a cinematic hero, script branding, torn-paper UI details and elegant serif typography.',
+    liveUrl: '/work-demos/forest-whisper/',
+    meta: [
+      { label: 'Role', value: 'Identity · Web · Build' },
+      { label: 'Timeline', value: '2026 · In progress' },
+      { label: 'Services', value: 'Strategy, Design, Dev' },
+      { label: 'Platform', value: 'Custom static site' },
+    ],
+    overview: {
+      heading: 'Nature as\nthe luxury.',
+      paragraphs: [
+        'Forest Whisper offers tree-house stays immersed in the forest — but the brand needed a digital presence as atmospheric as the cabins themselves. Generic rental templates couldn\'t carry the mood.',
+        'We\'re building the site section by section from the client\'s design references: a full-bleed forest hero, script logotype, torn-edge promo card and refined navigation that feels secluded and premium.',
+      ],
+    },
+    challenge: {
+      heading: 'Sell stillness\nbefore the booking.',
+      body: 'Guests choose Forest Whisper for escape — the homepage has to feel like stepping into the woods within seconds. Every typographic and textural detail, from deckle edges to warm cabin light, reinforces that promise.',
+    },
+    approach: [
+      {
+        no: '01',
+        title: 'Cinematic forest hero',
+        body: 'A full-viewport hero with the client\'s own photography, layered scrims, foreground depth and a torn-paper transition into the rest of the page.',
+      },
+      {
+        no: '02',
+        title: 'Script meets serif',
+        body: 'Pinyon Script for the logotype and Cormorant Garamond for the headline — contrasted with system-ui for navigation and functional copy.',
+      },
+      {
+        no: '03',
+        title: 'Torn-paper UI',
+        body: 'Deckle-edge promo card and jagged white section divider — tactile details that echo handmade, nature-first hospitality branding.',
+      },
+      {
+        no: '04',
+        title: 'Built section by section',
+        body: 'The demo grows with each approved design screenshot — hero first, then houses, services, gallery and reviews in the client\'s exact layout.',
+      },
+    ],
+    gallery: [
+      {
+        src: '/work-demos/forest-whisper/img/hero-bg.png',
+        label: 'Homepage · hero & nav',
+        alt: 'Forest Whisper homepage hero',
+      },
+    ],
+    gallerySiteUrl: 'forestwhisper.com',
+    palette: [
+      { name: 'Forest', hex: '#3A4234' },
+      { name: 'Olive', hex: '#4A5240' },
+      { name: 'Gold', hex: '#C8B896' },
+      { name: 'Cream', hex: '#EBE2D0' },
+      { name: 'Ink', hex: '#1C1C1C' },
+      { name: 'White', hex: '#FFFFFF' },
+    ],
+    paletteHeading: 'Forest dusk palette',
+    coverImage: '/work-demos/forest-whisper/img/hero-bg.png',
+    ctaHeading: 'Building a retreat brand?',
+    ctaSubtext: "Let's craft the calm, cinematic experience your guests deserve.",
+  },
+  {
     slug: 'novaframe',
     name: 'NovaFrame',
     accent: '#B79268',

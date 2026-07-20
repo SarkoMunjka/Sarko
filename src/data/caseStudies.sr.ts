@@ -177,6 +177,74 @@ export const CASE_STUDIES_SR: CaseStudyContent[] = [
     ctaSubtext: 'Hajde da izgradimo scroll iskustvo koje vaš brend zaslužuje.',
   },
   {
+    slug: 'forest-whisper',
+    name: 'Forest Whisper',
+    accent: '#3A4234',
+    tagline: 'Ugostiteljstvo · Web · 2026',
+    intro:
+      'Kućice na drvetu i šumska povlačenja gde udobnost sreće magiju prirode. Gradimo premium hospitality demo sa kinematskim heroom, script brendingom i torn-paper UI detaljima.',
+    liveUrl: '/work-demos/forest-whisper/',
+    meta: [
+      { label: 'Uloga', value: 'Identitet · Web · Razvoj' },
+      { label: 'Vremenski okvir', value: '2026 · U toku' },
+      { label: 'Usluge', value: 'Strategija, Dizajn, Razvoj' },
+      { label: 'Platforma', value: 'Prilagođen statički sajt' },
+    ],
+    overview: {
+      heading: 'Priroda kao\nluksuz.',
+      paragraphs: [
+        'Forest Whisper nudi boravke u kućicama na drvetu usred šume — ali brendu je trebala digitalna prisutnost jednako atmosferična kao same kabine. Generički rental šabloni nisu mogli da prenesu osećaj.',
+        'Sajt gradimo sekciju po sekciju po klijentovim dizajn referencama: full-bleed šumski hero, script logotip, promo kartica sa deckle ivicama i doterana navigacija.',
+      ],
+    },
+    challenge: {
+      heading: 'Prodati tišinu\npre rezervacije.',
+      body: 'Gosti biraju Forest Whisper zbog bekstva — početna stranica mora da deluje kao ulazak u šumu za nekoliko sekundi. Svaki tipografski i teksturalni detalj pojačava tu obećanu tišinu.',
+    },
+    approach: [
+      {
+        no: '01',
+        title: 'Kinematski šumski hero',
+        body: 'Full-viewport hero sa klijentovom fotografijom, slojevitim scrim-om, dubinom u prednjem planu i torn-paper prelazom u sledeće sekcije.',
+      },
+      {
+        no: '02',
+        title: 'Script + serif',
+        body: 'Pinyon Script za logotip i Cormorant Garamond za naslov — u kontrastu sa system-ui za navigaciju i funkcionalni tekst.',
+      },
+      {
+        no: '03',
+        title: 'Torn-paper UI',
+        body: 'Promo kartica sa deckle ivicama i nazubljeni beli prelaz — taktilni detalji koji podsećaju na prirodni, ručno rađen hospitality brend.',
+      },
+      {
+        no: '04',
+        title: 'Sekcija po sekcija',
+        body: 'Demo raste sa svakim odobrenim screenshotom — prvo hero, zatim houses, services, gallery i reviews u tačnom klijentovom layoutu.',
+      },
+    ],
+    gallery: [
+      {
+        src: '/work-demos/forest-whisper/img/hero-bg.png',
+        label: 'Početna · hero i nav',
+        alt: 'Forest Whisper hero početne stranice',
+      },
+    ],
+    gallerySiteUrl: 'forestwhisper.com',
+    palette: [
+      { name: 'Forest', hex: '#3A4234' },
+      { name: 'Olive', hex: '#4A5240' },
+      { name: 'Gold', hex: '#C8B896' },
+      { name: 'Cream', hex: '#EBE2D0' },
+      { name: 'Ink', hex: '#1C1C1C' },
+      { name: 'White', hex: '#FFFFFF' },
+    ],
+    paletteHeading: 'Šumska sumračna paleta',
+    coverImage: '/work-demos/forest-whisper/img/hero-bg.png',
+    ctaHeading: 'Gradite retreat brend?',
+    ctaSubtext: 'Hajde da osmislimo mirno, kinematsko iskustvo koje vaši gosti zaslužuju.',
+  },
+  {
     slug: 'novaframe',
     name: 'NovaFrame',
     accent: '#B79268',

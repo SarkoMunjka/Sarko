@@ -1,0 +1,490 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Forest Whisper — Tree Houses &amp; Forest Retreats</title>
+<meta name="description" content="Try a new level of relaxation in tree houses. Where comfort meets the magic of nature." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Pinyon+Script&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --white: #ffffff;
+    --ink: #1c1c1c;
+    --olive: rgba(52, 58, 44, 0.82);
+    --olive-solid: #3a4234;
+    --gold-1: #d4c4a8;
+    --gold-2: #ebe2d0;
+    --gold-3: #c8b896;
+    --ease: cubic-bezier(.22,.61,.36,1);
+    --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --font-serif: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+    --font-script: "Pinyon Script", cursive;
+    --pad-x: clamp(20px, 4vw, 56px);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+  body { font-family: var(--font-sans); color: var(--ink); background: #fff; overflow-x: hidden; }
+
+  /* ===== HERO SHELL ===== */
+  .hero {
+    position: relative;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    color: var(--white);
+  }
+
+  .hero__bg {
+    position: absolute;
+    inset: 0;
+    background: #1a2218 url("img/hero-bg.png") center 42% / cover no-repeat;
+    transform: scale(1.04);
+    animation: hero-zoom 18s var(--ease) forwards;
+  }
+  @keyframes hero-zoom {
+    to { transform: scale(1); }
+  }
+
+  .hero__scrim {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(180deg, rgba(10,14,8,.42) 0%, rgba(10,14,8,.18) 38%, rgba(10,14,8,.55) 78%, rgba(10,14,8,.72) 100%),
+      linear-gradient(90deg, rgba(8,12,6,.55) 0%, rgba(8,12,6,.2) 45%, rgba(8,12,6,.35) 100%);
+  }
+
+  .hero__leaves {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(120% 80% at 8% 95%, rgba(18,32,14,.92) 0%, transparent 52%),
+      radial-gradient(90% 70% at 92% 88%, rgba(14,26,12,.75) 0%, transparent 48%),
+      radial-gradient(60% 40% at 15% 70%, rgba(22,38,18,.45) 0%, transparent 70%);
+    filter: blur(2px);
+  }
+
+  /* ===== NAV ===== */
+  .nav {
+    position: relative;
+    z-index: 20;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 16px;
+    padding: 28px var(--pad-x) 0;
+  }
+
+  .nav__logo {
+    font-family: var(--font-script);
+    font-size: clamp(2rem, 3.6vw, 2.75rem);
+    font-weight: 400;
+    color: var(--white);
+    text-decoration: none;
+    line-height: 1;
+    letter-spacing: 0.01em;
+    justify-self: start;
+    opacity: 0;
+    animation: rise-in 1s var(--ease) .15s forwards;
+  }
+
+  .nav__menu {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0;
+    list-style: none;
+    opacity: 0;
+    animation: rise-in 1s var(--ease) .28s forwards;
+  }
+
+  .nav__menu li { display: flex; align-items: center; }
+  .nav__menu li + li::before {
+    content: "";
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.55);
+    margin: 0 14px;
+    flex-shrink: 0;
+  }
+
+  .nav__menu a {
+    color: rgba(255,255,255,.92);
+    text-decoration: none;
+    font-size: 12.5px;
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    text-transform: lowercase;
+    transition: opacity .2s;
+    white-space: nowrap;
+  }
+  .nav__menu a:hover { opacity: .7; }
+
+  .nav__right {
+    justify-self: end;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    opacity: 0;
+    animation: rise-in 1s var(--ease) .4s forwards;
+  }
+
+  .nav__phone {
+    color: rgba(255,255,255,.92);
+    text-decoration: none;
+    font-size: 12.5px;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+    transition: opacity .2s;
+  }
+  .nav__phone:hover { opacity: .75; }
+
+  .nav__socials { display: flex; gap: 10px; }
+  .nav__social {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,.55);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--white);
+    text-decoration: none;
+    transition: background .25s, border-color .25s, transform .25s var(--ease);
+  }
+  .nav__social:hover {
+    background: rgba(255,255,255,.12);
+    border-color: rgba(255,255,255,.85);
+    transform: translateY(-1px);
+  }
+  .nav__social svg { width: 15px; height: 15px; }
+
+  .nav__burger {
+    display: none;
+    width: 40px;
+    height: 40px;
+    border: 1px solid rgba(255,255,255,.45);
+    border-radius: 50%;
+    background: transparent;
+    color: #fff;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* ===== HERO BODY ===== */
+  .hero__body {
+    position: relative;
+    z-index: 10;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    padding: clamp(48px, 8vh, 96px) var(--pad-x) clamp(120px, 14vh, 180px);
+  }
+
+  .hero__layout {
+    width: 100%;
+    max-width: 1320px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: minmax(240px, 300px) 1fr;
+    gap: clamp(24px, 4vw, 56px);
+    align-items: center;
+  }
+
+  /* Torn-edge promo card */
+  .hero__card {
+    position: relative;
+    padding: 36px 30px 32px;
+    background: var(--olive);
+    color: var(--white);
+    opacity: 0;
+    filter: blur(8px);
+    transform: translateY(24px);
+    animation: focus-in 1.2s var(--ease) .5s forwards;
+  }
+
+  .hero__card::before {
+    content: "";
+    position: absolute;
+    inset: -3px;
+    background: var(--olive);
+    z-index: -1;
+    clip-path: polygon(
+      0% 2%, 4% 0%, 8% 3%, 12% 0%, 17% 2%, 22% 0%, 28% 3%, 34% 1%, 40% 3%, 46% 0%, 52% 2%, 58% 0%, 64% 3%, 70% 1%, 76% 3%, 82% 0%, 88% 2%, 94% 0%, 100% 3%,
+      100% 97%, 96% 100%, 90% 97%, 84% 100%, 78% 98%, 72% 100%, 66% 97%, 60% 100%, 54% 98%, 48% 100%, 42% 97%, 36% 100%, 30% 98%, 24% 100%, 18% 97%, 12% 100%, 6% 98%, 0% 100%
+    );
+  }
+
+  .hero__leaf {
+    width: 42px;
+    height: 42px;
+    margin-bottom: 22px;
+    opacity: .9;
+  }
+
+  .hero__card p {
+    font-size: 15px;
+    line-height: 1.55;
+    color: rgba(255,255,255,.88);
+    margin-bottom: 28px;
+    max-width: 220px;
+  }
+
+  .hero__cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 32px;
+    border: none;
+    border-radius: 999px;
+    background: linear-gradient(180deg, var(--gold-2) 0%, var(--gold-3) 48%, #b8a684 100%);
+    color: #2a2618;
+    font: 600 11.5px var(--font-sans);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    box-shadow: 0 8px 24px rgba(0,0,0,.22);
+    transition: transform .25s var(--ease), box-shadow .3s var(--ease);
+  }
+  .hero__cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 32px rgba(0,0,0,.28);
+  }
+
+  .hero__title {
+    font-family: var(--font-serif);
+    font-weight: 300;
+    font-size: clamp(2.4rem, 5.8vw, 5.25rem);
+    line-height: 1.02;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--white);
+    text-shadow: 0 2px 28px rgba(0,0,0,.35);
+    max-width: 14ch;
+    opacity: 0;
+    filter: blur(10px);
+    transform: translateY(28px);
+    animation: focus-in 1.35s var(--ease) .65s forwards;
+  }
+
+  /* Torn paper bottom edge */
+  .hero__torn {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    z-index: 15;
+    height: clamp(48px, 7vw, 88px);
+    color: #fff;
+    pointer-events: none;
+  }
+  .hero__torn svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Placeholder so torn edge has white below */
+  .section-stub {
+    min-height: 40vh;
+    background: #fff;
+  }
+
+  @keyframes rise-in {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: none; }
+  }
+
+  @keyframes focus-in {
+    to { opacity: 1; filter: blur(0); transform: none; }
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 1024px) {
+    .nav { grid-template-columns: 1fr auto; }
+    .nav__menu { display: none; }
+    .nav__burger { display: inline-flex; }
+    .nav__phone { display: none; }
+    .hero__layout { grid-template-columns: 1fr; max-width: 680px; }
+    .hero__title { max-width: none; }
+  }
+
+  @media (max-width: 560px) {
+    .nav { padding-top: 20px; }
+    .nav__socials { display: none; }
+    .hero__card { padding: 28px 24px; }
+    .hero__card p { max-width: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    .hero__bg { transform: none; }
+    .hero__card, .hero__title, .nav__logo, .nav__menu, .nav__right { opacity: 1 !important; filter: none !important; transform: none !important; }
+  }
+
+  /* Mobile menu overlay */
+  .mobile-nav {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    background: rgba(18,24,16,.96);
+    backdrop-filter: blur(12px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 28px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .35s var(--ease);
+  }
+  .mobile-nav.is-open { opacity: 1; pointer-events: auto; }
+  .mobile-nav a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 18px;
+    letter-spacing: 0.06em;
+    text-transform: lowercase;
+  }
+  .mobile-nav__close {
+    position: absolute;
+    top: 24px;
+    right: var(--pad-x);
+    width: 40px;
+    height: 40px;
+    border: 1px solid rgba(255,255,255,.45);
+    border-radius: 50%;
+    background: transparent;
+    color: #fff;
+    font-size: 20px;
+    cursor: pointer;
+  }
+
+  /* Card embed on Mark Studio homepage */
+  html.embed-preview,
+  html.embed-preview body {
+    overflow: hidden !important;
+    height: 100%;
+    max-height: 100vh;
+  }
+  html.embed-preview .section-stub { display: none !important; }
+  html.embed-preview .hero { min-height: 100svh !important; }
+</style>
+<script>
+  if (new URLSearchParams(location.search).has('embed')) {
+    document.documentElement.classList.add('embed-preview');
+  }
+</script>
+</head>
+<body>
+
+<header class="hero" id="top">
+  <div class="hero__bg" aria-hidden="true"></div>
+  <div class="hero__scrim" aria-hidden="true"></div>
+  <div class="hero__leaves" aria-hidden="true"></div>
+
+  <nav class="nav" aria-label="Main navigation">
+    <a href="#" class="nav__logo">Forest Whisper</a>
+
+    <ul class="nav__menu">
+      <li><a href="#about">about us</a></li>
+      <li><a href="#houses">houses</a></li>
+      <li><a href="#services">additional services</a></li>
+      <li><a href="#gallery">gallery</a></li>
+      <li><a href="#reviews">reviews</a></li>
+    </ul>
+
+    <div class="nav__right">
+      <a class="nav__phone" href="tel:+445553454665">+44 555 345 46 65</a>
+      <div class="nav__socials">
+        <a class="nav__social" href="#" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+            <rect x="3.5" y="3.5" width="17" height="17" rx="4.5"/>
+            <circle cx="12" cy="12" r="4"/>
+            <circle cx="17.4" cy="6.6" r="1" fill="currentColor" stroke="none"/>
+          </svg>
+        </a>
+        <a class="nav__social" href="#" aria-label="Telegram">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+          </svg>
+        </a>
+      </div>
+      <button class="nav__burger" type="button" aria-label="Open menu" id="menuOpen">
+        <svg width="18" height="14" viewBox="0 0 18 14" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <path d="M0 1h18M0 7h18M0 13h18"/>
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <div class="hero__body">
+    <div class="hero__layout">
+      <aside class="hero__card">
+        <svg class="hero__leaf" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true">
+          <path d="M24 4C14 14 8 24 10 36c8-2 14-8 18-16 2 10 8 18 16 22-4-14-12-26-20-38z" stroke-linejoin="round"/>
+          <path d="M24 20v20" stroke-linecap="round"/>
+        </svg>
+        <p>Where comfort meets the magic of nature</p>
+        <a href="#houses" class="hero__cta">Book now</a>
+      </aside>
+
+      <h1 class="hero__title">Try a new level of relaxation in tree houses</h1>
+    </div>
+  </div>
+
+  <div class="hero__torn" aria-hidden="true">
+    <svg viewBox="0 0 1440 88" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path fill="currentColor" d="M0,52 C60,28 120,68 180,44 C240,20 300,58 360,36 C420,14 480,62 540,40 C600,18 660,56 720,38 C780,20 840,64 900,42 C960,20 1020,54 1080,36 C1140,18 1200,60 1260,40 C1320,20 1380,56 1440,34 L1440,88 L0,88 Z"/>
+    </svg>
+  </div>
+</header>
+
+<!-- stub for next section -->
+<section class="section-stub" id="about" aria-hidden="true"></section>
+
+<div class="mobile-nav" id="mobileNav" aria-hidden="true">
+  <button class="mobile-nav__close" type="button" id="menuClose" aria-label="Close menu">×</button>
+  <a href="#about">about us</a>
+  <a href="#houses">houses</a>
+  <a href="#services">additional services</a>
+  <a href="#gallery">gallery</a>
+  <a href="#reviews">reviews</a>
+  <a href="tel:+445553454665">+44 555 345 46 65</a>
+</div>
+
+<script>
+  const menuOpen = document.getElementById('menuOpen');
+  const menuClose = document.getElementById('menuClose');
+  const mobileNav = document.getElementById('mobileNav');
+
+  function setMenu(open) {
+    mobileNav.classList.toggle('is-open', open);
+    mobileNav.setAttribute('aria-hidden', open ? 'false' : 'true');
+    document.body.style.overflow = open ? 'hidden' : '';
+  }
+
+  menuOpen?.addEventListener('click', () => setMenu(true));
+  menuClose?.addEventListener('click', () => setMenu(false));
+  mobileNav?.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setMenu(false)));
+
+  // Subtle parallax on scroll (barber-style polish)
+  const heroBg = document.querySelector('.hero__bg');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (heroBg && !reduce) {
+    addEventListener('scroll', () => {
+      const y = Math.min(scrollY, innerHeight);
+      heroBg.style.transform = `scale(1) translateY(${y * 0.18}px)`;
+    }, { passive: true });
+  }
+</script>
+</body>
+</html>

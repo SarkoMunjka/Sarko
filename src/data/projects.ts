@@ -19,6 +19,8 @@ export interface Project {
   poster?: string
   /** Vimeo video ID for hover preview / case-study hero. */
   vimeoId?: string
+  /** Live demo URL embedded in project cards (shows real site chrome + hero). */
+  demoUrl?: string
   /** Show on the home page featured grid (default true). */
   showOnHome?: boolean
 }
@@ -45,6 +47,18 @@ export const PROJECTS: Project[] = [
     accent: '#C8923E',
     caseStudy: true,
     cover: '/work-demos/lukic-barber/hero-poster.jpg',
+  },
+  {
+    slug: 'forest-whisper',
+    name: 'Forest Whisper',
+    category: 'Hospitality · Web',
+    year: '2026',
+    blurb:
+      'Tree houses and forest retreats — premium hospitality demo with cinematic hero, torn-paper UI and nature-first storytelling.',
+    accent: '#3A4234',
+    caseStudy: true,
+    demoUrl: '/work-demos/forest-whisper/?embed=1',
+    cover: '/work-demos/forest-whisper/img/hero-bg.png',
   },
   {
     slug: 'novaframe',
