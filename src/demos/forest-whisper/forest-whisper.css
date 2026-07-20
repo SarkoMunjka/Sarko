@@ -1,0 +1,49 @@
+/* Forest Whisper demo — responsive overrides */
+html.forest-whisper-demo,
+html.forest-whisper-demo body {
+  overflow-x: hidden;
+}
+
+html.forest-whisper-embed,
+html.forest-whisper-embed body {
+  overflow: hidden !important;
+  height: 100%;
+  max-height: 100vh;
+}
+
+html.forest-whisper-embed #about {
+  display: none !important;
+}
+
+@media (max-width: 1024px) {
+  .fw-hero-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .fw-hero-grid .fw-card {
+    grid-column: 1 !important;
+    grid-row: auto !important;
+    max-width: 320px;
+  }
+
+  .fw-hero-grid .fw-card-edge {
+    display: none;
+  }
+
+  .fw-hero-grid .fw-beside {
+    grid-column: 1 !important;
+    grid-row: auto !important;
+    padding-left: clamp(1.5rem, 4vw, 3.5rem) !important;
+    padding-right: clamp(1.5rem, 4vw, 3.5rem) !important;
+  }
+
+  .fw-hero-grid .fw-full-line {
+    grid-column: 1 !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .fw-hero-bg {
+    background-position: 65% 50% !important;
+  }
+}
