@@ -85,7 +85,7 @@ export function ForestWhisperDemo() {
         }
 
   const headlineClass =
-    'font-serif font-light uppercase text-cream text-[clamp(2.2rem,5.2vw,5.25rem)] leading-[0.86] tracking-[0.055em] [text-shadow:0_2px_28px_rgba(0,0,0,0.38)]'
+    'font-serif font-light uppercase text-cream text-[clamp(2.45rem,5.7vw,5.75rem)] leading-[0.86] tracking-[0.055em] [text-shadow:0_2px_28px_rgba(0,0,0,0.38)]'
 
   return (
     <div className="bg-cream font-sans text-ink antialiased">
@@ -167,29 +167,26 @@ export function ForestWhisperDemo() {
           </div>
         </motion.nav>
 
-        {/* Hero — 50px below header, editorial type on the left */}
-        <div
-          className="fw-hero-content relative z-10 flex min-h-[100svh] flex-col pb-[clamp(100px,12vh,130px)]"
-          style={{ paddingTop: 'calc(2rem + 3.25rem + 50px)' }}
-        >
+        {/* Hero — left editorial type, NOT centered */}
+        <div className="relative z-10 flex min-h-[100svh] items-end pb-[clamp(100px,12vh,130px)] pt-28">
           <motion.div {...fadeUp(0.28)} className="w-full">
             <h1
-              className="fw-hero-grid grid w-full items-start gap-x-[clamp(12px,2vw,28px)]"
+              className="fw-hero-grid grid w-full items-end gap-x-[clamp(12px,2vw,28px)]"
               style={{
                 gridTemplateColumns: 'minmax(220px, clamp(220px, 26vw, 300px)) 1fr',
-                gridTemplateRows: 'auto auto auto auto auto',
+                gridTemplateRows: 'repeat(5, auto)',
               }}
             >
               <span className={`fw-full-line ${headlineClass} col-span-2 ${PAD_X}`}>Try a new</span>
               <span className={`fw-full-line ${headlineClass} col-span-2 ${PAD_X}`}>level of</span>
 
-              {/* Card flush left; relaxation + in tree houses stacked in col 2 */}
+              {/* Row 3 — card flush left, relaxation beside */}
               <motion.aside
                 initial={reduce ? false : { opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 1, delay: 0.5, ease: EASE }}
-                className="fw-card relative self-stretch bg-[rgba(72,88,68,0.82)] py-8 shadow-[0_18px_48px_rgba(0,0,0,0.32)] backdrop-blur-[4px]"
-                style={{ gridColumn: '1', gridRow: '3 / 6' }}
+                className="fw-card relative col-start-1 row-start-3 self-stretch bg-[rgba(72,88,68,0.82)] py-8 shadow-[0_18px_48px_rgba(0,0,0,0.32)] backdrop-blur-[4px]"
+                style={{ gridColumn: '1', gridRow: '3' }}
               >
                 <div
                   className="fw-card-edge pointer-events-none absolute bottom-0 right-[-6px] top-0 w-3 bg-[rgba(72,88,68,0.82)]"
@@ -214,25 +211,14 @@ export function ForestWhisperDemo() {
               </motion.aside>
 
               <span
-                className={`fw-beside ${headlineClass} pr-6 md:pr-10 lg:pr-14`}
+                className={`fw-beside ${headlineClass} self-center pr-6 md:pr-10 lg:pr-14`}
                 style={{ gridColumn: '2', gridRow: '3' }}
               >
                 relaxation
               </span>
 
-              <span
-                className={`fw-beside ${headlineClass} pr-6 md:pr-10 lg:pr-14`}
-                style={{ gridColumn: '2', gridRow: '4' }}
-              >
-                in tree
-              </span>
-
-              <span
-                className={`fw-beside ${headlineClass} pr-6 md:pr-10 lg:pr-14`}
-                style={{ gridColumn: '2', gridRow: '5' }}
-              >
-                houses
-              </span>
+              <span className={`fw-full-line ${headlineClass} col-span-2 mt-1 ${PAD_X}`}>in tree</span>
+              <span className={`fw-full-line ${headlineClass} col-span-2 ${PAD_X}`}>houses</span>
             </h1>
           </motion.div>
         </div>
