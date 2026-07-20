@@ -1,0 +1,237 @@
+import { useState } from 'react'
+import { motion, useReducedMotion } from 'motion/react'
+import { ChevronLeft, ChevronRight, Tag, Users, Maximize2 } from 'lucide-react'
+
+const IMG = '/work-demos/forest-whisper/img'
+const EASE = [0.22, 0.61, 0.36, 1] as const
+const SECTION_BG = '#d4cfb3'
+const HERO_IMG = `${IMG}/hero-bg.png`
+
+type House = {
+  id: string
+  name: string
+  subtitle: string
+  people: number
+  price: number
+  size: number
+  slides: { src: string; position: string }[]
+}
+
+const CABIN_SLIDES = {
+  wild: [
+    { src: HERO_IMG, position: '68% 52%' },
+    { src: HERO_IMG, position: '78% 48%' },
+    { src: HERO_IMG, position: '55% 58%' },
+    { src: HERO_IMG, position: '82% 55%' },
+  ],
+  nymph: [
+    { src: HERO_IMG, position: '62% 50%' },
+    { src: HERO_IMG, position: '70% 60%' },
+    { src: HERO_IMG, position: '48% 55%' },
+    { src: HERO_IMG, position: '75% 45%' },
+  ],
+  hiding: [
+    { src: HERO_IMG, position: '72% 55%' },
+    { src: HERO_IMG, position: '58% 62%' },
+    { src: HERO_IMG, position: '85% 50%' },
+    { src: HERO_IMG, position: '65% 48%' },
+  ],
+}
+
+const HOUSES: House[] = [
+  {
+    id: 'wild-hut',
+    name: 'Wild Hut',
+    subtitle: 'A cozy retreat tucked deep in the whispering woods.',
+    people: 2,
+    price: 75,
+    size: 40,
+    slides: CABIN_SLIDES.wild,
+  },
+  {
+    id: 'forest-nymph',
+    name: 'Forest Nymph',
+    subtitle: 'Soft light, warm timber and silence between the pines.',
+    people: 4,
+    price: 95,
+    size: 55,
+    slides: CABIN_SLIDES.nymph,
+  },
+  {
+    id: 'forest-hiding',
+    name: 'Forest Hiding Place',
+    subtitle: 'Your private A-frame escape above the forest floor.',
+    people: 6,
+    price: 120,
+    size: 72,
+    slides: CABIN_SLIDES.hiding,
+  },
+]
+
+function HouseIcon() {
+  return (
+    <svg width="36" height="28" viewBox="0 0 52 40" fill="none" stroke="currentColor" strokeWidth="1.2" aria-hidden>
+      <path d="M4 18 26 4l22 14v16H4V18z" strokeLinejoin="round" />
+      <path d="M18 38V24h16v14" strokeLinejoin="round" />
+      <path d="M26 4v6" strokeLinecap="round" />
+    </svg>
+  )
+}
+
+function HouseCarousel({ slides, alt }: { slides: House['slides']; alt: string }) {
+  const [index, setIndex] = useState(0)
+  const count = slides.length
+  const slide = slides[index]
+
+  return (
+    <div className="h-full w-full overflow-hidden rounded-[20px] bg-cream p-4 shadow-[0_16px_48px_rgba(0,0,0,0.14)] md:p-5">
+      <div className="aspect-[4/3] w-full overflow-hidden rounded-[14px] bg-[#2a3426] lg:min-h-[300px]">
+        <img
+          src={slide.src}
+          alt={alt}
+          className="h-full w-full object-cover transition-opacity duration-500"
+          style={{ objectPosition: slide.position }}
+          loading="lazy"
+        />
+      </div>
+      <div className="mt-4 flex items-center justify-center gap-6 px-2">
+        <button
+          type="button"
+          onClick={() => setIndex((i) => (i - 1 + count) % count)}
+          aria-label="Previous image"
+          className="flex h-9 w-9 items-center justify-center text-ink/50 transition-colors hover:text-ink"
+        >
+          <ChevronLeft size={20} strokeWidth={1.5} />
+        </button>
+        <div className="flex items-center gap-2.5">
+          {slides.map((_, i) => (
+            <button
+              key={i}
+              type="button"
+              aria-label={`Go to image ${i + 1}`}
+              onClick={() => setIndex(i)}
+              className={`h-2.5 w-2.5 rounded-full transition-colors ${i === index ? 'bg-ink' : 'bg-ink/25'}`}
+            />
+          ))}
+        </div>
+        <button
+          type="button"
+          onClick={() => setIndex((i) => (i + 1) % count)}
+          aria-label="Next image"
+          className="flex h-9 w-9 items-center justify-center text-ink/50 transition-colors hover:text-ink"
+        >
+          <ChevronRight size={20} strokeWidth={1.5} />
+        </button>
+      </div>
+    </div>
+  )
+}
+
+function HouseDetails({ house }: { house: House }) {
+  return (
+    <div className="w-full py-2 lg:py-4">
+      <h3 className="font-sans text-[clamp(1.15rem,1.6vw,1.4rem)] font-semibold uppercase tracking-[0.14em] text-ink">
+        {house.name}
+      </h3>
+      <p className="mt-2.5 text-[13.5px] leading-[1.6] text-ink/65">{house.subtitle}</p>
+
+      <ul className="mt-5 space-y-3">
+        <li className="flex items-center gap-3 text-[13px] text-ink/80">
+          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-ink/20 text-ink/70">
+            <Users size={14} strokeWidth={1.5} />
+          </span>
+          Up to {house.people} people
+        </li>
+        <li className="flex items-center gap-3 text-[13px] text-ink/80">
+          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-ink/20 text-ink/70">
+            <Tag size={14} strokeWidth={1.5} />
+          </span>
+          {house.price} USD / day
+        </li>
+        <li className="flex items-center gap-3 text-[13px] text-ink/80">
+          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-ink/20 text-ink/70">
+            <Maximize2 size={14} strokeWidth={1.5} />
+          </span>
+          {house.size}m²
+        </li>
+      </ul>
+
+      <a
+        href="#houses"
+        className="mt-6 inline-flex items-center justify-center rounded-full bg-forest-deep px-8 py-3 font-serif text-[10.5px] font-medium uppercase tracking-[0.22em] text-cream shadow-[0_10px_28px_rgba(0,0,0,0.22)] transition-[box-shadow,transform] duration-300 hover:-translate-y-0.5 hover:shadow-[0_14px_36px_rgba(0,0,0,0.3)]"
+      >
+        Book now
+      </a>
+    </div>
+  )
+}
+
+export function HousesSection() {
+  const reduce = useReducedMotion()
+
+  const lineLg = 'font-serif font-light uppercase tracking-[0.04em] text-ink/30'
+  const lineMd = 'font-serif font-light uppercase tracking-[0.04em] text-ink/30'
+
+  return (
+    <section id="houses" className="relative overflow-x-clip py-[clamp(72px,10vw,110px)]" style={{ backgroundColor: SECTION_BG }}>
+      <div className="mx-auto w-full max-w-[1440px] px-6 md:px-10">
+        {/* Headline — right half of viewport, fully visible */}
+        <motion.div
+          className="mb-12 md:mb-16 lg:mb-20"
+          initial={reduce ? false : { opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.4 }}
+          transition={{ duration: 1.1, ease: EASE }}
+        >
+          <div className="grid md:grid-cols-2">
+            <div className="hidden md:block" aria-hidden />
+            <h2 className="fw-houses-headline inline-grid max-w-full gap-x-[clamp(10px,1.8vw,24px)]">
+              <span className={`${lineLg} col-span-2 text-left text-[clamp(1.9rem,4.2vw,4rem)] leading-[0.9]`}>
+                Are you going
+              </span>
+              <span className={`${lineMd} text-left text-[clamp(1.45rem,2.8vw,2.75rem)] leading-[0.92] md:whitespace-nowrap`}>
+                together or with
+              </span>
+              <span className={`${lineMd} text-left text-[clamp(1.45rem,2.8vw,2.75rem)] leading-[0.92]`}>
+                the whole
+              </span>
+              <div className="col-start-1 row-start-3 mt-1 w-fit">
+                <div className="w-fit rounded-[16px] bg-cream px-5 py-3 text-[#576a4f] shadow-[0_8px_24px_rgba(0,0,0,0.1)]">
+                  <HouseIcon />
+                  <p className="mt-2 font-script text-[1.25rem] leading-none md:text-[1.4rem]">
+                    Choose your own house!
+                  </p>
+                </div>
+              </div>
+              <span className={`${lineLg} col-start-2 row-start-3 self-end text-left text-[clamp(1.9rem,4.2vw,4rem)] leading-[0.9]`}>
+                company?
+              </span>
+            </h2>
+          </div>
+        </motion.div>
+
+        {/* Each row: 60% carousel aligned with 40% details */}
+        <div className="flex flex-col gap-12 lg:gap-16">
+          {HOUSES.map((house, i) => (
+            <motion.div
+              key={house.id}
+              className="grid grid-cols-1 items-center gap-8 lg:grid-cols-[60%_40%] lg:gap-6 xl:gap-10"
+              initial={reduce ? false : { opacity: 0, y: 28 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.9, delay: i * 0.06, ease: EASE }}
+            >
+              <HouseCarousel slides={house.slides} alt={house.name} />
+              <div
+                className="flex items-center rounded-[20px] px-5 py-4 md:px-7 lg:min-h-[300px]"
+                style={{ backgroundColor: SECTION_BG }}
+              >
+                <HouseDetails house={house} />
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
