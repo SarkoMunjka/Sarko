@@ -186,7 +186,7 @@ export function ForestWhisperDemo() {
                 initial={reduce ? false : { opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 1, delay: 0.5, ease: EASE }}
-                className="fw-card relative self-stretch bg-[rgba(72,88,68,0.82)] py-8 shadow-[0_18px_48px_rgba(0,0,0,0.32)] backdrop-blur-[4px]"
+                className="fw-card relative self-stretch bg-[#576a4f] py-8 shadow-[0_18px_48px_rgba(0,0,0,0.32)] backdrop-blur-[4px]"
                 style={{ gridColumn: '1', gridRow: '3 / 6', clipPath: TORN_CARD_CLIP }}
               >
                 <div className={`text-cream/90 ${PAD_X}`}>
