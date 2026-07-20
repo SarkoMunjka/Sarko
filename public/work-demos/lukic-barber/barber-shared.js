@@ -737,6 +737,144 @@ export function wireBookingPicker(root, callbacks = {}) {
   }
 }
 
+function bookingFlowStepsHtml() {
+  return `
+    <div class="book-flow__steps" data-book-steps aria-hidden="false">
+      <span class="book-flow__step-pill is-active" data-step-pill="1">
+        <span class="book-flow__step-num">1</span> Termin
+      </span>
+      <span class="book-flow__step-divider" aria-hidden="true"></span>
+      <span class="book-flow__step-pill" data-step-pill="2">
+        <span class="book-flow__step-num">2</span> Podaci
+      </span>
+    </div>`
+}
+
+function bookingSummaryHtml() {
+  return `
+    <div class="book-flow__summary" data-book-summary>
+      <div class="book-flow__summary-label">Izabrano</div>
+      <div class="book-flow__summary-row">
+        <span data-summary-service>—</span>
+        <span class="book-flow__summary-price" data-summary-price></span>
+      </div>
+      <div class="book-flow__summary-row">
+        <span data-summary-datetime>—</span>
+      </div>
+    </div>`
+}
+
+function bookingDetailsHtml(prefix = 'modal') {
+  const id = (name) => `${prefix}${name}`
+  return `
+    <p class="book-section-label">Vaši podaci</p>
+    <div class="field">
+      <label for="${id('Name')}">Ime i prezime</label>
+      <input id="${id('Name')}" type="text" placeholder="Vaše ime" autocomplete="name" required />
+    </div>
+    <div class="field">
+      <label for="${id('Phone')}">Broj telefona</label>
+      <input id="${id('Phone')}" type="tel" placeholder="06x xxx xxxx" autocomplete="tel" required />
+    </div>
+    <div class="field">
+      <label for="${id('Email')}">Email <span class="optional">(opciono)</span></label>
+      <input id="${id('Email')}" type="email" placeholder="vas@email.com" autocomplete="email" />
+    </div>
+    <button class="btn book-modal__submit" type="submit" id="${id('Submit')}">Potvrdi rezervaciju</button>`
+}
+
+export function wireBookingStepFlow({
+  picker,
+  step1,
+  step2,
+  scrollRoot,
+  summaryEl,
+  titleEl,
+  leadEl,
+  nameInput,
+  pillsRoot,
+  titles = {
+    step1: 'Zakaži termin',
+    step2: 'Vaši podaci',
+  },
+  leads = {
+    step1: 'Izaberite uslugu, datum i vreme.',
+    step2: 'Još samo vaši podaci — gotovo ste.',
+  },
+}) {
+  let step = 1
+
+  function setPills(active) {
+    if (!pillsRoot) return
+    pillsRoot.querySelectorAll('[data-step-pill]').forEach((pill) => {
+      const n = Number(pill.dataset.stepPill)
+      pill.classList.toggle('is-active', n === active)
+      pill.classList.toggle('is-done', n < active)
+    })
+  }
+
+  function paintSummary(state) {
+    if (!summaryEl) return
+    const service = state.services?.find((s) => s.id === state.serviceId)
+    const serviceNode = summaryEl.querySelector('[data-summary-service]')
+    const priceNode = summaryEl.querySelector('[data-summary-price]')
+    const datetimeNode = summaryEl.querySelector('[data-summary-datetime]')
+
+    if (serviceNode) serviceNode.textContent = service?.name || '—'
+    if (priceNode) {
+      priceNode.textContent = service?.priceRsd != null ? formatPriceRsd(service.priceRsd) : ''
+      priceNode.hidden = service?.priceRsd == null
+    }
+    if (datetimeNode) {
+      datetimeNode.textContent =
+        state.date && state.time
+          ? `${formatDateSr(state.date)} · ${state.time}`
+          : state.date
+            ? formatDateSr(state.date)
+            : '—'
+    }
+  }
+
+  function scrollToTop() {
+    if (scrollRoot && scrollRoot !== document.scrollingElement && scrollRoot !== document.documentElement) {
+      scrollRoot.scrollTo({ top: 0, behavior: 'smooth' })
+      return
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  function goToStep(next, state = picker.getState()) {
+    step = next
+    if (step1) step1.hidden = step !== 1
+    if (step2) step2.hidden = step !== 2
+    if (summaryEl) summaryEl.hidden = false
+    if (titleEl) titleEl.textContent = titles[`step${step}`] || titles.step1
+    if (leadEl) leadEl.textContent = leads[`step${step}`] || leads.step1
+    setPills(step)
+    paintSummary(state)
+    scrollToTop()
+    if (step === 2 && nameInput) {
+      requestAnimationFrame(() => nameInput.focus())
+    }
+  }
+
+  picker = picker || null
+
+  return {
+    goToStep,
+    reset() {
+      goToStep(1, picker?.getState?.() || {})
+    },
+    handlePickerChange(state) {
+      paintSummary(state)
+      if (step === 1 && state.serviceId && state.date && state.time) {
+        goToStep(2, state)
+      }
+    },
+    getStep: () => step,
+  }
+}
+
 function bookingModalHtml() {
   return `
   <div class="book-modal" id="bookModal" hidden aria-hidden="true">
@@ -744,39 +882,32 @@ function bookingModalHtml() {
     <div class="book-modal__panel" role="dialog" aria-modal="true" aria-labelledby="bookModalTitle">
       <button type="button" class="book-modal__close" data-close-book aria-label="Zatvori">×</button>
       <h2 class="book-modal__title" id="bookModalTitle">Zakaži termin</h2>
-      <p class="book-modal__lead">Usluga, datum i vreme — sve na jednom mestu.</p>
+      <p class="book-modal__lead" id="bookModalLead">Izaberite uslugu, datum i vreme.</p>
 
       <form id="bookModalForm" novalidate>
-        <div class="book-picker" data-booking-picker>
-          <p class="book-section-label">Usluga</p>
-          <div class="book-services" data-services></div>
-          <p class="book-service-price" data-service-price hidden></p>
+        ${bookingFlowStepsHtml()}
 
-          <p class="book-section-label book-section-label--spaced">Datum</p>
-          <div class="book-cal" data-calendar></div>
+        <div class="book-flow__step" data-book-step="1">
+          <div class="book-picker" data-booking-picker>
+            <p class="book-section-label">Usluga</p>
+            <div class="book-services" data-services></div>
+            <p class="book-service-price" data-service-price hidden></p>
 
-          <div class="book-time-block" data-time-block hidden>
-            <p class="book-section-label book-section-label--spaced">Vreme</p>
-            <p class="book-modal__hint" data-slots-hint></p>
-            <div class="slots book-slots" data-slots></div>
+            <p class="book-section-label book-section-label--spaced">Datum</p>
+            <div class="book-cal" data-calendar></div>
+
+            <div class="book-time-block" data-time-block hidden>
+              <p class="book-section-label book-section-label--spaced">Vreme</p>
+              <p class="book-modal__hint" data-slots-hint></p>
+              <div class="slots book-slots" data-slots></div>
+            </div>
           </div>
         </div>
 
-        <div class="book-modal__step2 focus-in" id="modalStep2" hidden>
-          <p class="book-section-label book-section-label--spaced">Vaši podaci</p>
-          <div class="field">
-            <label for="modalEmail">Email</label>
-            <input id="modalEmail" type="email" placeholder="vas@email.com" required />
-          </div>
-          <div class="field">
-            <label for="modalName">Ime i prezime</label>
-            <input id="modalName" type="text" placeholder="Vaše ime" required />
-          </div>
-          <div class="field">
-            <label for="modalPhone">Broj telefona</label>
-            <input id="modalPhone" type="tel" placeholder="06x xxx xxxx" required />
-          </div>
-          <button class="btn book-modal__submit" type="submit" id="modalSubmit">Potvrdi rezervaciju</button>
+        <div class="book-flow__step" id="modalStep2" data-book-step="2" hidden>
+          <button type="button" class="book-flow__back" data-book-back>← Izmeni termin</button>
+          ${bookingSummaryHtml()}
+          ${bookingDetailsHtml('modal')}
         </div>
 
         <div class="msg" id="modalMsg"></div>
@@ -792,12 +923,17 @@ export function initBookingModal() {
 
   const modal = document.getElementById('bookModal')
   const form = document.getElementById('bookModalForm')
+  const panel = modal.querySelector('.book-modal__panel')
+  const step1 = modal.querySelector('[data-book-step="1"]')
   const step2 = document.getElementById('modalStep2')
   const msgEl = document.getElementById('modalMsg')
   const submitBtn = document.getElementById('modalSubmit')
   const pickerRoot = modal.querySelector('[data-booking-picker]')
+  const titleEl = document.getElementById('bookModalTitle')
+  const leadEl = document.getElementById('bookModalLead')
 
   let picker = null
+  let flow = null
 
   function showMsg(text, ok) {
     msgEl.textContent = text
@@ -815,25 +951,33 @@ export function initBookingModal() {
     document.body.style.overflow = ''
   }
 
-  function maybeRevealStep2({ serviceId, date }) {
-    if (serviceId && date) revealElement(step2)
-    else {
-      step2.hidden = true
-      step2.classList.remove('is-visible')
-    }
-  }
-
   picker = wireBookingPicker(pickerRoot, {
-    onChange: (state) => maybeRevealStep2(state),
+    onChange: (state) => flow?.handlePickerChange(state),
+  })
+
+  flow = wireBookingStepFlow({
+    picker,
+    step1,
+    step2,
+    scrollRoot: panel,
+    summaryEl: step2?.querySelector('[data-book-summary]'),
+    titleEl,
+    leadEl,
+    nameInput: document.getElementById('modalName'),
+    pillsRoot: modal.querySelector('[data-book-steps]'),
+  })
+
+  step2.querySelector('[data-book-back]')?.addEventListener('click', () => {
+    clearMsg()
+    flow.goToStep(1)
   })
 
   function resetModal() {
-    step2.hidden = true
-    step2.classList.remove('is-visible')
     clearMsg()
     form.reset()
     submitBtn.disabled = false
     picker.reset()
+    flow.reset()
   }
 
   function openModal(preselectService) {
@@ -861,6 +1005,14 @@ export function initBookingModal() {
     }
     if (!time) {
       showMsg('Izaberite termin pre potvrde.', false)
+      flow.goToStep(1)
+      return
+    }
+    const name = document.getElementById('modalName').value.trim()
+    const phone = document.getElementById('modalPhone').value.trim()
+    if (!name || !phone) {
+      showMsg('Unesite ime i broj telefona.', false)
+      flow.goToStep(2)
       return
     }
     submitBtn.disabled = true
@@ -869,12 +1021,13 @@ export function initBookingModal() {
         serviceId,
         date,
         time,
-        name: document.getElementById('modalName').value.trim(),
+        name,
         email: document.getElementById('modalEmail').value.trim(),
-        phone: document.getElementById('modalPhone').value.trim(),
+        phone,
       })
       showMsg('✓ Zahtev je poslat. Javićemo vam se kada potvrdimo termin.', true)
       step2.hidden = true
+      step1.hidden = true
     } catch (err) {
       showMsg(err.message, false)
       picker.refreshSlots()
@@ -883,10 +1036,9 @@ export function initBookingModal() {
     }
   })
 
-  document.querySelectorAll('[data-open-book]').forEach((el) => {
-    el.addEventListener('click', (e) => {
-      e.preventDefault()
-      openModal(el.dataset.service || '')
-    })
-  })
+  window.__barberOpenBooking = openModal
+  if (window.__barberPendingBook !== undefined) {
+    openModal(window.__barberPendingBook)
+    delete window.__barberPendingBook
+  }
 }

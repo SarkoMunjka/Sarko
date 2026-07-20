@@ -19,6 +19,8 @@ export interface Project {
   poster?: string
   /** Vimeo video ID for hover preview / case-study hero. */
   vimeoId?: string
+  /** Live demo URL embedded in project cards (shows real site chrome + hero). */
+  demoUrl?: string
   /** Show on the home page featured grid (default true). */
   showOnHome?: boolean
 }
@@ -44,6 +46,7 @@ export const PROJECTS: Project[] = [
       'Premium berbernica u Beogradu — scroll-scrub hero, cenovnik i rezervacija oštri od rezova.',
     accent: '#C8923E',
     caseStudy: true,
+    demoUrl: '/work-demos/lukic-barber/?embed=1',
     cover: '/work-demos/lukic-barber/hero-poster.jpg',
   },
   {
