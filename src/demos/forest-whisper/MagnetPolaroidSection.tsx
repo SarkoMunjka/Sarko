@@ -56,7 +56,7 @@ function PolaroidCard({
 
   return (
     <motion.article
-      className={`fw-polaroid w-[min(280px,78vw)] ${className}`}
+      className={`fw-polaroid w-[min(260px,76vw)] ${className}`}
       style={{ rotate: `${rotate}deg` }}
       initial={reduce ? false : { opacity: 0, y: 36, rotate: rotate - 6 }}
       whileInView={{ opacity: 1, y: 0, rotate }}
@@ -105,30 +105,36 @@ export function MagnetPolaroidSection() {
   return (
     <section
       id="about"
-      className="relative overflow-hidden bg-cream pb-[clamp(80px,12vw,140px)] pt-[clamp(72px,10vw,110px)]"
+      className="relative overflow-hidden bg-cream pb-[clamp(80px,12vw,140px)] pt-[clamp(88px,11vw,128px)]"
     >
-      {/* Background heading — sits behind polaroids */}
+      {/* Background heading — mixed alignment behind polaroids */}
       <motion.h2
-        className="pointer-events-none relative z-0 mx-auto max-w-[min(92%,980px)] text-center font-serif text-[clamp(2.4rem,6.2vw,5.4rem)] font-light uppercase leading-[0.92] tracking-[0.04em] text-[#101010]/14"
+        className="pointer-events-none absolute inset-x-0 top-[clamp(52px,7vw,92px)] z-0 px-6 font-serif font-light uppercase tracking-[0.04em] text-[#101010]/14 md:px-10"
         initial={reduce ? false : { opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.4 }}
         transition={{ duration: 1.1, ease: EASE }}
       >
-        <span className="block">A vacation</span>
-        <span className="block">that will be remembered</span>
-        <span className="block">forever!</span>
+        <span className="block pl-[clamp(10%,16vw,22%)] text-left text-[clamp(2.4rem,6.2vw,5.4rem)] leading-[0.92]">
+          A vacation
+        </span>
+        <span className="mt-1 block pl-[clamp(4%,8vw,12%)] text-left text-[clamp(1.85rem,4.8vw,4.35rem)] leading-[0.95] md:whitespace-nowrap">
+          that will be remembered
+        </span>
+        <span className="mt-1 block text-center text-[clamp(2.4rem,6.2vw,5.4rem)] leading-[0.92]">
+          forever!
+        </span>
       </motion.h2>
 
-      {/* Polaroid board */}
-      <div className="fw-polaroid-board relative z-10 mx-auto mt-0 flex w-full max-w-[1180px] flex-col items-center gap-10 px-6 pb-8 md:mt-[clamp(-48px,-4vw,-24px)] md:block md:h-[min(720px,118vw)] md:gap-0 md:px-10 md:pb-0">
+      {/* Polaroid board — tighter cluster */}
+      <div className="fw-polaroid-board relative z-10 mx-auto mt-0 flex w-full max-w-[920px] flex-col items-center gap-10 px-6 pb-8 md:mt-[clamp(-32px,-2vw,-12px)] md:block md:h-[min(640px,95vw)] md:gap-0 md:px-8 md:pb-0">
         <PolaroidCard
           variant="brand"
           image={`${IMG}/polaroid-01.jpg`}
           alt="Child on a wooden deck looking toward a lit A-frame cabin at night"
           rotate={-9}
           delay={0.12}
-          className="relative md:absolute md:left-[4%] md:top-[4%]"
+          className="relative md:absolute md:left-[10%] md:top-[10%]"
         />
         <PolaroidCard
           variant="review"
@@ -139,7 +145,7 @@ export function MagnetPolaroidSection() {
           quote="I posted 2 photos from here, and already 150+ likes and a bunch of questions about where this paradise is"
           name="Den"
           avatar={`${IMG}/avatar-den.jpg`}
-          className="relative z-20 md:absolute md:left-1/2 md:top-[38%] md:-translate-x-1/2"
+          className="relative z-20 md:absolute md:left-1/2 md:top-[36%] md:-translate-x-1/2"
         />
         <PolaroidCard
           variant="review"
@@ -150,7 +156,7 @@ export function MagnetPolaroidSection() {
           quote="I felt something similar in Bali... A complete union with nature..."
           name="Maria"
           avatar={`${IMG}/avatar-maria.jpg`}
-          className="relative md:absolute md:right-[5%] md:top-[0%]"
+          className="relative md:absolute md:right-[10%] md:top-[6%]"
         />
       </div>
 
