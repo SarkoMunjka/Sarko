@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { motion, useReducedMotion } from 'motion/react'
 import { Menu, X } from 'lucide-react'
 import { TornPaperDivider } from './TornPaperDivider'
+import { TORN_CARD_CLIP } from './tornPaper'
 import './forest-whisper.css'
 
 const HERO_IMG = '/work-demos/forest-whisper/img/hero-bg.png'
@@ -186,16 +187,8 @@ export function ForestWhisperDemo() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 1, delay: 0.5, ease: EASE }}
                 className="fw-card relative self-stretch bg-[rgba(72,88,68,0.82)] py-8 shadow-[0_18px_48px_rgba(0,0,0,0.32)] backdrop-blur-[4px]"
-                style={{ gridColumn: '1', gridRow: '3 / 6' }}
+                style={{ gridColumn: '1', gridRow: '3 / 6', clipPath: TORN_CARD_CLIP }}
               >
-                <div
-                  className="fw-card-edge pointer-events-none absolute bottom-0 right-[-6px] top-0 w-3 bg-[rgba(72,88,68,0.82)]"
-                  style={{
-                    clipPath:
-                      'polygon(0 0, 100% 3%, 0 7%, 100% 11%, 0 15%, 100% 19%, 0 23%, 100% 27%, 0 31%, 100% 35%, 0 39%, 100% 43%, 0 47%, 100% 51%, 0 55%, 100% 59%, 0 63%, 100% 67%, 0 71%, 100% 75%, 0 79%, 100% 83%, 0 87%, 100% 91%, 0 95%, 100% 100%, 0 100%)',
-                  }}
-                  aria-hidden
-                />
                 <div className={`text-cream/90 ${PAD_X}`}>
                   <LeafIcon />
                   <p className="mt-5 max-w-[200px] text-[14px] leading-[1.55] text-cream/88">
