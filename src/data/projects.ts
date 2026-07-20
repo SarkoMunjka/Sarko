@@ -16,6 +16,8 @@ export interface Project {
   poster?: string
   /** Vimeo video ID for hover preview / case-study hero. */
   vimeoId?: string
+  /** Live demo URL embedded in project cards (shows real site chrome + hero). */
+  demoUrl?: string
 }
 
 export const PROJECTS: Project[] = [
@@ -40,6 +42,18 @@ export const PROJECTS: Project[] = [
     accent: '#C8923E',
     caseStudy: true,
     cover: '/work-demos/fade-co/hero-poster.jpg',
+  },
+  {
+    slug: 'moonstay',
+    name: 'Moonstay',
+    category: 'Hospitality · Web',
+    year: '2026',
+    blurb:
+      'Kurirani boravci za odmor — vile, kuće i vikendice sa scroll-scrub heroom i premium iskustvom rezervacije.',
+    accent: '#4A5D52',
+    caseStudy: true,
+    demoUrl: '/work-demos/moonstay/?embed=1',
+    cover: '/work-demos/moonstay/hero-poster.jpg',
   },
   {
     slug: 'novaframe',

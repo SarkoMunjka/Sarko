@@ -5,6 +5,7 @@ import { Projects } from './pages/Projects'
 import { CaseStudySocks } from './pages/CaseStudySocks'
 import { CaseStudyNovaframe } from './pages/CaseStudyNovaframe'
 import { CaseStudyFadeCo } from './pages/CaseStudyFadeCo'
+import { CaseStudyMoonstay } from './pages/CaseStudyMoonstay'
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/projects" element={<Projects />} />
         <Route path="/projects/socks-co" element={<CaseStudySocks />} />
         <Route path="/projects/fade-co" element={<CaseStudyFadeCo />} />
+        <Route path="/projects/moonstay" element={<CaseStudyMoonstay />} />
         <Route path="/projects/novaframe" element={<CaseStudyNovaframe />} />
       </Routes>
     </>

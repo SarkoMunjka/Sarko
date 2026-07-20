@@ -5,6 +5,7 @@ import { Footer } from '../components/Footer'
 import BlurText from '../components/BlurText'
 import { FadeIn } from '../components/FadeIn'
 import { ScrollPreview } from '../components/ScrollPreview'
+import { DemoSitePreview } from '../components/DemoSitePreview'
 import { VimeoHoverPreview } from '../components/VimeoPreview'
 import { PROJECTS } from '../data/projects'
 
@@ -51,6 +52,8 @@ export function Projects() {
                       videoId={project.vimeoId}
                       posterSrc={project.poster}
                     />
+                  ) : project.demoUrl ? (
+                    <DemoSitePreview src={project.demoUrl} alt={project.name} />
                   ) : project.video ? (
                     <video
                       src={project.video}
