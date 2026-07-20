@@ -15,15 +15,32 @@ html.forest-whisper-embed #about {
   display: none !important;
 }
 
+.fw-hero-content {
+  padding-top: calc(2rem + 3.25rem + 65px);
+}
+
+.fw-headline {
+  font-size: clamp(calc(2.45rem - 5px), calc(5.7vw - 5px), calc(5.75rem - 5px));
+}
+
+.fw-hero-grid {
+  max-width: 50%;
+}
+
 @media (max-width: 1024px) {
   .fw-hero-grid {
     grid-template-columns: 1fr !important;
+    max-width: 100% !important;
   }
 
   .fw-hero-grid .fw-card {
     grid-column: 1 !important;
     grid-row: auto !important;
     max-width: 320px;
+  }
+
+  .fw-hero-grid .fw-card[style*='grid-row'] {
+    grid-row: auto !important;
   }
 
   .fw-hero-grid .fw-card-edge {
