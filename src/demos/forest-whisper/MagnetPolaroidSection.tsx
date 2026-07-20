@@ -56,7 +56,7 @@ function PolaroidCard({
 
   return (
     <motion.article
-      className={`fw-polaroid w-[min(250px,74vw)] ${className}`}
+      className={`fw-polaroid w-[min(340px,88vw)] ${className}`}
       style={{ rotate: `${rotate}deg` }}
       initial={reduce ? false : { opacity: 0, y: 36, rotate: rotate - 6 }}
       whileInView={{ opacity: 1, y: 0, rotate }}
@@ -64,12 +64,12 @@ function PolaroidCard({
       transition={{ duration: 1, delay, ease: EASE }}
     >
       <FridgeMagnet />
-      <div className="relative bg-white px-3 pb-5 pt-3 shadow-[0_16px_44px_rgba(16,16,16,0.16),0_4px_14px_rgba(16,16,16,0.08)]">
-        <div className="aspect-[4/4.6] overflow-hidden bg-[#e8e2d8]">
+      <div className="relative bg-white px-4 pb-6 pt-4 shadow-[0_20px_52px_rgba(16,16,16,0.18),0_6px_18px_rgba(16,16,16,0.08)]">
+        <div className="aspect-[4/5] overflow-hidden bg-[#e8e2d8]">
           <img src={image} alt={alt} className="h-full w-full object-cover" loading="lazy" />
         </div>
 
-        <div className="mt-4 min-h-[88px] px-1">
+        <div className="mt-5 min-h-[96px] px-1">
           {variant === 'brand' ? (
             <div className="flex flex-col items-center gap-2 text-[#576a4f]">
               <HeartIcon />
@@ -108,7 +108,7 @@ export function MagnetPolaroidSection() {
   return (
     <section
       id="about"
-      className="relative overflow-hidden bg-cream pb-[clamp(80px,12vw,140px)] pt-[clamp(64px,8vw,96px)]"
+      className="relative overflow-hidden bg-cream pb-[clamp(100px,14vw,160px)] pt-[clamp(64px,8vw,96px)]"
     >
       {/* Headline — own row, always readable, polaroids sit below */}
       <motion.div
@@ -135,37 +135,37 @@ export function MagnetPolaroidSection() {
         </h2>
       </motion.div>
 
-      {/* Polaroids — spaced apart */}
-      <div className="fw-polaroid-board relative z-10 mx-auto -mt-6 flex w-full max-w-[1020px] flex-col items-center gap-12 px-6 md:-mt-8 md:block md:h-[min(600px,88vw)] md:gap-0 md:px-8">
+      {/* Polaroids — Instagram post size, spread V layout */}
+      <div className="fw-polaroid-board relative z-10 mx-auto -mt-4 flex w-full max-w-[1240px] flex-col items-center gap-14 px-4 md:-mt-6 md:block md:h-[min(780px,105vw)] md:gap-0 md:px-6">
         <PolaroidCard
           variant="brand"
           image={`${IMG}/polaroid-01.jpg`}
           alt="Child on a wooden deck looking toward a lit A-frame cabin at night"
-          rotate={-9}
+          rotate={9}
           delay={0.12}
-          className="relative md:absolute md:left-[4%] md:top-[4%]"
+          className="relative md:absolute md:left-[1%] md:top-[6%] lg:left-[3%]"
         />
         <PolaroidCard
           variant="review"
           image={`${IMG}/polaroid-02.jpg`}
           alt="Guest facing an A-frame cabin in the forest with arms raised"
-          rotate={-4}
+          rotate={-6}
           delay={0.28}
           quote="I posted 2 photos from here, and already 150+ likes and a bunch of questions about where this paradise is"
           name="Den"
           avatar={`${IMG}/avatar-den.jpg`}
-          className="relative z-20 md:absolute md:left-1/2 md:top-[44%] md:-translate-x-1/2"
+          className="relative z-20 md:absolute md:left-1/2 md:top-[46%] md:-translate-x-1/2"
         />
         <PolaroidCard
           variant="review"
           image={`${IMG}/polaroid-03.jpg`}
           alt="Forest view from a wooden balcony with two chairs"
-          rotate={14}
+          rotate={8}
           delay={0.42}
           quote="I felt something similar in Bali... A complete union with nature..."
           name="Maria"
           avatar={`${IMG}/avatar-maria.jpg`}
-          className="relative md:absolute md:right-[4%] md:top-[2%]"
+          className="relative md:absolute md:right-[1%] md:top-[2%] lg:right-[3%]"
         />
       </div>
     </section>
