@@ -56,7 +56,7 @@ function PolaroidCard({
 
   return (
     <motion.article
-      className={`fw-polaroid w-[min(260px,76vw)] ${className}`}
+      className={`fw-polaroid w-[min(250px,74vw)] ${className}`}
       style={{ rotate: `${rotate}deg` }}
       initial={reduce ? false : { opacity: 0, y: 36, rotate: rotate - 6 }}
       whileInView={{ opacity: 1, y: 0, rotate }}
@@ -102,39 +102,53 @@ function PolaroidCard({
 export function MagnetPolaroidSection() {
   const reduce = useReducedMotion()
 
+  const lineClass =
+    'font-serif font-light uppercase tracking-[0.04em] text-[#101010]/24'
+
   return (
     <section
       id="about"
-      className="relative overflow-hidden bg-cream pb-[clamp(80px,12vw,140px)] pt-[clamp(88px,11vw,128px)]"
+      className="relative overflow-hidden bg-cream pb-[clamp(80px,12vw,140px)] pt-[clamp(64px,8vw,96px)]"
     >
-      {/* Background heading — mixed alignment behind polaroids */}
-      <motion.h2
-        className="pointer-events-none absolute inset-x-0 top-[clamp(52px,7vw,92px)] z-0 px-6 font-serif font-light uppercase tracking-[0.04em] text-[#101010]/14 md:px-10"
+      {/* Headline — own row, always readable, polaroids sit below */}
+      <motion.div
+        className="relative z-20 mx-auto w-full max-w-[1040px] px-6 md:px-10"
         initial={reduce ? false : { opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.4 }}
         transition={{ duration: 1.1, ease: EASE }}
       >
-        <span className="block pl-[clamp(10%,16vw,22%)] text-left text-[clamp(2.4rem,6.2vw,5.4rem)] leading-[0.92]">
-          A vacation
-        </span>
-        <span className="mt-1 block pl-[clamp(4%,8vw,12%)] text-left text-[clamp(1.85rem,4.8vw,4.35rem)] leading-[0.95] md:whitespace-nowrap">
-          that will be remembered
-        </span>
-        <span className="mt-1 block text-center text-[clamp(2.4rem,6.2vw,5.4rem)] leading-[0.92]">
-          forever!
-        </span>
-      </motion.h2>
+        <h2 className="fw-about-headline">
+          {/* center-left anchor: block starts near horizontal center, lines go left */}
+          <span
+            className={`${lineClass} block text-left text-[clamp(2.5rem,6vw,5.2rem)] leading-[0.9]`}
+            style={{ marginLeft: 'clamp(8%, 14vw, 18%)' }}
+          >
+            A vacation
+          </span>
+          <span
+            className={`${lineClass} mt-1 block text-left text-[clamp(1.9rem,4.4vw,4rem)] leading-[0.95] md:whitespace-nowrap`}
+            style={{ marginLeft: 'clamp(2%, 6vw, 8%)' }}
+          >
+            that will be remembered
+          </span>
+          <span
+            className={`${lineClass} mt-2 block text-center text-[clamp(2.5rem,6vw,5.2rem)] leading-[0.9]`}
+          >
+            forever!
+          </span>
+        </h2>
+      </motion.div>
 
-      {/* Polaroid board — tighter cluster */}
-      <div className="fw-polaroid-board relative z-10 mx-auto mt-0 flex w-full max-w-[920px] flex-col items-center gap-10 px-6 pb-8 md:mt-[clamp(-32px,-2vw,-12px)] md:block md:h-[min(640px,95vw)] md:gap-0 md:px-8 md:pb-0">
+      {/* Polaroids — below headline, slight overlap only at top edge */}
+      <div className="fw-polaroid-board relative z-10 mx-auto -mt-6 flex w-full max-w-[860px] flex-col items-center gap-10 px-6 md:-mt-10 md:block md:h-[min(560px,82vw)] md:gap-0 md:px-6">
         <PolaroidCard
           variant="brand"
           image={`${IMG}/polaroid-01.jpg`}
           alt="Child on a wooden deck looking toward a lit A-frame cabin at night"
           rotate={-9}
           delay={0.12}
-          className="relative md:absolute md:left-[10%] md:top-[10%]"
+          className="relative md:absolute md:left-[14%] md:top-[2%]"
         />
         <PolaroidCard
           variant="review"
@@ -145,7 +159,7 @@ export function MagnetPolaroidSection() {
           quote="I posted 2 photos from here, and already 150+ likes and a bunch of questions about where this paradise is"
           name="Den"
           avatar={`${IMG}/avatar-den.jpg`}
-          className="relative z-20 md:absolute md:left-1/2 md:top-[36%] md:-translate-x-1/2"
+          className="relative z-20 md:absolute md:left-1/2 md:top-[40%] md:-translate-x-1/2"
         />
         <PolaroidCard
           variant="review"
@@ -156,7 +170,7 @@ export function MagnetPolaroidSection() {
           quote="I felt something similar in Bali... A complete union with nature..."
           name="Maria"
           avatar={`${IMG}/avatar-maria.jpg`}
-          className="relative md:absolute md:right-[10%] md:top-[6%]"
+          className="relative md:absolute md:right-[14%] md:top-[0%]"
         />
       </div>
 

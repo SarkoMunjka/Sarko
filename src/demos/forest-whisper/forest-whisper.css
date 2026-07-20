@@ -27,6 +27,10 @@ html.forest-whisper-embed #about {
   max-width: 50%;
 }
 
+.fw-about-headline {
+  padding-bottom: clamp(12px, 2vw, 24px);
+}
+
 @media (max-width: 1024px) {
   .fw-hero-grid {
     grid-template-columns: 1fr !important;
