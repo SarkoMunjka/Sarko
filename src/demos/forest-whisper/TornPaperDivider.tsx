@@ -1,4 +1,37 @@
-/** Organic ripped-paper edge — not a wave; warm off-white with center dip */
+/**
+ * Torn-paper divider along a symmetric upward arc.
+ * Jagged teeth stay consistent from left edge to right — no flat plateau.
+ */
+function buildTornArcPath(
+  width = 1440,
+  height = 120,
+  step = 6,
+  edgeY = 54,
+  peakY = 14,
+  tooth = 5,
+): string {
+  const center = width / 2
+  const curveA = (edgeY - peakY) / (center * center)
+  const baseY = (x: number) => curveA * (x - center) ** 2 + peakY
+
+  const parts: string[] = []
+  const count = Math.round(width / step)
+
+  for (let i = 0; i <= count; i++) {
+    const x = Math.min(i * step, width)
+    const phase = i % 2 === 0 ? -1 : 1
+    const wobble = (i % 3 === 0 ? 1 : 0) * phase
+    const y = Math.round(baseY(x) + phase * tooth + wobble)
+    parts.push(i === 0 ? `M${x},${y}` : `L${x},${y}`)
+  }
+
+  parts.push(`L${width},${height}`, `L0,${height}`, 'Z')
+  return parts.join(' ')
+}
+
+const TORN_ARC_PATH = buildTornArcPath()
+
+/** Organic ripped-paper edge — symmetric arc, warm off-white fill */
 export function TornPaperDivider() {
   return (
     <div
@@ -12,15 +45,7 @@ export function TornPaperDivider() {
         className="h-full w-full"
         xmlns="http://www.w3.org/2000/svg"
       >
-        <path
-          fill="#f6f1e8"
-          d="
-            M0,52 L5,48 L11,53 L17,47 L23,52 L29,46 L35,51 L41,45 L47,50 L53,44 L59,49 L65,43 L71,48 L77,42 L83,47 L89,41 L95,46 L101,40 L107,45 L113,39 L119,44 L125,38 L131,43 L137,37 L143,42 L149,36 L155,41 L161,35 L167,40 L173,34 L179,39 L185,33 L191,38 L197,32 L203,37 L209,31 L215,36 L221,30 L227,35 L233,29 L239,34 L245,28 L251,33 L257,27 L263,32 L269,26 L275,31 L281,25 L287,30 L293,24 L299,29 L305,23 L311,28 L317,22 L323,27 L329,21 L335,26 L341,20 L347,25 L353,19 L359,24 L365,18 L371,23 L377,17 L383,22 L389,16 L395,21 L401,15 L407,20 L413,14 L419,19 L425,13 L431,18 L437,12 L443,17 L449,11 L455,16 L461,10 L467,15 L473,9 L479,14 L485,8 L491,13 L497,7 L503,12 L509,6 L515,11 L521,5 L527,10 L533,4 L539,9 L545,3 L551,8 L557,2 L563,7 L569,1 L575,6 L581,0 L587,5 L593,0 L599,4
-            L638,4 A82,48 0 0 1 802,4
-            L808,7 L814,2 L820,7 L826,1 L832,6 L838,0 L844,5 L850,0 L856,4 L862,0 L868,3 L874,0 L880,2 L886,0 L892,1 L898,0 L904,2 L910,0 L916,1 L922,0 L928,1 L934,0 L940,0 L946,1 L952,0 L958,0 L964,1 L970,0 L976,0 L982,1 L988,0 L994,0 L1000,1 L1006,0 L1012,0 L1018,1 L1024,0 L1030,0 L1036,1 L1042,0 L1048,0 L1054,1 L1060,0 L1066,0 L1072,1 L1078,0 L1084,0 L1090,1 L1096,0 L1102,0 L1108,1 L1114,0 L1120,0 L1126,1 L1132,0 L1138,0 L1144,1 L1150,0 L1156,0 L1162,1 L1168,0 L1174,0 L1180,1 L1186,0 L1192,0 L1198,1 L1204,0 L1210,0 L1216,1 L1222,0 L1228,0 L1234,1 L1240,0 L1246,0 L1252,1 L1258,0 L1264,0 L1270,1 L1276,0 L1282,0 L1288,1 L1294,0 L1300,0 L1306,1 L1312,0 L1318,0 L1324,1 L1330,0 L1336,0 L1342,1 L1348,0 L1354,0 L1360,1 L1366,0 L1372,0 L1378,1 L1384,0 L1390,0 L1396,1 L1402,0 L1408,0 L1414,1 L1420,0 L1426,0 L1432,1 L1438,0 L1440,1
-            L1440,120 L0,120 Z
-          "
-        />
+        <path fill="#f6f1e8" d={TORN_ARC_PATH} />
       </svg>
     </div>
   )
