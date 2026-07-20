@@ -118,37 +118,32 @@ export function MagnetPolaroidSection() {
         viewport={{ once: true, amount: 0.4 }}
         transition={{ duration: 1.1, ease: EASE }}
       >
-        <h2 className="fw-about-headline">
-          {/* center-left anchor: block starts near horizontal center, lines go left */}
-          <span
-            className={`${lineClass} block text-left text-[clamp(2.5rem,6vw,5.2rem)] leading-[0.9]`}
-            style={{ marginLeft: 'clamp(8%, 14vw, 18%)' }}
-          >
+        <h2 className="fw-about-headline inline-grid gap-x-0" style={{ marginLeft: 'clamp(10%, 16vw, 20%)' }}>
+          <span className={`${lineClass} col-span-2 text-left text-[clamp(2.5rem,6vw,5.2rem)] leading-[0.9]`}>
             A vacation
           </span>
-          <span
-            className={`${lineClass} mt-1 block text-left text-[clamp(1.9rem,4.4vw,4rem)] leading-[0.95] md:whitespace-nowrap`}
-            style={{ marginLeft: 'clamp(2%, 6vw, 8%)' }}
-          >
-            that will be remembered
+          <span className={`${lineClass} whitespace-pre text-left text-[clamp(1.9rem,4.4vw,4rem)] leading-[0.95]`}>
+            that will{' '}
           </span>
-          <span
-            className={`${lineClass} mt-2 block text-center text-[clamp(2.5rem,6vw,5.2rem)] leading-[0.9]`}
-          >
+          <span className={`${lineClass} text-left text-[clamp(1.9rem,4.4vw,4rem)] leading-[0.95] md:whitespace-nowrap`}>
+            be remembered
+          </span>
+          <span aria-hidden className="col-start-1" />
+          <span className={`${lineClass} col-start-2 text-left text-[clamp(2.5rem,6vw,5.2rem)] leading-[0.9]`}>
             forever!
           </span>
         </h2>
       </motion.div>
 
-      {/* Polaroids — below headline, slight overlap only at top edge */}
-      <div className="fw-polaroid-board relative z-10 mx-auto -mt-6 flex w-full max-w-[860px] flex-col items-center gap-10 px-6 md:-mt-10 md:block md:h-[min(560px,82vw)] md:gap-0 md:px-6">
+      {/* Polaroids — spaced apart */}
+      <div className="fw-polaroid-board relative z-10 mx-auto -mt-6 flex w-full max-w-[1020px] flex-col items-center gap-12 px-6 md:-mt-8 md:block md:h-[min(600px,88vw)] md:gap-0 md:px-8">
         <PolaroidCard
           variant="brand"
           image={`${IMG}/polaroid-01.jpg`}
           alt="Child on a wooden deck looking toward a lit A-frame cabin at night"
           rotate={-9}
           delay={0.12}
-          className="relative md:absolute md:left-[14%] md:top-[2%]"
+          className="relative md:absolute md:left-[4%] md:top-[4%]"
         />
         <PolaroidCard
           variant="review"
@@ -159,7 +154,7 @@ export function MagnetPolaroidSection() {
           quote="I posted 2 photos from here, and already 150+ likes and a bunch of questions about where this paradise is"
           name="Den"
           avatar={`${IMG}/avatar-den.jpg`}
-          className="relative z-20 md:absolute md:left-1/2 md:top-[40%] md:-translate-x-1/2"
+          className="relative z-20 md:absolute md:left-1/2 md:top-[44%] md:-translate-x-1/2"
         />
         <PolaroidCard
           variant="review"
@@ -170,19 +165,7 @@ export function MagnetPolaroidSection() {
           quote="I felt something similar in Bali... A complete union with nature..."
           name="Maria"
           avatar={`${IMG}/avatar-maria.jpg`}
-          className="relative md:absolute md:right-[14%] md:top-[0%]"
-        />
-      </div>
-
-      {/* Mossy branch — bottom right */}
-      <div
-        className="pointer-events-none absolute bottom-0 right-0 z-30 w-[min(52vw,420px)] translate-x-[12%] translate-y-[18%]"
-        aria-hidden
-      >
-        <img
-          src={`${IMG}/branch-moss.jpg`}
-          alt=""
-          className="h-auto w-full rotate-[8deg] object-cover opacity-95 [mask-image:linear-gradient(135deg,black_40%,transparent_88%)]"
+          className="relative md:absolute md:right-[4%] md:top-[2%]"
         />
       </div>
     </section>

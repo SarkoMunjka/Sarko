@@ -29,6 +29,8 @@ html.forest-whisper-embed #about {
 
 .fw-about-headline {
   padding-bottom: clamp(12px, 2vw, 24px);
+  grid-template-columns: max-content max-content;
+  row-gap: 0.15em;
 }
 
 @media (max-width: 1024px) {
